@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     "&:hover":{
       backgroundColor:'pink'
     }
+  },
+  conditionalDisplay:{
+    [theme.breakpoints.down('sm')]: {
+      display:'none'
+    }
   }
 }));
 
@@ -48,9 +53,11 @@ export default function ButtonAppBar() {
           </IconButton>
           <img src={logo} width='150px' height='50px'></img>
           <div className={classes.title}></div>
+          <div className={classes.conditionalDisplay}>
             <a className={classes.link} href="#">Real SandleWood Products</a>
             <a className={classes.link} href="#">About Us</a>
             <a className={classes.link} href="#">Contact Us</a> 
+          </div>
         </Toolbar>
         <Drawer anchor={'left'} open={openState} onClose={()=>setOpen(!openState)}>
             <List component="nav" style={{width:'250px'}}>
