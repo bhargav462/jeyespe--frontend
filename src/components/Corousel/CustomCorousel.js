@@ -6,7 +6,6 @@ import Page1 from "./page1.png";
 import Page2 from "./page2.png";
 import React, { Component } from "react";
 import { Carousel } from "primereact/carousel";
-import { Button } from "primereact/button";
 
 function Page1JSX() {
   return (
@@ -15,7 +14,6 @@ function Page1JSX() {
       <h1>Red Sandle Wood</h1>
       <h3>(Pterocarpus santalinus)</h3>
       <p>
-        {" "}
         products of Car Decors, Home Decors, Phone accessories, Idols,
         Sculptures, Bowls and many more.
       </p>
@@ -26,6 +24,10 @@ function Page2JSX() {
   return (
     <>
       <h1>Real Sandle Health Products</h1>
+      <p>
+        products of Car Decors, Home Decors, Phone accessories, Idols,
+        Sculptures, Bowls and many more.
+      </p>
     </>
   );
 }
@@ -50,9 +52,11 @@ export default class CustomCarousel extends Component {
   pageTemplate(page) {
     console.log(page);
     return (
-      <div style={{ backgroundImage: `url(${page.imgURL})` }}>
-        {page.content}
-        <img src={page.imgURL}></img>
+      <div style={{ backgroundImage: `url(${page.imgURL})`, color:'white',
+                  height:'500px',backgroundColor:'#4b693c', backgroundRepeat:'no-repeat',
+                  backgroundPosition:'right', 
+                  backgroundSize:'550px 500px' }}>
+        <p style={{padding:'30px'}}>{page.content}</p>
       </div>
     );
   }
@@ -64,8 +68,6 @@ export default class CustomCarousel extends Component {
           value={this.state.pages}
           itemTemplate={this.pageTemplate}
           circular
-          autoplayInterval={3000}
-          header={<h5>Circular, AutoPlay, 3 Items per Page and Scroll by 1</h5>}
         />
       </div>
     );
