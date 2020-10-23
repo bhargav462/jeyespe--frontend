@@ -6,6 +6,7 @@ import ChemistryImage from './about2.jpg'
 import WoodImage from './about3.jpg'
 import MedicalImage from './about4.jpg'
 import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
 const info=[
     {
         imgURL: BotanicImage,
@@ -52,8 +53,8 @@ export default function About(){
                              </Grid>
                     
                              <Grid item xs={12} md={6} style={{paddingLeft:'20px'}}>
-                               <h1>{parah.heading}</h1>
-                                <p>{parah.description}</p>
+                               <Typography variant='h5'>{parah.heading}</Typography>
+                                <Typography>{parah.description}</Typography>
                              </Grid>
                          </Grid> 
                     })

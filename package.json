@@ -9,12 +9,15 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "classnames": "^2.2.6",
+    "formik": "^2.2.0",
+    "formik-material-ui": "^3.0.0",
     "primeflex": "^2.0.0",
     "primeicons": "^4.0.0",
     "primereact": "^5.0.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "3.4.3",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.4",
     "react-transition-group": "^4.4.1"
   },
   "scripts": {
