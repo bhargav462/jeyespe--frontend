@@ -6,8 +6,8 @@ const useStyles = makeStyles((theme) => {
         console.log(theme.palette)
         return   {
             FooterStyle:{
-                backgroundColor:theme.palette.primary.main,
-                color:'white'
+                color:'white',
+                backgroundColor:'#1d2547',
             }
         }
 })
