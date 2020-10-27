@@ -9,6 +9,7 @@ import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import Catalog from './components/Catalog/Catalog'
+import ShoppingCart from './components/ShoppingCart/ShoppingCart'
 console.log('hey here')
 console.log(green)
 const innerTheme = createMuiTheme({
@@ -53,6 +54,10 @@ function App() {
         <Route exact path="/catalog">
           <NavBar/>
           <Catalog/>
+        </Route>
+        <Route exact path="/cart">
+          <NavBar/>
+          <ShoppingCart/>
         </Route>
     </Router>
     </ThemeProvider>

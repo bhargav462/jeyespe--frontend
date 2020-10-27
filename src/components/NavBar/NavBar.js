@@ -111,9 +111,11 @@ export default function ButtonAppBar() {
           <StyledLink to="register" className={classes.myAccountLink}>
             <Typography component="span">Register</Typography>
           </StyledLink>
-          <IconButton>
+          <StyledLink to="cart">
+          <IconButton >
             <ShoppingCartIcon />
           </IconButton>
+          </StyledLink>
         </Toolbar>
         <Drawer
           anchor={"left"}

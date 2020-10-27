@@ -5,6 +5,7 @@ import { Button } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
+import { Redirect } from 'react-router'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Log() {
     const classes=useStyles()
-
+    const [user,setUser]=React.useState('')
+    
+    React.useEffect(() => {
+      console.log('use effect called')
+      const loggedInUser = localStorage.getItem("user");
+      if (loggedInUser) {
+        // const foundUser = JSON.parse(loggedInUser);
+        // console.log('found user'+foundUser)
+        setUser(loggedInUser);
+      }
+    }, []);
+    
     return (
     <Formik
       initialValues={{
@@ -69,6 +81,8 @@ export default function Log() {
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
 
+        setTimeout(() => {
+          setSubmitting(false);
         fetch('https://jeyespe-backend.herokuapp.com/login',{
           method:'POST',
           headers:{
@@ -81,19 +95,25 @@ export default function Log() {
           {
             return res.text();
           }else{
+            alert('invalid credentials')
             console.log("invalid credentials")
+            return 'error';
             // do something
           }
         })
         .then(data => {
-          alert('Logged in successfully')
+          if(data !=='error')
+          {
+          // alert('Logged in successfully')
           console.log('data',data);
+          localStorage.setItem('user', data)
+            return <Redirect to='/catalog'/>
+          }
+
           // store the token in local storage and redirect to home page
         })
 
-        setTimeout(() => {
-          setSubmitting(false);
-          alert("we recieved");
+          
           // alert(JSON.stringify(values, null, 2));
         }, 500);
       }}

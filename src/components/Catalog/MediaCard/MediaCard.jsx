@@ -7,25 +7,25 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: '300px',
-    height:'500px',
-    margin: '20px'
-},
+    width: "220px",
+    height: "360px",
+    margin: "20px",
+  },
   media: {
-    height: "300px"
-  }
+    height: "200px",
+  },
 });
 
-export default function MediaCard({item}) {
+export default function MediaCard({ item }) {
   const classes = useStyles();
   const theme = useTheme();
-    console.log(item)
+  console.log(item);
   return (
-    <Card className={classes.root} raised>
+    <Card  raised className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -33,26 +33,33 @@ export default function MediaCard({item}) {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom variant="h6">
-            {item.name} 
+          <Typography gutterBottom variant="p">
+            {item.name}
           </Typography>
-          <Typography variant="body1"  component="p">
+          <Typography variant="body1" component="p">
             Price Rs. {item.price}
           </Typography>
         </CardContent>
       </CardActionArea>
-        <CardActions>
-        
-      <Button disableElevation variant="contained" style={{backgroundColor:theme.palette.success.light}}
+      <CardActions>
+        <div style={{ textAlign: "center" }}>
+          {/* <Button  disableElevation variant="contained" style={{backgroundColor:theme.palette.success.light}}
        size="small" color="primary">
             Buy Now
-          </Button>
-          <Button disableElevation variant="contained" style={{backgroundColor:theme.palette.info.light}}
-           size="small" color="primary">
+          </Button> */}
+
+          <Button
+          
+            disableElevation
+            variant="contained"
+            style={{ backgroundColor: theme.palette.info.light }}
+            size="medium"
+            color="primary"
+          >
             Add to Cart
           </Button>
+        </div>
       </CardActions>
-      
     </Card>
   );
 }
