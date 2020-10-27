@@ -70,7 +70,41 @@ export default function Logout() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+        console.log('values',values);
+
+        fetch('https://jeyespe-backend.herokuapp.com/register',{
+          method:'POST',
+          headers:{
+            "content-Type": "application/json"
+          },
+          body: JSON.stringify(values)
+        }).then(res => {
+          console.log(res);
+          if(res.ok){
+            return res.json();
+          }
+          
+          res.json().then(function(text){
+            if(text.error){
+              throw new Error(text.error);
+            }
+          }).catch(function(e){
+            console.log(e.message);
+            if(e.message === 'email'){
+              console.log('email already used')
+            }else if(e.message === 'phoneNo'){
+              console.log('phone number already in use')
+            }
+          })
+          return 'error';
+        })
+        .then(data => {
+            if(data !== 'error'){
+              alert('registered successfully');
+              // redirect to login
+            }
+        })
+
         setTimeout(() => {
           setSubmitting(false);
           alert("we recieved");
