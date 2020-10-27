@@ -95,7 +95,7 @@ export default function About() {
               <Slide
                 direction={idx%2==0 ? "right" : "left"}
                 in={sliderState[idx]}
-                timeout={4000}
+                timeout={3000}
               >
           
                 <img src={parah.imgURL} style={{ width: "100%" }}></img>

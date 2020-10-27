@@ -9,19 +9,26 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
     textInput:{
-        [theme.breakpoints.up('xs')]:{
+        [theme.breakpoints.down('sm')]:{
             width:'300px'
         },
-        [theme.breakpoints.up('md')]:{
+        [theme.breakpoints.up('sm')]:{
             width:'500px'
         },
         marginBottom:'10px',
     } ,
     formContainer:{
         marginTop:'5%',
-        border: '1px solid black',
         padding: '50px 30px 30px 30px',
-        textAlign:'center'
+        textAlign:'center',
+        [theme.breakpoints.down('md')]:{
+          marginTop:'15%',
+          padding: '50px 30px 30px 30px',         
+        },
+        [theme.breakpoints.down('sm')]:{
+          marginTop:'30%',
+          padding: '40px 10px 30px 10px',         
+        },
     } ,
     submitButton:{
         backgroundColor: theme.palette.secondary.main,

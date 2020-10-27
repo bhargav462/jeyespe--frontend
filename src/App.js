@@ -8,6 +8,7 @@ import { green, orange } from '@material-ui/core/colors';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
+import Catalog from './components/Catalog/Catalog'
 console.log('hey here')
 console.log(green)
 const innerTheme = createMuiTheme({
@@ -48,6 +49,10 @@ function App() {
         <Route exact path="/Register">
           <NavBar/>
           <Register/>
+        </Route>
+        <Route exact path="/catalog">
+          <NavBar/>
+          <Catalog/>
         </Route>
     </Router>
     </ThemeProvider>

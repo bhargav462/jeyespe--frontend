@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import logo from "./images/logo.png";
 import Drawer from "@material-ui/core/Drawer";
-import { Link } from "react-router-dom";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import InfoIcon from "@material-ui/icons/Info";
@@ -14,23 +13,24 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
-import Typography from '@material-ui/core/Typography';
-
+import Typography from "@material-ui/core/Typography";
+import StyledLink from "../utility/StyledLink";
 
 const useStyles = makeStyles((theme) => {
   return {
+    appBar: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.primary.main,
+    },
     logo: {
       [theme.breakpoints.down("sm")]: {
         width: "100px",
         height: "50px",
       },
       width: "200px",
-      height: "100px",
+      height: "80px",
       marginTop: "5px",
       marginBottom: "5px",
-    },
-    root: {
-      flexGrow: 1,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -75,8 +75,8 @@ export default function ButtonAppBar() {
   const [openState, setOpen] = React.useState(false);
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
+    <div>
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -87,14 +87,16 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/">
+          <StyledLink to="/">
             <img src={logo} className={classes.logo}></img>
-          </Link>
+          </StyledLink>
           <div className={classes.leftLinksGroup}>
-            <Typography component="span" className={classes.link} >
-              Real SandleWood Products
-            </Typography>
-            <Typography component="span"  className={classes.link}>
+            <StyledLink to="/catalog" style={{ textDecoration: "none" }}>
+              <Typography component="span" className={classes.link}>
+                Real SandleWood Products
+              </Typography>
+            </StyledLink>
+            <Typography component="span" className={classes.link}>
               About Us
             </Typography>
             <Typography component="span" className={classes.link}>
@@ -103,16 +105,12 @@ export default function ButtonAppBar() {
           </div>
           <div className={classes.title}></div>
 
-          <Link to="login" className={classes.myAccountLink}>
-          <Typography component="span">
-              Login
-            </Typography>
-          </Link>
-          <Link to="register" className={classes.myAccountLink}>
-          <Typography component="span">
-              Register
-            </Typography>
-          </Link>
+          <StyledLink to="login" className={classes.myAccountLink}>
+            <Typography component="span">Login</Typography>
+          </StyledLink>
+          <StyledLink to="register" className={classes.myAccountLink}>
+            <Typography component="span">Register</Typography>
+          </StyledLink>
           <IconButton>
             <ShoppingCartIcon />
           </IconButton>
@@ -123,26 +121,38 @@ export default function ButtonAppBar() {
           onClose={() => setOpen(!openState)}
         >
           <List component="nav" style={{ width: "250px" }}>
-            <Link to="/login">
+            <StyledLink to="/login">
               <ListItem button>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Login" />
               </ListItem>
-            </Link>
+            </StyledLink>
             <ListItem button>
               <ListItemIcon>
                 <DraftsIcon />
               </ListItemIcon>
               <ListItemText primary="Drafts" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <ListIcon />
-              </ListItemIcon>
-              <ListItemText primary="Real SandleWood Products" />
-            </ListItem>
+            <StyledLink to="/catalog">
+              <ListItem button>
+                <ListItemIcon>
+                  <ListIcon />
+                </ListItemIcon>
+                <ListItemText primary="Real SandleWood Products" />
+              </ListItem>
+            </StyledLink>
+
+            <StyledLink to="/register">
+              <ListItem button>
+                <ListItemIcon>
+                  <ListIcon />
+                </ListItemIcon>
+                <ListItemText primary="Register" />
+              </ListItem>
+            </StyledLink>
+
             <ListItem button>
               <ListItemIcon>
                 <InfoIcon />
