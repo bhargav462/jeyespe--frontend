@@ -1,11 +1,12 @@
-import "primeicons/primeicons.css";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.css";
-import 'primeflex/primeflex.css';
 import Page1 from "./page1.png";
 import Page2 from "./page2.png";
-import React, { Component } from "react";
-import { Carousel } from "primereact/carousel";
+import React from "react";
+import Slide from "@material-ui/core/Slide";
+import Carousel from 'react-bootstrap/Carousel'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Fade from '@material-ui/core/Fade';
+import { makeStyles } from "@material-ui/core/styles";
+
 
 function Page1JSX() {
   return (
@@ -31,45 +32,91 @@ function Page2JSX() {
     </>
   );
 }
-export default class CustomCarousel extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      pages: [
-        {
-          content: <Page1JSX />,
-          imgURL: Page1,
-        },
-        {
-          content: <Page2JSX />,
-          imgURL: Page2,
-        },
-      ],
-    };
+
+const useStyles = makeStyles((theme) => ({
+  courouselBackground:{
+    backgroundSize:'550px 500px',
+    backgroundPosition:'right',
+    [theme.breakpoints.down('md')]:{
+      backgroundSize:'400px 400px',
+      backgroundPosition:'center'
+  },
+  [theme.breakpoints.down('sm')]:{
+    backgroundSize:'300px 300px',
+    backgroundPosition:'center'
+}
+  
+  },
+  courouselPageText:{
+      [theme.breakpoints.down('md')]:{
+          display:'none'
+      }
   }
+}))
 
-  pageTemplate(page) {
-    console.log(page);
-    return (
-      <div style={{ backgroundImage: `url(${page.imgURL})`, color:'white',
-                  height:'500px',backgroundColor:'#4b693c', backgroundRepeat:'no-repeat',
-                  backgroundPosition:'right', 
-                  backgroundSize:'550px 500px' }}>
-        <p style={{padding:'30px'}}>{page.content}</p>
-      </div>
-    );
-  }
-
-  render() {
-    return (
+const pageTemplate=(page,animationState,classes)=> {
+  return (<>
+    <div className={classes.courouselBackground}  style={{ backgroundImage: `url(${page.imgURL})`, color:'white',
+                height:'500px',backgroundColor:'#a2a2a2', backgroundRepeat:'no-repeat',
+                 
+                 }}>
+    <div className={classes.courouselPageText}>
+    <Slide
+        direction="right"
+        in={animationState}
+        timeout={{
+          appear: 500,
+          enter: 3000,
+          exit: 500
+        }}
+      >
       <div>
-        <Carousel
-          value={this.state.pages}
-          itemTemplate={this.pageTemplate}
-          circular
-        />
+      <Fade in={animationState} timeout={4000}>
+      <p style={{padding:'50px'}}>{page.content}</p>
+      </Fade>
       </div>
-    );
-  }
+    </Slide>
+    </div>
+    </div>
+    </>
+  );
+}
+
+const pages= [
+  {
+    content: <Page1JSX />,
+    imgURL: Page1,
+  },
+  {
+    content: <Page2JSX />,
+    imgURL: Page2,
+  },
+];
+
+
+export default function CUstomCarousel(){
+  const classes=useStyles()
+   let arr=new Array(pages.length)
+   arr.fill(false)
+   arr[0]=true
+   const [animationStates,changeAnimationState]=React.useState(arr)
+  return (
+<Carousel 
+  onSlid={(e)=>{
+    let copyArr=[...arr]
+    copyArr.fill(false)
+    copyArr[e]=true
+    changeAnimationState(copyArr)
+  }}
+  >
+    {
+      pages.map((page,idx)=>{
+        return <Carousel.Item interval={5000}>
+        {pageTemplate(page,animationStates[idx],classes)} 
+         </Carousel.Item>
+      })
+    }
+</Carousel>
+  )
 }

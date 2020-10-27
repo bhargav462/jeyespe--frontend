@@ -108,7 +108,7 @@ export default function ButtonAppBar() {
               Login
             </Typography>
           </Link>
-          <Link to="login" className={classes.myAccountLink}>
+          <Link to="register" className={classes.myAccountLink}>
           <Typography component="span">
               Register
             </Typography>

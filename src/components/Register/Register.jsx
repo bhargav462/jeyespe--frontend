@@ -4,6 +4,7 @@ import { Formik, Form, Field } from "formik";
 import { Button } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
+import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 
 
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Log() {
+export default function Logout() {
     const classes=useStyles()
 
     return (
@@ -41,6 +42,8 @@ export default function Log() {
       initialValues={{
         email: "",
         password: "",
+        username:"",
+        contact: ""
       }}
       validate={(values) => {
         console.log(values);
@@ -57,6 +60,13 @@ export default function Log() {
         } else if (values.password.length < 8) {
           errors.password = "Password should be atleast 8 characters";
         }
+        if(!values.username){
+            errors.username="Required"
+        }
+        if(!values.contact)
+        {
+            errors.contact="Required"
+        }
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -72,7 +82,16 @@ export default function Log() {
         <Form >
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
-          
+          <Grid item >
+              <Field
+                component={TextField}
+                type="username"
+                label="Username"
+                name="username"
+                variant="outlined"
+                className={classes.textInput}
+              />
+            </Grid>
           <Grid item >
               <Field
                 component={TextField}
@@ -92,6 +111,16 @@ export default function Log() {
                 className={classes.textInput}
               />
             </Grid>
+            <Grid item >
+              <Field
+                component={TextField}
+                type="contact"
+                label="contact"
+                name="contact"
+                variant="outlined"
+                className={classes.textInput}
+              />
+            </Grid>
             <Grid item>
               <Button
                 variant="contained"
@@ -99,7 +128,7 @@ export default function Log() {
                 onClick={submitForm}
                 className={classes.submitButton}
               >
-                Login
+                Register
               </Button>
             </Grid>
             </Paper>
@@ -110,16 +139,3 @@ export default function Log() {
   );
 }
 
-//    function Login() {
-//     const classes = useStyles();
-
-//     return (
-//       <FormControl className={classes.form}>
-//         {/* <Grid container direction="column" spacing={3} alignItems="center"> */}
-//             <TextField className={classes.inputElement} label="User Name" variant="outlined" type="email"/>
-//             <TextField className={classes.inputElement} label="Password" variant="outlined" type="password"/>
-//             <Button variant="contained" color="primary" type="submit">Submit</Button>
-//         {/* </Grid> */}
-//       </FormControl>
-//     );
-//   }
