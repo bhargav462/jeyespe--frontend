@@ -67,7 +67,30 @@ export default function Log() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+        console.log('values',values);
+
+        fetch('https://jeyespe-backend.herokuapp.com/login',{
+          method:'POST',
+          headers:{
+            "content-Type": "application/json"
+          },
+          body: JSON.stringify(values)
+        }).then(res => {
+          console.log('res',res);
+          if(res.ok)
+          {
+            return res.text();
+          }else{
+            console.log("invalid credentials")
+            // do something
+          }
+        })
+        .then(data => {
+          alert('Logged in successfully')
+          console.log('data',data);
+          // store the token in local storage and redirect to home page
+        })
+
         setTimeout(() => {
           setSubmitting(false);
           alert("we recieved");
