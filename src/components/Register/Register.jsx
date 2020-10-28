@@ -6,6 +6,7 @@ import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +44,7 @@ formContainer:{
 
 export default function Logout() {
     const classes=useStyles()
+    let history = useHistory();
 
     return (
     <Formik
@@ -108,7 +110,8 @@ export default function Logout() {
         .then(data => {
             if(data !== 'error'){
               alert('registered successfully');
-              // redirect to login
+              history.push('/login')
+
             }
         })
 

@@ -15,7 +15,7 @@ import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import StyledLink from "../utility/StyledLink";
-
+import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
 const useStyles = makeStyles((theme) => {
   return {
     appBar: {
@@ -70,10 +70,17 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+function handleLogout(setUser){
+  localStorage.removeItem("user")
+  setUser('')
+}
+
 export default function ButtonAppBar() {
   const classes = useStyles();
   const [openState, setOpen] = React.useState(false);
-
+  const user=React.useContext(AuthContext)
+  const setUser=React.useContext(AuthUpdateContext)
+  console.log('In NavBar',user)
   return (
     <div>
       <AppBar position="static" className={classes.appBar}>
@@ -104,18 +111,28 @@ export default function ButtonAppBar() {
             </Typography>
           </div>
           <div className={classes.title}></div>
-
-          <StyledLink to="login" className={classes.myAccountLink}>
+      {console.log('in between i am here',user)}
+        { 
+          !user ? <>
+            <StyledLink to="login" className={classes.myAccountLink}>
             <Typography component="span">Login</Typography>
           </StyledLink>
           <StyledLink to="register" className={classes.myAccountLink}>
             <Typography component="span">Register</Typography>
+          </StyledLink>
+          </>
+        :
+          <>
+         <StyledLink to="login" onClick={()=>handleLogout(setUser)}  className={classes.myAccountLink}>
+            <Typography component="span">Logout</Typography>
           </StyledLink>
           <StyledLink to="cart">
           <IconButton >
             <ShoppingCartIcon />
           </IconButton>
           </StyledLink>
+          </>
+      }
         </Toolbar>
         <Drawer
           anchor={"left"}

@@ -21,7 +21,7 @@ export default class Catalog extends Component {
         })
     }
     render() {
-       
+        
 
         return (<>
             <Grid container direction='column' style={{width:'80%', margin:'20px auto'}}>

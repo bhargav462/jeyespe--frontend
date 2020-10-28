@@ -6,6 +6,8 @@ import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router'
+import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,20 +43,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Log() {
+function refreshPage(){
+  // window.location.reload(true);
+}
+export default function Log(props) {
     const classes=useStyles()
-    const [user,setUser]=React.useState('')
-    
-    React.useEffect(() => {
-      console.log('use effect called')
-      const loggedInUser = localStorage.getItem("user");
-      if (loggedInUser) {
-        // const foundUser = JSON.parse(loggedInUser);
-        // console.log('found user'+foundUser)
-        setUser(loggedInUser);
-      }
-    }, []);
-    
+    const user=React.useContext(AuthContext)
+    const setUser=React.useContext(AuthUpdateContext)
+    let history = useHistory();
+
+    console.log('this is fucked up',user)
+    if(user) return <Redirect to="/catalog"/>
     return (
     <Formik
       initialValues={{
@@ -78,11 +77,12 @@ export default function Log() {
         }
         return errors;
       }}
+
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
 
         setTimeout(() => {
-          setSubmitting(false);
+          
         fetch('https://jeyespe-backend.herokuapp.com/login',{
           method:'POST',
           headers:{
@@ -97,6 +97,7 @@ export default function Log() {
           }else{
             alert('invalid credentials')
             console.log("invalid credentials")
+            setSubmitting(false);
             return 'error';
             // do something
           }
@@ -107,10 +108,10 @@ export default function Log() {
           // alert('Logged in successfully')
           console.log('data',data);
           localStorage.setItem('user', data)
-            return <Redirect to='/catalog'/>
+           setUser(data)
+           history.push('/catalog')
           }
-
-          // store the token in local storage and redirect to home page
+          setSubmitting(false);
         })
 
           
@@ -118,7 +119,8 @@ export default function Log() {
         }, 500);
       }}
     >
-      {({ isSubmitting, submitForm }) => (
+      {
+         ({ isSubmitting, submitForm }) => (
         <Form >
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
