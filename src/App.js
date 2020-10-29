@@ -43,7 +43,7 @@ function App() {
           <NavBar/>
           <CustomCorousel/>
           <About/>
-          
+          <Footer/>
         </Route>
         <Route exact path="/login">
           <NavBar/>
