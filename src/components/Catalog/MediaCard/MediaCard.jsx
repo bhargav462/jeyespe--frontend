@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 export default function MediaCard({ item }) {
   const classes = useStyles();
   const theme = useTheme();
-  var itemImage = "http://localhost:3001/images/"+item.img;
+  var itemImage = "https://jeyespe-backend.herokuapp.com/images"+item.img;
   console.log(item);
   return (
     <Card  raised className={classes.root}>

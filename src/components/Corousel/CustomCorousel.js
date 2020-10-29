@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
 
 const pageTemplate=(page,animationState,classes)=> {
   return (<>
-    <div className={classes.courouselBackground}  style={{ backgroundImage: `url(${page.imgURL})`, color:'white',
-                height:'500px',backgroundColor:'#a2a2a2', backgroundRepeat:'no-repeat',
+    <div className={classes.courouselBackground}  style={{ backgroundImage: `url(${page.imgURL})`, 
+                height:'500px',backgroundColor:'#e1e2e1', backgroundRepeat:'no-repeat',
                  
                  }}>
     <div className={classes.courouselPageText}>

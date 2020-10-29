@@ -33,11 +33,10 @@ formContainer:{
     },
 } ,
     submitButton:{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         color: 'white',
         "&:hover":{
-            backgroundColor: theme.palette.secondary.light,
-            // color:theme.palette.secondary.main
+            backgroundColor: theme.palette.primary.light,
           }
     }
 }));

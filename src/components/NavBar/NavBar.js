@@ -43,11 +43,11 @@ const useStyles = makeStyles((theme) => {
     },
     link: {
       padding: "20px",
-      color: "black",
+      color: "white",
       textDecoration: "none",
       "&:hover": {
         // backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
       },
     },
     leftLinksGroup: {
@@ -57,11 +57,11 @@ const useStyles = makeStyles((theme) => {
     },
     myAccountLink: {
       padding: "10px",
-      color: "black",
+      color: "white",
       textDecoration: "none",
       "&:hover": {
         // backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
       },
       [theme.breakpoints.down("sm")]: {
         display: "none",
@@ -114,21 +114,23 @@ export default function ButtonAppBar() {
       {console.log('in between i am here',user)}
         { 
           !user ? <>
-            <StyledLink to="login" className={classes.myAccountLink}>
-            <Typography component="span">Login</Typography>
+            <StyledLink to="login" >
+            <Typography component="span" className={classes.myAccountLink}>Login</Typography>
           </StyledLink>
-          <StyledLink to="register" className={classes.myAccountLink}>
-            <Typography component="span">Register</Typography>
+          <StyledLink to="register" >
+            <Typography component="span"  className={classes.myAccountLink}>
+               Register
+              </Typography>
           </StyledLink>
           </>
         :
           <>
-         <StyledLink to="login" onClick={()=>handleLogout(setUser)}  className={classes.myAccountLink}>
-            <Typography component="span">Logout</Typography>
+         <StyledLink to="login" onClick={()=>handleLogout(setUser)} >
+            <Typography component="span"  className={classes.myAccountLink}>Logout</Typography>
           </StyledLink>
           <StyledLink to="cart">
           <IconButton >
-            <ShoppingCartIcon />
+            <ShoppingCartIcon fontSize='large' className={classes.myAccountLink}/>
           </IconButton>
           </StyledLink>
           </>

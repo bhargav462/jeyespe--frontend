@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
         },
     } ,
     submitButton:{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
         color: 'white',
         "&:hover":{
-            backgroundColor: theme.palette.secondary.light,
+            backgroundColor: theme.palette.primary.light,
             // color:theme.palette.secondary.main
           }
     }

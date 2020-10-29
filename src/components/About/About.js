@@ -9,6 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Slide from "@material-ui/core/Slide";
 import VisibilitySensor from "react-visibility-sensor";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { IconButton } from '@material-ui/core';
 
 const info = [
   {
@@ -76,7 +78,7 @@ export default function About() {
   return (
     <div className={classes.marginCenter}>
       <HomePageCard />
-      <h1>About Red Sandalwood</h1>
+      <h1 style={{margin:'20px 0px'}}>About Red Sandalwood</h1>
       {info.map((parah, id) => {
         let idx=id
         return (
