@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/core/styles";
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
 export default function MediaCard({ item }) {
   const classes = useStyles();
   const theme = useTheme();
-  var itemImage = "http://localhost:3001/images/"+item.img;
+  var itemImage = "https://jeyespe-backend.herokuapp.com/images"+item.img;
   console.log(item);
   return (
     <Card  raised className={classes.root}>
@@ -43,7 +44,7 @@ export default function MediaCard({ item }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <div style={{ textAlign: "center" }}>
+        <Box width="100%" style={{ textAlign: "center" }}>
           {/* <Button  disableElevation variant="contained" style={{backgroundColor:theme.palette.success.light}}
        size="small" color="primary">
             Buy Now
@@ -59,7 +60,7 @@ export default function MediaCard({ item }) {
           >
             Add to Cart
           </Button>
-        </div>
+        </Box>
       </CardActions>
     </Card>
   );
