@@ -1,11 +1,11 @@
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-body{
-    background-color: #e9e4d0;
+body {
+  background-color: #e9e4d0;
 }
 
 /* #test{
@@ -13,68 +13,81 @@ body{
     display: inline;
 } */
 
-.item__family{
-    text-align: center;
+.item__family {
+  text-align: center;
 }
 
-.cardogiries{
-    width: 80%;
-    float: right;
-    padding: 20px;
+.cardogiries {
+  width: 78%;
+  float: right;
+  padding: 20px;
 }
 
-.categories{
-    width: 200px;
-    background:Red;
-    padding: 20px;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: 400;
+.categories {
+  margin-top: 15%;
+  width: 100%;
+  background: white;
+  border: 1px solid black;
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.categories a{
+    color:black;
+    text-decoration:none;
+    padding:10px;
+    display: block;
+    border-bottom: 1px solid black; 
+}
+.categories a:hover{
+    background-color:#c8a781;
+    text-decoration:none;
 }
 
-.categories__container{
-    width: 20%;
-    float: left;
-    padding: 20px;
-    position: fixed;
-     /* height:100px; */ 
-    /*width: 200px;
+.categories__container {
+  width: 24%;
+  float: left;
+  padding: 20px;
+  position: fixed;
+  /* height:100px; */
+  /*width: 200px;
     margin: 20px;
     position: fixed;
     background-color: #ecf0f1; */
 }
 
-main{
-    display: grid;
-    grid-template-columns: 1fr repeat(12,minmax(auto,60px)) 1fr;
-    grid-gap: 40px;
-    padding: 60px 0;
+main {
+  display: grid;
+  grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;
+  grid-gap: 40px;
+  padding: 60px 0;
 }
 
-.text--medium{
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: 400;
-    color: brown;
+.text--medium {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  color: brown;
 }
 
-.cards{
-    grid-column: 2 / span 12;
-    display: grid;
-    grid-template-columns: repeat(12, minmax(auto,60px));
-    grid-gap: 40px;
+.cards {
+  grid-column: 2 / span 12;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(auto, 60px));
+  grid-gap: 40px;
 }
 
-.card{
-    grid-column-end: span 4;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-    height: 350px;
+.card {
+  grid-column-end: span 4;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  height: 350px;
 }
 
 /* .card:hover {
@@ -82,105 +95,104 @@ main{
 } */
 
 .card__image-container {
-    width: 100%;
-    height: 350px;
-    padding-top: 56.25%;
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  height: 350px;
+  padding-top: 56.25%;
+  overflow: hidden;
+  position: relative;
 }
 
-.card__image-container img{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+.card__image-container img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .card__content {
-    padding: 20px;
-    background: white;
+  padding: 20px;
+  background: white;
 }
 
-.card__title{
-    text-align: center;
-    margin-bottom: 5px;
-    color: #8b857d;
+.card__title {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #8b857d;
 }
-
 
 .card__title:hover {
-    color: #504037;
+  color: #504037;
 }
 
-.card__price{
-   text-align: center;
-   font-weight: 1000;
+.card__price {
+  text-align: center;
+  font-weight: 1000;
 }
 
-.card__info{
-    display: flex;
-    margin-top: 10px;
-    align-self: end;
-    align-items: center;
+.card__info {
+  display: flex;
+  margin-top: 10px;
+  align-self: end;
+  align-items: center;
 }
 
-.add__to__cart:hover{
-    background-color: #b18857;
+.add__to__cart:hover {
+  background-color: #b18857;
 }
 
-.add__to__cart{
-    margin-left: auto;
-    margin-right: auto;
-    padding: 5px 20px;
-    background-color: #504037;
-    /* border-radius: 5px; */
-    /* background: transparent; */
-    color: #ffffff;
+.add__to__cart {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 20px;
+  background-color: #504037;
+  /* border-radius: 5px; */
+  /* background: transparent; */
+  color: #ffffff;
 }
 
-@media only screen and (max-width: 1000px){
-    .card{
-        grid-column-end: span 6; 
-    }
+@media only screen and (max-width: 1000px) {
+  .card {
+    grid-column-end: span 6;
+  }
 }
 
-@media only screen and (max-width: 700px){
-    .categories__container{
-        display: none;
-    }
-    .cardogiries{
-        width: 100%;
-    }
-    main{
-        grid-gap: 20px;
-    }
-    .card{
-        grid-column-end: span 12; 
-    }
+@media only screen and (max-width: 700px) {
+  .categories__container {
+    display: none;
+  }
+  .cardogiries {
+    width: 100%;
+  }
+  main {
+    grid-gap: 20px;
+  }
+  .card {
+    grid-column-end: span 12;
+  }
 }
 
-@media only screen and (max-width: 500px){
-    .categories__container{
-        display: none;
-    }
-    .cardogiries{
-        width: 100%;
-    }
-    main{
-        grid-template-columns: 10px repeat(6, 1fr) 10px;
-        grid-gap: 10px;
-    }
-    .cards{
-        grid-column: 2 / span 6;
-        grid-template-columns: repeat(6, 1fr);
-        grid-gap: 20px;
-    }
-    .card{
-        grid-column-end: span 6; 
-    }
+@media only screen and (max-width: 500px) {
+  .categories__container {
+    display: none;
+  }
+  .cardogiries {
+    width: 100%;
+  }
+  main {
+    grid-template-columns: 10px repeat(6, 1fr) 10px;
+    grid-gap: 10px;
+  }
+  .cards {
+    grid-column: 2 / span 6;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 20px;
+  }
+  .card {
+    grid-column-end: span 6;
+  }
 }

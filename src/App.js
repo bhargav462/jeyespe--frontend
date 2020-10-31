@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from './components/NavBar/NavBar'
 import CustomCorousel from './components/Corousel/CustomCorousel'
-import About from './components/About/About'
+import Home from './components/Home/Home'
 import Footer from './components/Footer/Footer'
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {Redirect,BrowserRouter as Router,Route} from 'react-router-dom'
@@ -24,7 +24,7 @@ function App() {
         <Route exact path="/">
           <NavBar/>
           <CustomCorousel/>
-          <About/>
+          <Home/>
           <Footer/>
         </Route>
         <Route exact path="/login">

@@ -101,7 +101,7 @@ export default function About() {
         </div>
         <Stripe image={parallax1}>
           <h1>
-            We Buy Red Pine Poles, Softwood, Hardwood & Standing Timber!hiuhoiuh
+            We Buy Red Pine Poles, Softwood, Hardwood & Standing Timber!
           </h1>
         </Stripe>
 

@@ -3,7 +3,8 @@ import MediaCard from './MediaCard/MediaCard'
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
 import './CatalogStyles.css';
-
+import {StyledButton} from '../utility/StyledButton'
+import { NavLink } from 'react-router-dom';
 
 export default class Catalog extends Component {
     constructor(){
@@ -25,16 +26,15 @@ export default class Catalog extends Component {
         
 
         return (<>
-        
             <div class="categories__container">
                 <div class="categories">
+                    <h4>Product Categories</h4>
                     <ul>
-                        <li>Phone accessories</li>
-                        <li>Idols</li>
-                        <li>Pencils</li>
-                        <li>pens</li>
-                        <li>jcajdajkdjakdjkajkdka</li>
-                        <li>jakdjkajdkjakd adkadk</li>
+                     {
+                        Object.keys(this.state.products).map(prod=> {
+                         return  <a href={'#'+prod.replace(' ','')}>{prod}</a>
+                        })
+                     }
                     </ul>
                 </div>
             </div>
@@ -42,7 +42,7 @@ export default class Catalog extends Component {
             {
                 Object.keys(this.state.products).map(prod=> {
                     return <> 
-                    <h2 class="item__family">{prod}</h2>
+                    <h2 id={prod.replace(' ','')} class="item__family">{prod}</h2>
                     <main>
                     <section class="cards">
                         
