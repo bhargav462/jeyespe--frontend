@@ -8,6 +8,12 @@ body {
   background-color: #e9e4d0;
 }
 
+.loading{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* #test{
     float: right;
     display: inline;

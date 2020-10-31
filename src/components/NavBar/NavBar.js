@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => {
       color: "white",
       "&:hover": {
         // backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.primary.light,
+        color: theme.palette.primary.dark,
         textDecoration: "none",
       },
     },
@@ -113,6 +113,14 @@ export default function ButtonAppBar() {
             >
               Catalog
             </NavLink>
+            <NavLink
+                  to="cart"
+                  className={classes.link}
+                  activeClassName={classes.activeLink}
+                  exact={true}
+                >
+                Cart
+                </NavLink>
             <NavLink to="#"  className={classes.link}>
               About Us
             </NavLink>
@@ -150,18 +158,10 @@ export default function ButtonAppBar() {
                 >
                   Logout
                 </NavLink>
-                <NavLink
-                  to="cart"
-                  className={classes.link}
-                  activeClassName={classes.activeLink}
-                  exact={true}
-                >
-                  <IconButton>
-                    <ShoppingCartIcon fontSize="large" />
-                  </IconButton>
-                </NavLink>
+               
               </>
             )}
+
           </div>
         </Toolbar>
         {/* This is drawer Area */}
