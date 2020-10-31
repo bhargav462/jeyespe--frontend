@@ -4,10 +4,9 @@ import { Formik, Form, Field } from "formik";
 import { Button } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
-import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
-
+import {StyledButton} from '../utility/StyledButton'
 
 const useStyles = makeStyles((theme) => ({
   textInput:{
@@ -31,14 +30,7 @@ formContainer:{
       marginTop:'10%',
       padding: '40px 10px 30px 10px',         
     },
-} ,
-    submitButton:{
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
-        "&:hover":{
-            backgroundColor: theme.palette.primary.light,
-          }
-    }
+} 
 }));
 
 export default function Logout() {
@@ -165,14 +157,14 @@ export default function Logout() {
               />
             </Grid>
             <Grid item>
-              <Button
+              <StyledButton
                 variant="contained"
                 disabled={isSubmitting}
                 onClick={submitForm}
-                className={classes.submitButton}
+                mode="light"
               >
                 Register
-              </Button>
+              </StyledButton>
             </Grid>
             </Paper>
           </Grid>

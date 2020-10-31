@@ -1,0 +1,24 @@
+.heading {
+  font-size: 6.5vw;
+ font-weight: bold;
+}
+
+.bg-image-wrapper {
+  position: absolute;
+  /* background: url('http://ns328286.ip-37-187-113.eu/ew/wallpapers/800x480/12840_800x480.jpg'); */
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transition: 20s;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.content {
+  position: relative;
+  text-align: center;
+  color: white;
+  /* background-color: red; */
+  display: "flex";
+  margin-top: 5%;
+}

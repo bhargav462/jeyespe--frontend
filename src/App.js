@@ -10,34 +10,16 @@ import Register from './components/Register/Register'
 import Catalog from './components/Catalog/Catalog'
 import ShoppingCart from './components/ShoppingCart/ShoppingCart'
 import {AuthProvider} from './components/utility/AuthProvider'
-
-const innerTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#e53935',
-      dark:'#ab000d',
-      light: '#ff6e60'
-    },
-    secondary:{
-      main : '#5c6bc0',
-      light: '#ffc08d',
-      dark: '#c56033'
-    }
-  },
-  typography: {
-    fontSize: 16,
-    // fontFamily: [
-    //   "Comic Sans MS", 'cursive', 'sans-serif'
-    // ].join(','),
-  }
-});
+import customTheme from './components/utility/customTheme'
+import { MuiThemeProvider,StylesProvider } from "@material-ui/core/styles";
 
 function App() {
  
   return (
     <div>
     <AuthProvider>
-    <ThemeProvider theme={innerTheme}>
+    
+    <ThemeProvider theme={customTheme}>
     <Router>
         <Route exact path="/">
           <NavBar/>
@@ -59,15 +41,15 @@ function App() {
           <Footer/>
         </Route>
         <Route exact path="/cart">
-        {/* <AuthCheck> */}
           <NavBar/>
           <ShoppingCart/>
           <Footer/>
-          {/* </AuthCheck> */}
         </Route>
     </Router>
     
     </ThemeProvider>
+
+ 
     </AuthProvider>
     </div>
   );

@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { Redirect } from 'react-router'
 import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
 import { useHistory } from "react-router-dom";
-
+import {StyledButton} from '../utility/StyledButton'
 
 const useStyles = makeStyles((theme) => ({
     textInput:{
@@ -32,15 +32,7 @@ const useStyles = makeStyles((theme) => ({
           marginTop:'30%',
           padding: '40px 10px 30px 10px',         
         },
-    } ,
-    submitButton:{
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
-        "&:hover":{
-            backgroundColor: theme.palette.primary.light,
-            // color:theme.palette.secondary.main
-          }
-    }
+    } 
 }));
 
 function refreshPage(){
@@ -145,14 +137,14 @@ export default function Log(props) {
               />
             </Grid>
             <Grid item>
-              <Button
+              <StyledButton
                 variant="contained"
                 disabled={isSubmitting}
                 onClick={submitForm}
-                className={classes.submitButton}
+                mode="light"
               >
                 Login
-              </Button>
+              </StyledButton>
             </Grid>
             </Paper>
           </Grid>

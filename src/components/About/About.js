@@ -6,12 +6,15 @@ import ChemistryImage from "./about2.jpg";
 import WoodImage from "./about3.jpg";
 import MedicalImage from "./about4.jpg";
 import Grid from "@material-ui/core/Grid";
-import { Typography } from "@material-ui/core";
+import { createStyles, Typography } from "@material-ui/core";
 import Slide from "@material-ui/core/Slide";
 import VisibilitySensor from "react-visibility-sensor";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { IconButton } from '@material-ui/core';
-
+import RowButtons from "./RowButtons/RowButtons";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
+import Stripe from "../utility/Stripe";
+import parallax1 from "./parallax1.jpg";
+import { StyledButton } from "../utility/StyledButton";
 const info = [
   {
     imgURL: BotanicImage,
@@ -55,65 +58,137 @@ const info = [
   },
 ];
 
-const useStyles = makeStyles({
-  marginCenter: {
-    margin: "5%",
-  },
-});
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    marginCenter: {
+      margin: "5%",
+    },
+    stripeContainer: {
+      height: "400px",
+      width: "100%",
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      textAlign: "center",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      margin: "100px 0px",
+    },
+    content: {
+      color: "white",
+      width: "80%",
+    },
+  })
+);
 
-function handleVisibilityChange(idx,setSliderState,sliderState)
-{
-  // console.log('toggled slider state '+idx)
-    let prevState=[...sliderState];
-    prevState[idx]=true;
-    setSliderState(prevState)
+function handleVisibilityChange(idx, setSliderState, sliderState) {
+  let prevState = [...sliderState];
+  prevState[idx] = true;
+  setSliderState(prevState);
 }
 
 export default function About() {
   const classes = useStyles();
-  const temp=new Array(info.length)
-  temp.fill(false)
-  const [sliderState,setSliderState]=React.useState(temp)
+  const temp = new Array(info.length);
+  temp.fill(false);
+  const [sliderState, setSliderState] = React.useState(temp);
 
   return (
-    <div className={classes.marginCenter}>
-      <HomePageCard />
-      <h1 style={{margin:'20px 0px'}}>About Red Sandalwood</h1>
-      {info.map((parah, id) => {
-        let idx=id
-        return (
-          <VisibilitySensor onChange={isVisible=> {
-            if(isVisible==true)
-            handleVisibilityChange(idx,setSliderState,sliderState)
-          }}>
+    <div>
+      <div>
+        <div className={classes.marginCenter}>
+          <HomePageCard />
+        </div>
+        <Stripe image={parallax1}>
+          <h1>
+            We Buy Red Pine Poles, Softwood, Hardwood & Standing Timber!hiuhoiuh
+          </h1>
+        </Stripe>
 
-          <Grid
-            container
-            style={{ marginTop: "20px" }}
-            alignItems="center"
-            direction={idx % 2 == 0 ? "row" : "row-reverse"}
-          >
-            <Grid item xs={12} md={6}>
-              <Slide
-                direction={idx%2==0 ? "right" : "left"}
-                in={sliderState[idx]}
-                timeout={3000}
+        <h1 style={{ margin: "40px 0px", textAlign: "center" }}>
+          About Red Sandalwood
+        </h1>
+        <div className={classes.marginCenter}>
+          {info.map((parah, id) => {
+            let idx = id;
+            return (
+              <VisibilitySensor
+                onChange={(isVisible) => {
+                  if (isVisible == true)
+                    handleVisibilityChange(idx, setSliderState, sliderState);
+                }}
               >
-          
-                <img src={parah.imgURL} style={{ width: "100%" }}></img>
+                <Grid
+                  container
+                  style={{ marginTop: "20px" }}
+                  alignItems="center"
+                  direction={idx % 2 == 0 ? "row" : "row-reverse"}
+                >
+                  <Grid item xs={12} md={6}>
+                    <Slide
+                      direction={idx % 2 == 0 ? "right" : "left"}
+                      in={sliderState[idx]}
+                      timeout={3000}
+                    >
+                      <img src={parah.imgURL} style={{ width: "100%" }}></img>
+                    </Slide>
+                  </Grid>
 
-              </Slide>
-            </Grid>
+                  <Grid item xs={12} md={6} style={{ paddingLeft: "20px" }}>
+                    <Typography variant="h5">{parah.heading}</Typography>
+                    <Typography>{parah.description}</Typography>
+                  </Grid>
+                </Grid>
+              </VisibilitySensor>
+            );
+          })}
+        </div>
+      </div>
 
-            <Grid item xs={12} md={6} style={{ paddingLeft: "20px" }}>
-              <Typography variant="h5">{parah.heading}</Typography>
-              <Typography>{parah.description}</Typography>
-            </Grid>
-          </Grid>
-          </VisibilitySensor>
+      {/* start of next segment */}
+      <div
+        style={{
+          textAlign: "center",
+          margin: "100px 0px",
+          padding: "40px",
+          backgroundColor: "#f0ece0",
+        }}
+      >
+        <h1 style={{ marginBottom: "60px" }}>What we do</h1>
 
-        );
-      })}
+        <RowButtons />
+
+        <Box mt={4} style={{ textAlign: "center" }}>
+          <Button variant="contained" color="primary">
+            Learn More
+          </Button>
+        </Box>
+      </div>
+
+      <Box
+        style={{
+          textAlign: "center",
+          backgroundColor: "#f0ece0",
+          height: "400px",
+        }}
+      >
+        <h3 style={{ color: "black",paddingTop:'100px' }}>
+          Meet Our Partners
+        </h3>
+        <Box display="flex" justifyContent="space-around" my={6}>
+          <h3>Flipkart</h3>
+          <h3>Amazon</h3>
+          <h3>AWS</h3>
+          <h3>Azure</h3>
+        </Box>
+      </Box>
+
+      <Stripe image={parallax1}>
+        <h1 style={{ marginBottom: "50px" }}>
+          Red Sandlewood Products Are What We Know Best
+        </h1>
+        <StyledButton mode="dark">Click Here</StyledButton>
+      </Stripe>
     </div>
   );
 }
