@@ -1,10 +1,59 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
+import StripeCheckout from 'react-stripe-checkout';
 
 export default class ShoppingCart extends Component {
+
     render() {
+
+        // const [product,setProduct] = useState({
+        //     productId: "",
+        //     productFamily: ""
+        // })
+
+        const checkOutButtonStyles = {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+
+        const products = [{
+            id: "PHS01",
+            productFamily: "PhoneAccessories",
+            quantity: 1
+        },{
+            id: "car02",
+            productFamily: "CarDecors",
+            quantity: 2
+        },{
+            id: "id03",
+            productFamily: "Idols",
+            quantity: 3
+        }];
+
+        // TODO: "add the products of the cart to product variable"
+
+        const makePayment = token => {
+            const body = {
+                token,
+                products
+            }
+            const headers = {
+                "Content-Type": "application/json"
+            }
+
+            return fetch("http://localhost:3001/purchase",{
+                method: "POST",
+                headers,
+                body: JSON.stringify(body)
+            }).then(response => {
+                console.log("response",response);
+                console.log("status",response.status);
+            })
+            .catch(error => console.log(error));
+        }
         return (
             <Box elevation={3}
                  m={4} component={Paper}>
@@ -29,7 +78,13 @@ export default class ShoppingCart extends Component {
                 
                 </Box>
                 <Divider variant="middle"/>
-                
+                <div style={checkOutButtonStyles}>
+                    <StripeCheckout
+                    stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
+                    token={makePayment}
+                    >
+                    </StripeCheckout>
+                </div>
             </Box>
         )
     }

@@ -92,17 +92,18 @@ export default function Logout() {
             console.log(e.message);
             if(e.message === 'email'){
               console.log('email already used')
+              // TODO: "Email already used"
             }else if(e.message === 'phoneNo'){
               console.log('phone number already in use')
+              // TODO: "Phone Number already in use"
             }
           })
           return 'error';
         })
-        .then(data => {
+        .then(data => { 
             if(data !== 'error'){
               alert('registered successfully');
               history.push('/login')
-
             }
         })
 

@@ -102,6 +102,8 @@ export default function Log(props) {
           localStorage.setItem('user', data)
            setUser(data)
            history.push('/catalog')
+          }else{
+            // TODO: "Show Invalid credentials message"
           }
           setSubmitting(false);
         })
