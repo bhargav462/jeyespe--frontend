@@ -72,7 +72,7 @@ export default function Logout() {
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
 
-        fetch('https://jeyespe-backend.herokuapp.com/register',{
+        fetch('http://localhost:3001/register',{
           method:'POST',
           headers:{
             "content-Type": "application/json"

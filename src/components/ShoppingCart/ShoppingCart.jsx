@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import StripeCheckout from 'react-stripe-checkout';
+import Cookies from 'js-cookie'
 
 export default class ShoppingCart extends Component {
 
@@ -33,6 +34,18 @@ export default class ShoppingCart extends Component {
             quantity: 3
         }];
 
+        let authentication = function(response){
+            if(!response.ok){
+                if(response.status === 403){
+                    response.json().then((check) => {
+                        if(check === "Login"){
+                    // TODO : Route to login page
+                        }
+                    })
+                }
+            }
+        }
+
         // TODO: "add the products of the cart to product variable"
 
         const makePayment = token => {
@@ -40,8 +53,10 @@ export default class ShoppingCart extends Component {
                 token,
                 products
             }
+            
             const headers = {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "token": Cookies.get('token')
             }
 
             return fetch("http://localhost:3001/purchase",{
@@ -49,6 +64,7 @@ export default class ShoppingCart extends Component {
                 headers,
                 body: JSON.stringify(body)
             }).then(response => {
+                authentication(response)
                 console.log("response",response);
                 console.log("status",response.status);
             })

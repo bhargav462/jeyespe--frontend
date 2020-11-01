@@ -5,6 +5,7 @@ import Drawer from "@material-ui/core/Drawer";
 import "./CatalogStyles.css";
 import { StyledButton } from "../utility/StyledButton";
 import { NavLink } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 export default class Catalog extends Component {
   constructor() {
@@ -15,8 +16,32 @@ export default class Catalog extends Component {
     };
   }
   componentDidMount() {
-    fetch("https://jeyespe-backend.herokuapp.com/getItemList")
-      .then((data) => data.json())
+
+    const headers = {
+        "Content-Type": "Application/json",
+        "token": Cookies.get('token')
+    };
+
+    let authentication = function(response){
+        if(!response.ok){
+            if(response.status === 403){
+                response.json().then((check) => {
+                    if(check === "Login"){
+                // TODO : Route to login page
+                    }
+                })
+            }
+        }
+    }
+
+    fetch("http://localhost:3001/getItemList",{
+        method: "GET",
+        headers
+    })
+      .then((data) => {
+        authentication(data);
+        return data.json()
+      })
       .then((products) => {
         console.log(products);
         this.setState({ products,loading:false });

@@ -9,6 +9,7 @@ import { Redirect } from 'react-router'
 import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
 import { useHistory } from "react-router-dom";
 import {StyledButton} from '../utility/StyledButton'
+import Cookies from 'js-cookie'
 
 const useStyles = makeStyles((theme) => ({
     textInput:{
@@ -75,14 +76,14 @@ export default function Log(props) {
 
         setTimeout(() => {
           
-        fetch('https://jeyespe-backend.herokuapp.com/login',{
+        fetch('http://localhost:3001/login',{
           method:'POST',
           headers:{
             "content-Type": "application/json"
           },
           body: JSON.stringify(values)
         }).then(res => {
-          console.log('res',res);
+          
           if(res.ok)
           {
             return res.text();
@@ -95,6 +96,13 @@ export default function Log(props) {
           }
         })
         .then(data => {
+
+          console.log('res',data);
+          
+          Cookies.set('token', data, { expires: 7 })
+
+          console.log('cookie',document.cookie);
+
           if(data !=='error')
           {
           // alert('Logged in successfully')
