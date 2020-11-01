@@ -5,6 +5,7 @@ import Drawer from "@material-ui/core/Drawer";
 import "./CatalogStyles.css";
 import { StyledButton } from "../utility/StyledButton";
 import { NavLink } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class Catalog extends Component {
   constructor() {
@@ -23,7 +24,8 @@ export default class Catalog extends Component {
       });
   }
   render() {
-    if (this.state.loading) return <h1 class="loading">Loading ...</h1>;
+    if (this.state.loading)
+     return <h1 class="loading"><CircularProgress size={80} /></h1>;
     else
       return (
         <div>

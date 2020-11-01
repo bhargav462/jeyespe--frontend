@@ -15,6 +15,8 @@ import Box from "@material-ui/core/Box";
 import Stripe from "../utility/Stripe";
 import parallax1 from "./parallax1.jpg";
 import { StyledButton } from "../utility/StyledButton";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 const info = [
   {
     imgURL: BotanicImage,
@@ -78,6 +80,19 @@ const useStyles = makeStyles((theme) =>
       color: "white",
       width: "80%",
     },
+    showAbovexs:{
+      [theme.breakpoints.down('sm')]:{
+       display:'none'
+    }
+
+    },    
+    showBelowxs:{
+      [theme.breakpoints.up('sm')]:{
+          display:'none'
+      }
+
+    }
+
   })
 );
 
@@ -89,6 +104,8 @@ function handleVisibilityChange(idx, setSliderState, sliderState) {
 
 export default function About() {
   const classes = useStyles();
+  const matches = useMediaQuery(theme => theme.breakpoints.up('sm'));
+
   const temp = new Array(info.length);
   temp.fill(false);
   const [sliderState, setSliderState] = React.useState(temp);
@@ -125,18 +142,23 @@ export default function About() {
                   direction={idx % 2 == 0 ? "row" : "row-reverse"}
                 >
                   <Grid item xs={12} md={6}>
-                    <Slide
+                   {
+                     matches ?   <Slide
                       direction={idx % 2 == 0 ? "right" : "left"}
                       in={sliderState[idx]}
                       timeout={3000}
+                      
                     >
-                      <img src={parah.imgURL} style={{ width: "100%" }}></img>
+                      <img  src={parah.imgURL} style={{ width: "100%" }}></img>
                     </Slide>
+                    :
+                    <img src={parah.imgURL} style={{ width: "100%" }}></img>
+                   }
                   </Grid>
 
                   <Grid item xs={12} md={6} style={{ paddingLeft: "20px" }}>
-                    <Typography variant="h5">{parah.heading}</Typography>
-                    <Typography>{parah.description}</Typography>
+                    <Typography variant="h3">{parah.heading}</Typography>
+                    <Typography variant="p">{parah.description}</Typography>
                   </Grid>
                 </Grid>
               </VisibilitySensor>
