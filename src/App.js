@@ -34,10 +34,12 @@ function App() {
           <NavBar/>
           <Register/>
         </Route>
-        <Route exact path="/catalog">
-          <NavBar/>
-          <Catalog/>
-          <Footer/>
+        <Route exact path="/catalog"render={(props) => <>
+             <NavBar/>
+             <Catalog {...props} />
+             <Footer/>
+             </>
+         }>
         </Route>
         <Route exact path="/cart">
           <NavBar/>

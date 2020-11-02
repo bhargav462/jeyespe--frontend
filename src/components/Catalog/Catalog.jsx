@@ -22,12 +22,14 @@ export default class Catalog extends Component {
       token: Cookies.get("token"),
     };
 
-    let authentication = function (response) {
+    let authentication =  (response)=> {
       if (!response.ok) {
         if (response.status === 403) {
           response.json().then((check) => {
-            if (check === "Login") {
-              // TODO : Route to login page
+            console.log('check: ',check)
+            if (check.error === "Login") {
+              console.log('in catalog', this.props.history)
+              this.props.history.push("/login")
             }
           });
         }
