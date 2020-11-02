@@ -19,17 +19,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom:'10px',
 } ,
 formContainer:{
-    marginTop:'5%',
-    padding: '50px 30px 30px 30px',
-    textAlign:'center',
-    [theme.breakpoints.down('md')]:{
-      marginTop:'8%',
-      padding: '50px 30px 30px 30px',         
-    },
-    [theme.breakpoints.down('sm')]:{
-      marginTop:'10%',
-      padding: '40px 10px 30px 10px',         
-    },
+  marginTop:'7%',
+  padding: '50px 30px 30px 30px',
+  textAlign:'center',
+  [theme.breakpoints.down('md')]:{
+    padding: '50px 30px 30px 30px',         
+  },
+  [theme.breakpoints.down('sm')]:{
+    marginTop:'15%',
+    padding: '40px 20px 30px 20px',         
+  },
 } 
 }));
 
@@ -72,7 +71,7 @@ export default function Logout() {
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
 
-        fetch('http://localhost:3001/register',{
+        fetch(process.env.REACT_APP_API_URL+'/register',{
           method:'POST',
           headers:{
             "content-Type": "application/json"

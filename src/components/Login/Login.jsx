@@ -22,23 +22,20 @@ const useStyles = makeStyles((theme) => ({
         marginBottom:'10px',
     } ,
     formContainer:{
-        marginTop:'5%',
+        marginTop:'12%',
         padding: '50px 30px 30px 30px',
         textAlign:'center',
         [theme.breakpoints.down('md')]:{
-          marginTop:'15%',
           padding: '50px 30px 30px 30px',         
         },
         [theme.breakpoints.down('sm')]:{
-          marginTop:'30%',
-          padding: '40px 10px 30px 10px',         
+          marginTop:'20%',
+          padding: '40px 20px 30px 20px',         
         },
     } 
 }));
 
-function refreshPage(){
-  // window.location.reload(true);
-}
+
 export default function Log(props) {
     const classes=useStyles()
     const user=React.useContext(AuthContext)
@@ -46,7 +43,7 @@ export default function Log(props) {
     let history = useHistory();
 
     console.log('this is fucked up',user)
-    if(user) return <Redirect to="/catalog"/>
+    if(user) return <Redirect to="/"/>
     return (
     <Formik
       initialValues={{
@@ -76,7 +73,7 @@ export default function Log(props) {
 
         setTimeout(() => {
           
-        fetch('http://localhost:3001/login',{
+        fetch(process.env.REACT_APP_API_URL+'/login',{
           method:'POST',
           headers:{
             "content-Type": "application/json"
@@ -156,6 +153,13 @@ export default function Log(props) {
                 Login
               </StyledButton>
             </Grid>
+            
+            <Grid item>
+              <a style={{color:'black'}} href={process.env.REACT_APP_API_URL+'/check'}>
+                Forgot Password?
+             </a>
+            
+            </Grid>
             </Paper>
           </Grid>
         </Form>
@@ -163,17 +167,3 @@ export default function Log(props) {
     </Formik>
   );
 }
-
-//    function Login() {
-//     const classes = useStyles();
-
-//     return (
-//       <FormControl className={classes.form}>
-//         {/* <Grid container direction="column" spacing={3} alignItems="center"> */}
-//             <TextField className={classes.inputElement} label="User Name" variant="outlined" type="email"/>
-//             <TextField className={classes.inputElement} label="Password" variant="outlined" type="password"/>
-//             <Button variant="contained" color="primary" type="submit">Submit</Button>
-//         {/* </Grid> */}
-//       </FormControl>
-//     );
-//   }

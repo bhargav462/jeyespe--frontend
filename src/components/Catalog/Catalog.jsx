@@ -17,7 +17,6 @@ export default class Catalog extends Component {
     };
   }
   componentDidMount() {
-
     const headers = {
         "Content-Type": "Application/json",
         "token": Cookies.get('token')
@@ -29,13 +28,14 @@ export default class Catalog extends Component {
                 response.json().then((check) => {
                     if(check === "Login"){
                 // TODO : Route to login page
+                      
                     }
                 })
             }
         }
     }
 
-    fetch("http://localhost:3001/getItemList",{
+    fetch( process.env.REACT_APP_API_URL+"/getItemList",{
         method: "GET",
         headers
     })

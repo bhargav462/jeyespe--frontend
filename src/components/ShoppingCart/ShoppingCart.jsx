@@ -3,13 +3,10 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import StripeCheckout from 'react-stripe-checkout';
-<<<<<<< HEAD
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-=======
 import Cookies from 'js-cookie'
->>>>>>> 6022700c81671ad7d2c3bb76246ddc56e87aeefc
 
 export default function ShoppingCart(){
         const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
@@ -64,7 +61,7 @@ export default function ShoppingCart(){
                 "token": Cookies.get('token')
             }
 
-            return fetch("http://localhost:3001/purchase",{
+            return fetch(process.env.REACT_APP_API_URL+"/purchase",{
                 method: "POST",
                 headers,
                 body: JSON.stringify(body)
