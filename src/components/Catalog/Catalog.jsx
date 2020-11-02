@@ -16,42 +16,65 @@ export default class Catalog extends Component {
       loading: true,
     };
   }
-  componentDidMount() {
-    const headers = {
-      "Content-Type": "Application/json",
-      token: Cookies.get("token"),
-    };
 
-    let authentication =  (response)=> {
+  authentication(response) {
       if (!response.ok) {
         if (response.status === 403) {
-          response.json().then((check) => {
-            console.log('check: ',check)
-            if (check.error === "Login") {
-              console.log('in catalog', this.props.history)
+          response.json().then((element) => {
+            if (element.error === "Login") {
               this.props.history.push("/login")
+              console.log("routing")
+            }else{
+              this.renderData(element);     
             }
           });
         }
       }
     };
 
+  renderData(products){
+    console.log(products);
+    this.setState({ products, loading: false }); 
+  }
+
+  componentDidMount() {
+    const headers = {
+      "Content-Type": "Application/json",
+      token: Cookies.get("token"),
+    };
+
     fetch(process.env.REACT_APP_API_URL + "/getItemList", {
       method: "GET",
       headers,
+    }).then((data) => {
+        this.authentication(data);
     })
-      .then((data) => {
-        authentication(data);
-        return data.json();
-      })
-      .then((products) => {
-        console.log(products);
-        this.setState({ products, loading: false });
-      });
+      
   }
 
   addToCart(productId) {
-    // Todo: make post request
+    console.log('cart');
+    const headers = {
+      "Content-Type": "Application/json",
+      token: Cookies.get("token"),
+    };
+
+    let item = {
+      itemId:"itemId",
+      itemFamily:"itemFamily",
+      quantity:"number"
+    }
+
+    fetch(process.env.REACT_APP_API_URL + "/addToCart",{
+      method: "POST",
+      headers,
+      body:JSON.stringify(item)
+    }).then(data => {
+      this.authentication(data);
+      return data.json();
+    }).then((response) => {
+      console.log(response);
+    })
   }
 
   render() {
