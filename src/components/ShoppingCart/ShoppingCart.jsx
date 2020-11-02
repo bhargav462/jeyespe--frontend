@@ -8,7 +8,6 @@ import Cookies from 'js-cookie'
 export default class ShoppingCart extends Component {
 
     render() {
-
         // const [product,setProduct] = useState({
         //     productId: "",
         //     productFamily: ""
