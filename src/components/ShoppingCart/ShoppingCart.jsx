@@ -36,17 +36,24 @@ export default function ShoppingCart(){
             quantity: 3
         }];
 
-        let authentication = function(response){
-            if(!response.ok){
-                if(response.status === 403){
-                    response.json().then((check) => {
-                        if(check === "Login"){
+        let authentication = function(response) {
+            if (!response.ok) {
+              if (response.status === 403) {
+                response.json().then((element) => {
+                  if (element.error === "Login") {
                     // TODO : Route to login page
-                        }
-                    })
-                }
+                    console.log("routing")
+                  }else{
+                    renderData(element);     
+                  }
+                });
+              }
             }
-        }
+          };
+
+          let renderData = function(products){
+            // TODO: Do something with response 
+          }
 
         // TODO: "add the products of the cart to product variable"
 
@@ -67,8 +74,7 @@ export default function ShoppingCart(){
                 body: JSON.stringify(body)
             }).then(response => {
                 authentication(response)
-                console.log("response",response);
-                console.log("status",response.status);
+                
             })
             .catch(error => console.log(error));
         }
