@@ -4,51 +4,61 @@ import Grid from "@material-ui/core/Grid";
 import Drawer from "@material-ui/core/Drawer";
 import "./CatalogStyles.css";
 import { StyledButton } from "../utility/StyledButton";
-import { NavLink } from "react-router-dom";
-import Cookies from 'js-cookie'
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Cookies from "js-cookie";
+import { Link, NavLink } from "react-router-dom";
 
 export default class Catalog extends Component {
   constructor() {
     super();
     this.state = {
       products: {},
-      loading: true
+      loading: true,
     };
   }
   componentDidMount() {
-
     const headers = {
-        "Content-Type": "Application/json",
-        "token": Cookies.get('token')
+      "Content-Type": "Application/json",
+      token: Cookies.get("token"),
     };
 
-    let authentication = function(response){
-        if(!response.ok){
-            if(response.status === 403){
-                response.json().then((check) => {
-                    if(check === "Login"){
-                // TODO : Route to login page
-                    }
-                })
+    let authentication = function (response) {
+      if (!response.ok) {
+        if (response.status === 403) {
+          response.json().then((check) => {
+            if (check === "Login") {
+              // TODO : Route to login page
             }
+          });
         }
-    }
+      }
+    };
 
-    fetch("http://localhost:3001/getItemList",{
-        method: "GET",
-        headers
+    fetch(process.env.REACT_APP_API_URL + "/getItemList", {
+      method: "GET",
+      headers,
     })
       .then((data) => {
         authentication(data);
-        return data.json()
+        return data.json();
       })
       .then((products) => {
         console.log(products);
-        this.setState({ products,loading:false });
+        this.setState({ products, loading: false });
       });
   }
+
+  addToCart(productId) {
+    // Todo: make post request
+  }
+
   render() {
-    if (this.state.loading) return <h1 class="loading">Loading ...</h1>;
+    if (this.state.loading)
+      return (
+        <h1 class="loading">
+          <CircularProgress size={80} />
+        </h1>
+      );
     else
       return (
         <div>
@@ -75,12 +85,14 @@ export default class Catalog extends Component {
                         return (
                           <div class="card">
                             <div class="card__image-container">
-                              <img
-                                src={
-                                  "https://jeyespe-backend.herokuapp.com/images/" +
-                                  subItem.img
-                                }
-                              />
+                              <Link to={`product/${subItem.id}`}>
+                                <img
+                                  src={
+                                    "https://jeyespe-backend.herokuapp.com/images/" +
+                                    subItem.img
+                                  }
+                                />
+                              </Link>
                             </div>
                             <div class="card__content">
                               <p class="card__title text--medium">
@@ -90,8 +102,14 @@ export default class Catalog extends Component {
                                 Rs {subItem.price}.00
                               </p>
                               <div class="card__info">
-                                <a class="add__to__cart text--medium">
-                                  Add to Cart
+                                <a>
+                                  <button
+                                    onClick={this.addToCart(subItem.id)}
+                                    class="add__to__cart text--medium"
+                                  >
+                                    {" "}
+                                    Add to Cart{" "}
+                                  </button>
                                 </a>
                               </div>
                             </div>

@@ -3,11 +3,13 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import StripeCheckout from 'react-stripe-checkout';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Cookies from 'js-cookie'
 
-export default class ShoppingCart extends Component {
-
-    render() {
+export default function ShoppingCart(){
+        const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
         // const [product,setProduct] = useState({
         //     productId: "",
         //     productFamily: ""
@@ -16,7 +18,8 @@ export default class ShoppingCart extends Component {
         const checkOutButtonStyles = {
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            marginTop:'20px'
         }
 
         const products = [{
@@ -58,7 +61,7 @@ export default class ShoppingCart extends Component {
                 "token": Cookies.get('token')
             }
 
-            return fetch("http://localhost:3001/purchase",{
+            return fetch(process.env.REACT_APP_API_URL+"/purchase",{
                 method: "POST",
                 headers,
                 body: JSON.stringify(body)
@@ -69,9 +72,11 @@ export default class ShoppingCart extends Component {
             })
             .catch(error => console.log(error));
         }
+        if(matches)
         return (
-            <Box elevation={3}
-                 m={4} component={Paper}>
+            
+            <Box style={{minHeight:'100vh'}} elevation={3}
+                m={4} component={Paper}>
                 <Box fontSize='h4.fontSize' m={3}>
                 Items in Your Bag
                 </Box>
@@ -102,5 +107,44 @@ export default class ShoppingCart extends Component {
                 </div>
             </Box>
         )
-    }
+        else
+        {
+            return (
+                <Box style={{minHeight:'100vh'}} elevation={3}
+                 m={4} component={Paper}>
+                <Box fontSize='h4.fontSize' m={3}>
+                Items in Your Bag
+                </Box>
+                <Divider variant="middle" />
+                <div>
+                    <Box display="flex">
+                        <img style={{margin:'10px 10px',width:'120px', height:'120px'}} src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202003_FMT_WHH?wid=2000&hei=2000&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1583433236838'></img>
+                        <div style={{flexGrow:1,paddingLeft:'10px',paddingTop:'10px'}}>
+                        
+                            <Typography variant="h3">Red Wood Phone Stand</Typography>
+                            <Typography variant="p" component="div">Rs. 12000</Typography>
+                            <Typography variant="p" component="div"> $120000</Typography>
+                        </div>
+
+                    </Box>
+                
+                    <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
+                        Qty. <input type="text" value="10" readOnly size={3}></input>
+                    </Typography>
+
+                    <Divider variant="middle" style={{marginTop:'20px'}}/>
+                </div>  
+
+
+                <div style={checkOutButtonStyles}>
+                    <StripeCheckout
+                    stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
+                    token={makePayment}
+                    >
+                    </StripeCheckout>
+                </div>
+            </Box>
+            )
+        }
+    
 }
