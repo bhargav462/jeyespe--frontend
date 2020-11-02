@@ -11,8 +11,7 @@ import Catalog from './components/Catalog/Catalog'
 import ShoppingCart from './components/ShoppingCart/ShoppingCart'
 import {AuthProvider} from './components/utility/AuthProvider'
 import customTheme from './components/utility/customTheme'
-import { MuiThemeProvider,StylesProvider } from "@material-ui/core/styles";
-
+import ProductDetails from './components/ProductDetails/ProductDetails'
 function App() {
  
   return (
@@ -31,7 +30,7 @@ function App() {
           <NavBar/>
           <Login/>
         </Route>
-        <Route exact path="/Register">
+        <Route exact path="/register">
           <NavBar/>
           <Register/>
         </Route>
@@ -45,6 +44,15 @@ function App() {
           <ShoppingCart/>
           <Footer/>
         </Route>
+        <Route exact path="/product/:id"
+        render={(props) => <>
+             <NavBar/>
+             <ProductDetails {...props} />
+             <Footer/>
+             </>
+         }>   
+        </Route>
+      
     </Router>
     
     </ThemeProvider>
