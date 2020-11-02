@@ -24,11 +24,14 @@ export default class Catalog extends Component {
             if (element.error === "Login") {
               this.props.history.push("/login")
               console.log("routing")
-            }else{
-              this.renderData(element);     
             }
           });
         }
+      }else{
+        console.log("catalog");
+        response.json().then((element) => {
+          this.renderData(element);     
+        })
       }
     };
 
