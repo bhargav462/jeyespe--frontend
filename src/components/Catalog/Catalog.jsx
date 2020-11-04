@@ -129,11 +129,11 @@ export default class Catalog extends Component {
                               <p class="card__price text--medium">
                                 Rs {subItem.price}.00
                               </p>
-                              <div class="card__info">
+                              <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={this.addToCart(subItem.id)}
-                                    class="add__to__cart text--medium"
+                                    onClick={() => this.addToCart(subItem.id)}
+                                    class="add__to__cart text--medium "
                                   >
                                     {" "}
                                     Add to Cart{" "}
