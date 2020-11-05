@@ -93,7 +93,9 @@ export default class Catalog extends Component {
         //TODO: Item is already present in the cart
         alert('Item is already present in the cart');
       }
+      else{
       console.log(response);
+      alert('item added')}
     })
   }
 

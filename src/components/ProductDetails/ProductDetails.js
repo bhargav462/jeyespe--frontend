@@ -3,11 +3,13 @@ import ReactImageMagnify from 'react-image-magnify';
 import Img1 from './placeholder.jpg'
 import Img2 from './1.jpg'
 import Img3 from './2.jpg'
+import {StyledButton} from '../utility/StyledButton'
+import Button from '@material-ui/core/Button';
 export default function ProductDetails({match}) {
     let arr=[Img1,Img2,Img3]
     const [shownImage,changeImage]=useState(0)
     const productId=match.params.id;
-    return <div style={{display:'flex',margin:'30px'}}>
+    return <div style={{display:'flex',margin:'8% 30px'}}>
         <div style={{display:'flex',flexDirection:'column',marginRight:'10px'}}>
             {
                 arr.map((img,idx)=>{
@@ -38,8 +40,15 @@ export default function ProductDetails({match}) {
             isHintEnabled:true,
         }} />
         </div>
-        <h1>Hello World</h1>
-        <button onClick={()=>changeImage((shownImage+arr.length-1)%arr.length)}>Left</button>
+        <div style={{marginLeft:'40px',flexDirection:'column',flexGrow:1, display:'flex'
+                        , padding:'30px'}}>
+            <h1>Product Name</h1>
+            <h2>Price $2342</h2>
+            <div style={{marginTop:'20px'}}>
+                <button style={{marginRight:'30px'}}>Buy Now</button>
+                <button>Add to Cart</button>
+            </div>
+        </div>
         </div>
     
 }
