@@ -8,6 +8,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
 
+const loadState={
+  loading: 'loading',
+  redirect: 'redirect',
+  showPage: 'showPage'
+}
+
 export default class Catalog extends Component {
   constructor() {
     super();
@@ -50,6 +56,7 @@ export default class Catalog extends Component {
       method: "GET",
       headers,
     }).then((data) => {
+        console.log('bhargav fucker',data)
         this.authentication(data);
     })
       
