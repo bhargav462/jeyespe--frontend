@@ -22,23 +22,24 @@ export default class Catalog extends Component {
         if (response.status === 403) {
           response.json().then((element) => {
             if (element.error === "Login") {
-              this.props.history.push("/login")
-              console.log("routing")
+              alert('Please Login');
+              return this.props.history.push("/login")
             }
           });
+        }else{
+          alert("error");
         }
       }else{
-        console.log("catalog");
-        response.json().then((element) => {
-          this.renderData(element);     
+        // console.log("catalog");
+        // response.json().then((element) => {
+        //   this.renderData(element);     
+        // })
+        return new Promise(resolve => {
+          resolve(response);
         })
       }
     };
 
-  renderData(products){
-    console.log(products);
-    this.setState({ products, loading: false }); 
-  }
 
   componentDidMount() {
     const headers = {
@@ -50,7 +51,9 @@ export default class Catalog extends Component {
       method: "GET",
       headers,
     }).then((data) => {
-        this.authentication(data);
+          data.json().then((products) => {
+            this.setState({ products, loading: false }); 
+          })
     })
       
   }
@@ -73,9 +76,17 @@ export default class Catalog extends Component {
       headers,
       body:JSON.stringify(item)
     }).then(data => {
-      this.authentication(data);
+      if(!data.ok)
+      {
+        alert('please login')
+      }else{
       return data.json();
+      }
     }).then((response) => {
+      if(response && response.itemPresent){
+        //TODO: Item is already present in the cart
+        alert('Item is already present in the cart');
+      }
       console.log(response);
     })
   }
