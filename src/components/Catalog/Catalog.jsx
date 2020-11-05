@@ -65,6 +65,7 @@ export default class Catalog extends Component {
       token: Cookies.get("token"),
     };
 
+    // TODO : create the item object
     let item = {
       itemId:"itemId",
       itemFamily:"itemFamily",
@@ -143,7 +144,7 @@ export default class Catalog extends Component {
                               <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={() => this.addToCart(subItem.id)}
+                                    onClick={() => this.addToCart(subItem.id,prod)}
                                     class="add__to__cart text--medium "
                                   >
                                     {" "}

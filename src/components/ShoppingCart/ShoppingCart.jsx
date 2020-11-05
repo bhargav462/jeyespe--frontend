@@ -36,6 +36,26 @@ export default function ShoppingCart(){
             quantity: 3
         }];
 
+        fetch(process.env.REACT_APP_API_URL+'/getCartItems',{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json",
+                "token": Cookies.get('token')
+            }
+            // send the body by using JSON.stringify
+        }).then(response => {
+            if(!response.ok){
+                alert('Please Login')
+            }else{
+                response.json().then(cart => {
+                    //cart Items
+                    console.log('cart',cart);
+                })
+            }
+        });
+
+
+
         let authentication = function(response) {
             if (!response.ok) {
               if (response.status === 403) {
