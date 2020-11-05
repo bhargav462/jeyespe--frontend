@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import logo from "./images/logo.png";
+import logo from "./images/logo.jpeg";
 import Drawer from "@material-ui/core/Drawer";
 import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
@@ -17,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import StyledLink from "../utility/StyledLink";
 import { AuthContext, AuthUpdateContext } from "../utility/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Cookies from 'js-cookie'
 
 import Box from "@material-ui/core/Box";
 
@@ -28,8 +30,8 @@ const useStyles = makeStyles((theme) => {
     },
     logo: {
       [theme.breakpoints.down("sm")]: {
-        width: "100px",
-        height: "50px",
+        width: "70px",
+        height: "60px",
       },
       width: "200px",
       height: "80px",
@@ -68,7 +70,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 function handleLogout(setUser) {
-  localStorage.removeItem("user");
+  Cookies.remove('token')
   setUser("");
 }
 
@@ -80,7 +82,7 @@ export default function ButtonAppBar() {
   console.log("In NavBar", user);
   return (
     <div>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Box flexGrow={1} display="flex" justifyContent="space-between" className={classes.displayBelowMedium}>
           <NavLink to="/">
@@ -171,20 +173,36 @@ export default function ButtonAppBar() {
           onClose={() => setOpen(!openState)}
         >
           <List component="nav" style={{ width: "250px" }} >
-            <StyledLink to="/login">
-              <ListItem button>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Login" />
-              </ListItem>
-            </StyledLink>
-            <ListItem button>
+            {
+              !user ?  <>
+                  <StyledLink to="/login">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <InboxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Login" />
+                  </ListItem>
+                </StyledLink>
+                <StyledLink to="/register">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <ListIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Register" />
+                  </ListItem>
+                </StyledLink>
+              </>
+              :
+
+            <StyledLink to="/login"> 
+            <ListItem button onClick={()=>handleLogout(setUser)}>
               <ListItemIcon>
-                <DraftsIcon />
+                <ExitToAppIcon />
               </ListItemIcon>
-              <ListItemText primary="Drafts" />
+              <ListItemText primary="Logout" />
             </ListItem>
+            </StyledLink>
+          }
             <StyledLink to="/catalog">
               <ListItem button>
                 <ListItemIcon>
@@ -194,14 +212,6 @@ export default function ButtonAppBar() {
               </ListItem>
             </StyledLink>
 
-            <StyledLink to="/register">
-              <ListItem button>
-                <ListItemIcon>
-                  <ListIcon />
-                </ListItemIcon>
-                <ListItemText primary="Register" />
-              </ListItem>
-            </StyledLink>
 
             <ListItem button>
               <ListItemIcon>

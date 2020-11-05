@@ -103,8 +103,8 @@ export default function Log(props) {
           if(data !=='error')
           {
           // alert('Logged in successfully')
-          console.log('data',data);
-          localStorage.setItem('user', data)
+          // console.log('data',data);
+          // localStorage.setItem('user', data)
            setUser(data)
            history.push('/catalog')
           }else{
