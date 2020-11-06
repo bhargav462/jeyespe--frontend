@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import HomePageCard from "./HomePageCard";
+import CustomCorousel from '../Corousel/CustomCorousel'
 import BotanicImage from "./about1.jpg";
 import ChemistryImage from "./about2.jpg";
 import WoodImage from "./about3.jpg";
@@ -113,7 +114,8 @@ export default function About() {
   const [sliderState, setSliderState] = React.useState(temp);
 
   return (
-    <div>
+    <div style={{marginTop:'60px'}}>
+       <CustomCorousel/>
       <div>
         <div className={classes.marginCenter}>
           <HomePageCard />

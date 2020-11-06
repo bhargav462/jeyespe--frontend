@@ -1,6 +1,5 @@
 import React from "react";
 import NavBar from './components/NavBar/NavBar'
-import CustomCorousel from './components/Corousel/CustomCorousel'
 import Home from './components/Home/Home'
 import Footer from './components/Footer/Footer'
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -23,7 +22,6 @@ function App() {
     <Router>
         <Route exact path="/">
           <NavBar/>
-          <CustomCorousel/>
           <Home/>
           <Footer/>
         </Route>
