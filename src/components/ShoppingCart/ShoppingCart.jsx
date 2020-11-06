@@ -47,10 +47,20 @@ export default function ShoppingCart(){
             if(!response.ok){
                 alert('Please Login')
             }else{
+                console.log(response.body);
+                
                 response.json().then(cart => {
                     //cart Items
-                    console.log('cart',cart);
+                    if(cart.cart !== false)
+                    {
+                        //TODO: show the products
+                        console.log('cart',cart);
+                    }else{
+                        // Empty cart
+                        console.log('empty');
+                    }
                 })
+                
             }
         });
 
@@ -94,9 +104,9 @@ export default function ShoppingCart(){
                 body: JSON.stringify(body)
             }).then(response => {
                 authentication(response)
-                
             })
             .catch(error => console.log(error));
+            
         }
         if(matches)
         return (
