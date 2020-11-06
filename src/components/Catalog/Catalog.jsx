@@ -64,7 +64,7 @@ export default class Catalog extends Component {
       
   }
 
-  addToCart(productId) {
+  addToCart(productId,itemFamily,name,price) {
     console.log('cart');
     const headers = {
       "Content-Type": "Application/json",
@@ -73,9 +73,11 @@ export default class Catalog extends Component {
 
     // TODO : create the item object
     let item = {
-      itemId:"itemId",
-      itemFamily:"itemFamily",
-      quantity:"number"
+      itemId:productId,
+      itemFamily:itemFamily,
+      quantity:1,
+      name,
+      price
     }
 
     fetch(process.env.REACT_APP_API_URL + "/addToCart",{
@@ -152,7 +154,7 @@ export default class Catalog extends Component {
                               <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={() => this.addToCart(subItem.id,prod)}
+                                    onClick={() => this.addToCart(subItem.id,prod,subItem.name,subItem.price)}
                                     class="add__to__cart text--medium "
                                   >
                                     {" "}
