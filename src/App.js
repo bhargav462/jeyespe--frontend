@@ -12,6 +12,7 @@ import ShoppingCart from './components/ShoppingCart/ShoppingCart'
 import {AuthProvider} from './components/utility/AuthProvider'
 import customTheme from './components/utility/customTheme'
 import ProductDetails from './components/ProductDetails/ProductDetails'
+import Contact from './components/Contact/Contact'
 function App() {
  
   return (
@@ -50,6 +51,15 @@ function App() {
         render={(props) => <>
              <NavBar/>
              <ProductDetails {...props} />
+             <Footer/>
+             </>
+         }>   
+        </Route>
+
+        <Route exact path="/contact"
+        render={(props) => <>
+             <NavBar/>
+             <Contact {...props} />
              <Footer/>
              </>
          }>   

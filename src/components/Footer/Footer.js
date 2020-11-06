@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => {
         return   {
             footerContainer:{
                 color:'white',
-                backgroundColor:'black',
+                backgroundColor:'#352f2a',
                 padding:'40px 0px',
                                
             },
