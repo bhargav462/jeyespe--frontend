@@ -71,6 +71,7 @@ export default class Catalog extends Component {
       token: Cookies.get("token"),
     };
 
+    // TODO : create the item object
     let item = {
       itemId:productId,
       itemFamily:productFamily,
