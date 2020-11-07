@@ -82,6 +82,7 @@ export default function ShoppingCart(){
           };
 
           let renderData = function(products){
+              console.log(products,products)
             // TODO: Do something with response 
           }
 
@@ -138,6 +139,7 @@ export default function ShoppingCart(){
                     <StripeCheckout
                     stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
                     token={makePayment}
+                    shippingAddress
                     >
                     </StripeCheckout>
                 </div>
