@@ -19,8 +19,11 @@ import { AuthContext, AuthUpdateContext } from "../utility/AuthProvider";
 import { Link, NavLink } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Cookies from 'js-cookie'
-
+import HomeIcon from '@material-ui/icons/Home';
 import Box from "@material-ui/core/Box";
+import WorkIcon from '@material-ui/icons/Work';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -173,12 +176,21 @@ export default function ButtonAppBar() {
           onClose={() => setOpen(!openState)}
         >
           <List component="nav" style={{ width: "250px" }} >
+              <StyledLink to="/">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Home" />
+                  </ListItem>
+                </StyledLink>
+
             {
               !user ?  <>
                   <StyledLink to="/login">
                   <ListItem button>
                     <ListItemIcon>
-                      <InboxIcon />
+                      <ExitToAppIcon />
                     </ListItemIcon>
                     <ListItemText primary="Login" />
                   </ListItem>
@@ -186,7 +198,7 @@ export default function ButtonAppBar() {
                 <StyledLink to="/register">
                   <ListItem button>
                     <ListItemIcon>
-                      <ListIcon />
+                      <CreateIcon />
                     </ListItemIcon>
                     <ListItemText primary="Register" />
                   </ListItem>
@@ -206,19 +218,28 @@ export default function ButtonAppBar() {
             <StyledLink to="/catalog">
               <ListItem button>
                 <ListItemIcon>
-                  <ListIcon />
+                  <ListAltIcon />
                 </ListItemIcon>
                 <ListItemText primary="Catalog" />
               </ListItem>
             </StyledLink>
 
-
-            <ListItem button>
+           {user &&  <>
+                    <ListItem button>
               <ListItemIcon>
-                <InfoIcon />
+                <WorkIcon />
               </ListItemIcon>
-              <ListItemText primary="About Us" />
+              <ListItemText primary="My Order" />
             </ListItem>
+
+              <ListItem button>
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cart" />
+            </ListItem>
+            </>
+          }
             <ListItem button>
               <ListItemIcon>
                 <PermContactCalendarIcon />

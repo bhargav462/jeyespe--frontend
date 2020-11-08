@@ -27,14 +27,14 @@ export default function ProductDetails({match}) {
            <ReactImageMagnify {...{
             smallImage: {
                 alt: 'Wristwatch by Ted Baker London',
-                isFluidWidth: true,
+                isFluidWidth: false,
                 src: arr[shownImage],
               
             },
             largeImage: {
                 src: arr[shownImage],
-                width: 1100,
-                height: 1000
+                    // width: 1100,
+                    // height: 1000
             },
             shouldUsePositiveSpaceLens: true,
             isHintEnabled:true,

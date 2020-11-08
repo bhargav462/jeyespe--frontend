@@ -8,7 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from 'js-cookie'
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 function authentication(response) {
     if (!response.ok) {
       if (response.status === 403) {
@@ -64,13 +66,18 @@ const useStyles = makeStyles((theme) => ({
     heading:{
         textAlign:'center',
         padding:'15px'
-    }
+    },
+    button: {
+        padding:'4px',
+        backgroundColor: theme.palette.warning.dark,
+        color:'white'
+    },
 }))
 function calculateSubTotal(items){
     let total=0;
     for(let i=0;i<items.length;i++)
     {
-        total+=(items[i].price-0)
+        total+=Number(items[i].price)
     }
     return total
 }
@@ -119,28 +126,40 @@ export default function ShoppingCart(){
                 </Box>
                 <Divider variant="middle" />
                 {products.map(item => {
-                    return    <Box display="flex">
+                    return    <>
+                    <Box display="flex">
                     <img style={{margin:'10px 70px',width:'150px', height:'120px'}} src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202003_FMT_WHH?wid=2000&hei=2000&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1583433236838'></img>
-                    <Box style={{flexGrow:1}}>
-                        <Box mt={3} mx={3}  display="flex" justifyContent="space-between">
-                        <h5>{item.name}</h5>
-                        <h5>Rs. {item.price}</h5>
-                        <h5>Qty. <input type="text" value={item.quantity} readOnly size={3}></input></h5>
-                        <h5> {`$${item.quantity*item.price}`}</h5>
-                        </Box>
-                        <Box variant="h5" mx={3}>
-                            {item.itemFamily}
-                        </Box>
+                    <Box style={{flexGrow:1}} mt={3} mx={3}>
+                        <Grid container>
+                            <Grid item md={4}>
+                                <h5>{item.name}</h5>
+                                <Box variant="h5">
+                                    {item.itemFamily}
+                                </Box>
+                            </Grid> 
+                            <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
+                            <Grid item md={2}>
+                                <h5>Qty. <input type="text" value={item.quantity} size={3}></input></h5>
+                                <Button className={classes.button} size="small" variant="contained">Update</Button>
+                                </Grid>
+                            <Grid item md={2}><h5> {`$${item.quantity*item.price}`}</h5></Grid>
+                            <Grid item md={1}>
+                                <IconButton size="large">
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </Box>
                 
                 </Box>
-                // <Divider variant="middle"/>
+                    <Divider variant="middle"/>
+                    </>
                 }   )}
                 
-                <div style={{display:'flex',justifyContent:'flex-end'}}>
-                    <h3 style={{padding:'20px'}}> ${calculateSubTotal(products)}</h3>
-                </div>
-                <div className={classes.checkOutButtonStyles}>
+                <Box> 
+                    <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : ${calculateSubTotal(products)}</h3>
+                </Box>
+                  <div className={classes.checkOutButtonStyles}>
                     <StripeCheckout
                     stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
                     token={makePayment}
@@ -172,7 +191,7 @@ export default function ShoppingCart(){
                     </Box>
                 
                     <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
-                        Qty. <input type="text" value={item.quantity} readOnly size={3}></input>
+                        Qty. <input type="text" value={item.quantity}  size={3}></input>
                     </Typography>
 
                     <Divider variant="middle" style={{marginTop:'20px'}}/>

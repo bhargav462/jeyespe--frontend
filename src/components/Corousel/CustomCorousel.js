@@ -39,7 +39,7 @@ function Page3JSX() {
     <>
       <p>Keep Your Calm and buy</p>
        <div  className={'heading'} >
-          TIMBER
+          Red SandleWood
       </div>
       <StyledButton>Shop Now</StyledButton>
     
