@@ -124,9 +124,9 @@ export default function ButtonAppBar() {
                 Cart
                 </NavLink>
             <NavLink to="#"  className={classes.link}>
-              About Us
+              My Orders
             </NavLink>
-            <NavLink to="#"  className={classes.link}>
+            <NavLink to="contact"  className={classes.link}>
               Contact Us
             </NavLink>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import HomePageCard from "./HomePageCard";
+import CustomCorousel from '../Corousel/CustomCorousel'
 import BotanicImage from "./about1.jpg";
 import ChemistryImage from "./about2.jpg";
 import WoodImage from "./about3.jpg";
@@ -16,7 +17,9 @@ import Stripe from "../utility/Stripe";
 import parallax1 from "./parallax1.jpg";
 import { StyledButton } from "../utility/StyledButton";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import Flipkart from './partners/flipkart.jpg'
+import Amazon from './partners/amazon.png'
+import IndiaMart from './partners/indiamart.jpg'
 const info = [
   {
     imgURL: BotanicImage,
@@ -111,7 +114,8 @@ export default function About() {
   const [sliderState, setSliderState] = React.useState(temp);
 
   return (
-    <div>
+    <div style={{marginTop:'60px'}}>
+       <CustomCorousel/>
       <div>
         <div className={classes.marginCenter}>
           <HomePageCard />
@@ -198,10 +202,9 @@ export default function About() {
           Meet Our Partners
         </h3>
         <Box display="flex" justifyContent="space-around" my={6}>
-          <h3>Flipkart</h3>
-          <h3>Amazon</h3>
-          <h3>AWS</h3>
-          <h3>Azure</h3>
+          <img src={Amazon} style={{width:'150px'}}/>
+          <img src={Flipkart} style={{width:'150px'}}/>
+          <img src={IndiaMart} style={{width:'150px'}}/>
         </Box>
       </Box>
 

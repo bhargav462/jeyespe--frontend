@@ -79,7 +79,7 @@ export default class Catalog extends Component {
       name,
       price
     }
-
+    console.log('item bro',item)
     fetch(process.env.REACT_APP_API_URL + "/addToCart",{
       method: "POST",
       headers,
