@@ -45,7 +45,7 @@ function App() {
           <ShoppingCart/>
           <Footer/>
         </Route>
-        <Route exact path="/product/:id"
+        <Route exact path="/product/:family/:id"
         render={(props) => <>
              <NavBar/>
              <ProductDetails {...props} />

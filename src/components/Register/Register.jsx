@@ -18,7 +18,12 @@ const useStyles = makeStyles((theme) => ({
     },
     marginBottom:'10px',
 } ,
-formContainer:{
+errorMessage:{
+  color:'red',
+  textAlign:'left',
+  marginBottom:'10px'
+},
+  formContainer:{
   marginTop:'7%',
   padding: '50px 30px 30px 30px',
   textAlign:'center',
@@ -32,9 +37,19 @@ formContainer:{
 } 
 }));
 
+
+
+
 export default function Logout() {
     const classes=useStyles()
     let history = useHistory();
+    const [contactErrorMessage,setContactMessage]=React.useState('');
+    const [emailErrorMessage,setEmailMessage]=React.useState('');
+    function validateContact(value) {
+
+      return contactErrorMessage;
+
+    }
 
     return (
     <Formik
@@ -66,11 +81,17 @@ export default function Logout() {
         {
             errors.contact="Required"
         }
+        else if(values.contact.length!=10 || Object.is(Number(values.contact),NaN))  
+        {
+          errors.contact="Enter valid number"
+        }
+        
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
-
+        setContactMessage('')
+        setEmailMessage('')
         fetch(process.env.REACT_APP_API_URL+'/register',{
           method:'POST',
           headers:{
@@ -87,12 +108,15 @@ export default function Logout() {
             if(text.error){
               throw new Error(text.error);
             }
+            else  console.log(text)
           }).catch(function(e){
             console.log(e.message);
             if(e.message === 'email'){
+              setEmailMessage('email already in use')
               console.log('email already used')
               // TODO: "Email already used"
             }else if(e.message === 'phoneNo'){
+              setContactMessage('Phone Number already in use  ')
               console.log('phone number already in use')
               // TODO: "Phone Number already in use"
             }
@@ -135,6 +159,7 @@ export default function Logout() {
                 label="Email"
                 className={classes.textInput}
               />
+              <div className={classes.errorMessage}>{emailErrorMessage}</div>
             </Grid>
             <Grid item >
               <Field
@@ -155,6 +180,7 @@ export default function Logout() {
                 variant="outlined"
                 className={classes.textInput}
               />
+              <div className={classes.errorMessage}>{contactErrorMessage}</div>
             </Grid>
             <Grid item>
               <StyledButton

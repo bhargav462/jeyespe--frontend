@@ -36,10 +36,6 @@ export default class Catalog extends Component {
           alert("error");
         }
       }else{
-        // console.log("catalog");
-        // response.json().then((element) => {
-        //   this.renderData(element);     
-        // })
         return new Promise(resolve => {
           resolve(response);
         })
@@ -58,6 +54,7 @@ export default class Catalog extends Component {
       headers,
     }).then((data) => {
           data.json().then((products) => {
+            console.log(products)
             this.setState({ products, loading: false }); 
           })
     })
@@ -89,6 +86,7 @@ export default class Catalog extends Component {
       {
         alert('please login')
       }else{
+
       return data.json();
       }
     }).then((response) => {
@@ -123,6 +121,7 @@ export default class Catalog extends Component {
             </div>
           </div>
           <div class="cardogiries">
+          
             {Object.keys(this.state.products).map((prod) => {
               return (
                 <>
@@ -135,7 +134,7 @@ export default class Catalog extends Component {
                         return (
                           <div class="card">
                             <div class="card__image-container">
-                              <Link to={`product/${subItem.id}`}>
+                              <Link to={`product/${prod}/${subItem.id}`}>
                                 <img
                                   src={
                                     "https://jeyespe-backend.herokuapp.com/images/" +

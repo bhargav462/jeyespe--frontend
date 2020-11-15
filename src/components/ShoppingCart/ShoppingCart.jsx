@@ -81,11 +81,25 @@ function calculateSubTotal(items){
     }
     return total
 }
+function deleteFromCart(id,setProducts){
+    fetch(process.env.REACT_APP_API_URL+'/cart/deleteItem',{
+        method: "POST",
+        body: JSON.stringify({itemId: id})
+        ,
+        headers:{
+            "Content-Type": "application/json",
+            "token": Cookies.get('token'),
+        }
+    }).then(response=>{
+        return response.json()
+    }).then(temp=> setProducts(temp.cartItems))
 
+}
 export default function ShoppingCart(){
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
     const classes=useStyles()
     const [products,setProducts]=useState([])
+    const [quantities,setQuantities]=useState([])
     useEffect(()=>{
         fetch(process.env.REACT_APP_API_URL+'/getCartItems',{
             method: "POST",
@@ -106,6 +120,7 @@ export default function ShoppingCart(){
                     {
                         console.log('hey bhavuk',cart.items)
                         setProducts(cart.items)
+                        setQuantities(cart.items.map(item=> item.quantity))
                     }else{
                         // Empty cart
                         console.log('empty');
@@ -116,6 +131,14 @@ export default function ShoppingCart(){
         });
         
     },[])
+
+    function quantityChange(e,idx){
+            if(Object.is(parseInt(e.target.value),NaN))    return;
+    
+           let prevQuantities={...quantities}
+           prevQuantities[idx]=parseInt(e.target.value);
+           setQuantities(prevQuantities)
+    }
     
     if(matches)
     return (
@@ -125,10 +148,11 @@ export default function ShoppingCart(){
                 Items in Your Bag
                 </Box>
                 <Divider variant="middle" />
-                {products.map(item => {
+                {products.map((item,idx) => {
                     return    <>
                     <Box display="flex">
-                    <img style={{margin:'10px 70px',width:'150px', height:'120px'}} src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202003_FMT_WHH?wid=2000&hei=2000&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1583433236838'></img>
+                    <img style={{margin:'10px 70px',width:'150px', height:'120px'}} 
+                    src={process.env.REACT_APP_API_URL+`/image/${item.itemFamily}/${item.itemId}`}></img>
                     <Box style={{flexGrow:1}} mt={3} mx={3}>
                         <Grid container>
                             <Grid item md={4}>
@@ -139,12 +163,17 @@ export default function ShoppingCart(){
                             </Grid> 
                             <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
                             <Grid item md={2}>
-                                <h5>Qty. <input type="text" value={item.quantity} size={3}></input></h5>
-                                <Button className={classes.button} size="small" variant="contained">Update</Button>
+                                <h5>Qty. <input type="number" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}></input></h5>
+                                {
+                                    (item.quantity!=quantities[idx])  &&
+                                    <Button className={classes.button} size="small" variant="contained">
+                                      Update
+                                    </Button>
+                                }
                                 </Grid>
                             <Grid item md={2}><h5> {`$${item.quantity*item.price}`}</h5></Grid>
                             <Grid item md={1}>
-                                <IconButton size="large">
+                                <IconButton size="large" onClick={()=> deleteFromCart(item.itemId,setProducts)}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </Grid>
@@ -177,7 +206,7 @@ export default function ShoppingCart(){
                 <h3 className={classes.heading}>Items in Your Bag</h3>
                 
                 <Divider variant="middle" />
-                { products.map(item=> {
+                { products.map((item,idx)=> {
                    return <div>
                     <Box display="flex">
                         <img style={{margin:'10px 10px',width:'120px', height:'120px'}} src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202003_FMT_WHH?wid=2000&hei=2000&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1583433236838'></img>
@@ -186,13 +215,24 @@ export default function ShoppingCart(){
                             <Typography style={{marginBottom:'10px'}} variant="h3">{item.name}</Typography>
                             <Typography  variant="p" component="div">{item.itemFamily}</Typography>
                             <Typography variant="p" component="div"> {`$${item.price}`}</Typography>
+                            <Button size="small" variant="contained" onClick={()=> deleteFromCart(item.itemId)}>
+                                Delete
+                            </Button>
+                                    
                         </div>
 
                     </Box>
-                
+                    
                     <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
-                        Qty. <input type="text" value={item.quantity}  size={3}></input>
-                    </Typography>
+                        Qty.<input type="number" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}></input>
+                  </Typography>
+                    <br/>
+                    {
+                            (item.quantity!=quantities[idx])  &&
+                            <Button style={{marginLeft:'30px',marginTop:'10px'}} className={classes.button} size="small" variant="contained">
+                                Update
+                            </Button>
+                    }
 
                     <Divider variant="middle" style={{marginTop:'20px'}}/>
                   </div>  
