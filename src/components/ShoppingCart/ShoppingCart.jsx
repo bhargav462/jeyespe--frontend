@@ -11,46 +11,7 @@ import Cookies from 'js-cookie'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-function authentication(response) {
-    if (!response.ok) {
-      if (response.status === 403) {
-        response.json().then((element) => {
-          if (element.error === "Login") {
-            // TODO : Route to login page
-            console.log("routing")
-          }else{
-            renderData(element);     
-          }
-        });
-      }
-    }
-};
 
-function renderData(products){
-  // TODO: Do something with response 
-}
-
-const makePayment = (token,products) => {
-    const body = {
-        token,
-        products
-    }
-    
-    const headers = {
-        "Content-Type": "application/json",
-        "token": Cookies.get('token')
-    }
-
-    return fetch(process.env.REACT_APP_API_URL+"/purchase",{
-        method: "POST",
-        headers,
-        body: JSON.stringify(body)
-    }).then(response => {
-        authentication(response)
-    })
-    .catch(error => console.log(error));
-    
-}
 
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
@@ -139,6 +100,50 @@ export default function ShoppingCart(){
            prevQuantities[idx]=parseInt(e.target.value);
            setQuantities(prevQuantities)
     }
+
+        let authentication = function(response) {
+            if (!response.ok) {
+              if (response.status === 403) {
+                response.json().then((element) => {
+                  if (element.error === "Login") {
+                    // TODO : Route to login page
+                    console.log("routing")
+                  }else{
+                    renderData(element);     
+                  }
+                });
+              }
+            }
+          };
+
+          let renderData = function(products){
+              console.log(products,products)
+            // TODO: Do something with response 
+          }
+
+        // TODO: "add the products of the cart to product variable"
+
+        const makePayment = token => {
+            const body = {
+                token,
+                products
+            }
+            
+            const headers = {
+                "Content-Type": "application/json",
+                "token": Cookies.get('token')
+            }
+
+            return fetch(process.env.REACT_APP_API_URL+"/purchase",{
+                method: "POST",
+                headers,
+                body: JSON.stringify(body)
+            }).then(response => {
+                authentication(response)
+            })
+            .catch(error => console.log(error));
+            
+        }
     
     if(matches)
     return (
@@ -192,11 +197,12 @@ export default function ShoppingCart(){
                     <StripeCheckout
                     stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
                     token={makePayment}
+                    shippingAddress
                     >
                     </StripeCheckout>
                 </div>
             </Box>
-        )
+    )
         else
         {
             return (
@@ -248,11 +254,10 @@ export default function ShoppingCart(){
                 </div>
             </Box>
         )
+    
+    
     }
-    
-}
 
-function UI(matches,classes,item){
-    console.log('called for ',item)
-    
+
+
 }
