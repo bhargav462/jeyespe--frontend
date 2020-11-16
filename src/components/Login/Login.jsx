@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
 import { Button } from "@material-ui/core";
@@ -10,6 +10,13 @@ import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
 import { useHistory } from "react-router-dom";
 import {StyledButton} from '../utility/StyledButton'
 import Cookies from 'js-cookie'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TF from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     textInput:{
@@ -41,10 +48,46 @@ export default function Log(props) {
     const user=React.useContext(AuthContext)
     const setUser=React.useContext(AuthUpdateContext)
     let history = useHistory();
+    const [open, setOpen] = React.useState(false);
+    const [mailSentMessage,setMailSentMessage]=useState('')
+    const [waiting,setWaiting]=useState(false)
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
 
-    console.log('this is fucked up',user)
+   function postRequest(){
+     setWaiting(true);
+      let email=document.getElementById('recoveryEmail').value;
+      fetch(process.env.REACT_APP_API_URL+'/check',{
+        method:'POST',
+        headers:{
+          "content-Type": "application/json"
+        },
+        body:JSON.stringify({email})
+      }).then(response=> {
+        console.log(response)
+        if(response.ok){
+          setMailSentMessage('Mail Sent Successfully')
+        }
+        else{
+          setMailSentMessage("Could not send mail")
+        }
+        setWaiting(false);
+      })
+    }
+   
     if(user) return <Redirect to="/"/>
+
+    else if(waiting)  return  <h1 class="loading">
+                       <CircularProgress size={80} />
+                    </h1>
     return (
+      <>
+   
     <Formik
       initialValues={{
         email: "",
@@ -70,7 +113,8 @@ export default function Log(props) {
 
       onSubmit={(values, { setSubmitting }) => {
         console.log('values',values);
-
+        setMailSentMessage('')
+        setWaiting(true)
         setTimeout(() => {
           
         fetch(process.env.REACT_APP_API_URL+'/login',{
@@ -80,6 +124,7 @@ export default function Log(props) {
           },
           body: JSON.stringify(values)
         }).then(res => {
+          setWaiting(false)
           
           if(res.ok)
           {
@@ -118,12 +163,15 @@ export default function Log(props) {
         }, 500);
       }}
     >
+       
       {
          ({ isSubmitting, submitForm }) => (
         <Form >
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
           
+          <h3>{mailSentMessage}</h3>
+
           <Grid item >
               <Field
                 component={TextField}
@@ -155,15 +203,43 @@ export default function Log(props) {
             </Grid>
             
             <Grid item>
-              <a style={{color:'black'}} href={process.env.REACT_APP_API_URL+'/check'}>
-                Forgot Password?
-             </a>
+            <div>
+      <Button  onClick={handleClickOpen}>
+        Forgot Password ?
+      </Button>
+      <Dialog open={open} onClose={handleClose} > 
+        <DialogTitle>Forgot Password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+           Enter Email to recover password
+          </DialogContentText>
+          <TF
+            autoFocus
+            margin="dense"
+            id="recoveryEmail"
+            label="Email Address"
+            type="email"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>{handleClose(); postRequest();}} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
             
             </Grid>
             </Paper>
           </Grid>
         </Form>
       )}
+
     </Formik>
+   
+    </>
   );
 }
+
+

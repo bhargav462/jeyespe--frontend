@@ -107,7 +107,7 @@ function handleVisibilityChange(idx, setSliderState, sliderState) {
 
 export default function About() {
   const classes = useStyles();
-  const matches = useMediaQuery(theme => theme.breakpoints.up('sm'));
+  const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
   const temp = new Array(info.length);
   temp.fill(false);

@@ -168,6 +168,11 @@ main {
   justify-content: center;
 }
 
+
+.cardogiries{
+  margin-top: 80px;
+}
+
 @media only screen and (max-width: 1000px) {
   .card {
     grid-column-end: span 6;
@@ -180,6 +185,7 @@ main {
   }
   .cardogiries {
     width: 100%;
+   
   }
 }
 

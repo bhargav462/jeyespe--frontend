@@ -7,6 +7,7 @@ import { StyledButton } from "../utility/StyledButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
+import {addToCart} from '../utility/AddToCart'
 
 const loadState={
   loading: 'loading',
@@ -36,10 +37,6 @@ export default class Catalog extends Component {
           alert("error");
         }
       }else{
-        // console.log("catalog");
-        // response.json().then((element) => {
-        //   this.renderData(element);     
-        // })
         return new Promise(resolve => {
           resolve(response);
         })
@@ -58,48 +55,11 @@ export default class Catalog extends Component {
       headers,
     }).then((data) => {
           data.json().then((products) => {
+            console.log(products)
             this.setState({ products, loading: false }); 
           })
     })
       
-  }
-
-  addToCart(productId,itemFamily,name,price) {
-    console.log('cart');
-    const headers = {
-      "Content-Type": "Application/json",
-      token: Cookies.get("token"),
-    };
-
-    // TODO : create the item object
-    let item = {
-      itemId:productId,
-      itemFamily:itemFamily,
-      quantity:1,
-      name,
-      price
-    }
-    console.log('item bro',item)
-    fetch(process.env.REACT_APP_API_URL + "/addToCart",{
-      method: "POST",
-      headers,
-      body:JSON.stringify(item)
-    }).then(data => {
-      if(!data.ok)
-      {
-        alert('please login')
-      }else{
-      return data.json();
-      }
-    }).then((response) => {
-      if(response && response.itemPresent){
-        //TODO: Item is already present in the cart
-        alert('Item is already present in the cart');
-      }
-      else{
-      console.log(response);
-      alert('item added')}
-    })
   }
 
   render() {
@@ -123,6 +83,7 @@ export default class Catalog extends Component {
             </div>
           </div>
           <div class="cardogiries">
+          
             {Object.keys(this.state.products).map((prod) => {
               return (
                 <>
@@ -135,7 +96,7 @@ export default class Catalog extends Component {
                         return (
                           <div class="card">
                             <div class="card__image-container">
-                              <Link to={`product/${subItem.id}`}>
+                              <Link to={`product/${prod}/${subItem.id}`}>
                                 <img
                                   src={
                                     "https://jeyespe-backend.herokuapp.com/images/" +
@@ -154,7 +115,7 @@ export default class Catalog extends Component {
                               <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={() => this.addToCart(subItem.id,prod,subItem.name,subItem.price)}
+                                    onClick={() => addToCart(subItem.id,prod,subItem.name,subItem.price)}
                                     class="add__to__cart text--medium "
                                   >
                                     {" "}
