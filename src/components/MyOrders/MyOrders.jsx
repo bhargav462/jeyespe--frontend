@@ -2,6 +2,11 @@ import React,{useState,useEffect} from 'react'
 import Cookies from "js-cookie";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -13,7 +18,7 @@ const useStyles = makeStyles((theme) => {
         orderDetail:{
             padding:'20px',
             boxSizing:'border-box',
-            marginBottom:'10px'
+            marginTop:'10px'
         }
     }
 })
@@ -46,13 +51,28 @@ export default function MyOrders(props){
         return (<div className={classes.container}>
             {
                 orders.map(order=>{
-                    return <Paper key={order._id} className={classes.orderDetail}>
+                   return <>
+
+                    <Paper key={order._id} className={classes.orderDetail}>
                         <p><strong>Order ID</strong>: {order._id}</p>
-                <p><strong>Total</strong>: Rs. {order.price*order.quantity}</p>
-                <p>{order.name}</p>
+                        <p><strong>Total</strong>: Rs. {order.price*order.quantity}</p>
+                        <p>{order.name}</p>
                         <img src={`${process.env.REACT_APP_API_URL}/images/${order.img}`}
-                            width={'100px'}></img>
+                            width={'100px'}></img>      
                     </Paper>
+
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />} >
+                            <Typography>Write a Review</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <form>
+                                <input></input>
+                                <button>Submit</button>
+                            </form>
+                        </AccordionDetails>
+                   </Accordion>
+                </>
                 })
             }
         </div>)
