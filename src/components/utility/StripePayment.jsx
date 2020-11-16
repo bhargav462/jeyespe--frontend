@@ -48,7 +48,7 @@ export  function StripePayment(){
     stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
     token={makePayment}
     >
-        <StyledButton style={{marginRight:'10px'}}>
+        <StyledButton style={{marginRight:'10px',marginBotton:'10px'}}>
             Buy Now
         </StyledButton>
     </StripeCheckout>
