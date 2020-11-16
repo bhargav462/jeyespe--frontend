@@ -108,13 +108,15 @@ export default function ProductDetails(props) {
         :
         <div style={{marginTop:'90px'}}>
             <Carousel controls={false} interval={10000000} style={{textAlign:'center'}}>
-            <Carousel.Item >
-            <img style={{width:'80%',height:'400px'}} src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
-            </Carousel.Item>
-            <Carousel.Item >
-            <img src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
-            </Carousel.Item>
-            
+            {
+                images.map((image,idx)=>{
+                    return (<Carousel.Item >
+                    <img style={{width:'80%',height:'60%'}} src={`${process.env.REACT_APP_API_URL}/images/${image}`}></img>
+                    </Carousel.Item>)
+                })
+
+            }
+
             </Carousel>
             <div style={{marginLeft:'40px',flexDirection:'column',flexGrow:1, display:'flex'
                         , padding:'30px'}}>
