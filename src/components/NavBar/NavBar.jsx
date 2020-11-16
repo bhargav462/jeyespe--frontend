@@ -119,17 +119,18 @@ export default function ButtonAppBar() {
               Catalog
             </NavLink>
             <NavLink
-                  to="cart"
+              
+                  to="/cart"
                   className={classes.link}
                   activeClassName={classes.activeLink}
                   exact={true}
                 >
                 Cart
                 </NavLink>
-            <NavLink to="#"  className={classes.link}>
+            <NavLink to="/myOrders"  className={classes.link}>
               My Orders
             </NavLink>
-            <NavLink to="contact"  className={classes.link}>
+            <NavLink to="/contact"  className={classes.link}>
               Contact Us
             </NavLink>
 
@@ -155,7 +156,7 @@ export default function ButtonAppBar() {
             ) : (
               <>
                 <NavLink
-                  to="login"
+                  to="/login"
                   className={classes.link}
                   activeClassName={classes.activeLink}
                   exact={true}
@@ -225,27 +226,34 @@ export default function ButtonAppBar() {
             </StyledLink>
 
            {user &&  <>
+
+            <StyledLink to="/myOrders">
                     <ListItem button>
               <ListItemIcon>
                 <WorkIcon />
               </ListItemIcon>
               <ListItemText primary="My Order" />
             </ListItem>
-
+            </StyledLink>
+              
+            <StyledLink to="/cart">
               <ListItem button>
               <ListItemIcon>
                 <ShoppingCartIcon />
               </ListItemIcon>
               <ListItemText primary="Cart" />
             </ListItem>
+            </StyledLink>
             </>
           }
+           <StyledLink to="/contact">
             <ListItem button>
               <ListItemIcon>
                 <PermContactCalendarIcon />
               </ListItemIcon>
               <ListItemText primary="Contact Us" />
             </ListItem>
+            </StyledLink>
           </List>
         </Drawer>
       </AppBar>

@@ -11,6 +11,9 @@ import Cookies from 'js-cookie'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import { Link, NavLink } from "react-router-dom";
+import { StripePayment } from '../utility/StripePayment';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +41,7 @@ function calculateSubTotal(items){
     let total=0;
     for(let i=0;i<items.length;i++)
     {
-        total+=Number(items[i].price)
+        total+=Number(items[i].price)*Number(items[i].quantity)
     }
     return total
 }
@@ -94,56 +97,40 @@ export default function ShoppingCart(){
     },[])
 
     function quantityChange(e,idx){
+             
             if(Object.is(parseInt(e.target.value),NaN))    return;
-    
+
            let prevQuantities={...quantities}
            prevQuantities[idx]=parseInt(e.target.value);
            setQuantities(prevQuantities)
     }
-
-        let authentication = function(response) {
-            if (!response.ok) {
-              if (response.status === 403) {
-                response.json().then((element) => {
-                  if (element.error === "Login") {
-                    // TODO : Route to login page
-                    console.log("routing")
-                  }else{
-                    renderData(element);     
-                  }
-                });
-              }
-            }
-          };
-
-          let renderData = function(products){
-              console.log(products,products)
-            // TODO: Do something with response 
-          }
-
-        // TODO: "add the products of the cart to product variable"
-
-        const makePayment = token => {
-            const body = {
-                token,
-                products
-            }
-            
-            const headers = {
-                "Content-Type": "application/json",
-                "token": Cookies.get('token')
-            }
-
-            return fetch(process.env.REACT_APP_API_URL+"/purchase",{
-                method: "POST",
-                headers,
-                body: JSON.stringify(body)
-            }).then(response => {
-                authentication(response)
-            })
-            .catch(error => console.log(error));
-            
+    function setZero(e,idx){
+        if(e.target.value=='')  
+        {
+            let prevQuantities={...quantities}
+            prevQuantities[idx]=0
+            setQuantities(prevQuantities)
         }
+    }
+    function updateQuantity(itemId,idx){    
+        fetch(process.env.REACT_APP_API_URL + "/updateQuantity",{
+            method: "POST",
+            headers:{
+                    "Content-Type": "Application/json",
+                    token: Cookies.get("token")
+            },
+            body:JSON.stringify({itemId,quantity:quantities[idx]})
+        }).then(res=>  res.text())
+        .then(data=> {
+            alert(data)
+            const prevProducts=[...products]
+            prevProducts[idx].quantity=quantities[idx]
+            setProducts(prevProducts)
+        })
+
+    }
+
+      
     
     if(matches)
     return (
@@ -156,8 +143,8 @@ export default function ShoppingCart(){
                 {products.map((item,idx) => {
                     return    <>
                     <Box display="flex">
-                    <img style={{margin:'10px 70px',width:'150px', height:'120px'}} 
-                    src={process.env.REACT_APP_API_URL+`/image/${item.itemFamily}/${item.itemId}`}></img>
+                    <Link to={`/product/${item.itemFamily}/${item.itemId}`}><img style={{margin:'10px 70px',width:'150px', height:'120px'}} 
+                    src={process.env.REACT_APP_API_URL+`/image/${item.itemFamily}/${item.itemId}`}></img></Link>
                     <Box style={{flexGrow:1}} mt={3} mx={3}>
                         <Grid container>
                             <Grid item md={4}>
@@ -168,10 +155,12 @@ export default function ShoppingCart(){
                             </Grid> 
                             <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
                             <Grid item md={2}>
-                                <h5>Qty. <input type="number" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}></input></h5>
+                                <h5>Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
+                                        onBlur={e=> setZero(e,idx)}></input></h5>
                                 {
                                     (item.quantity!=quantities[idx])  &&
-                                    <Button className={classes.button} size="small" variant="contained">
+                                    <Button className={classes.button} size="small" variant="contained"
+                                            onClick={()=>updateQuantity(item.itemId,idx)}>
                                       Update
                                     </Button>
                                 }
@@ -194,16 +183,11 @@ export default function ShoppingCart(){
                     <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : ${calculateSubTotal(products)}</h3>
                 </Box>
                   <div className={classes.checkOutButtonStyles}>
-                    <StripeCheckout
-                    stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
-                    token={makePayment}
-                    shippingAddress
-                    >
-                    </StripeCheckout>
+                    <StripePayment/>
                 </div>
             </Box>
     )
-        else
+        else    
         {
             return (
                 <Box className={classes.container} elevation={3}
@@ -215,7 +199,9 @@ export default function ShoppingCart(){
                 { products.map((item,idx)=> {
                    return <div>
                     <Box display="flex">
-                        <img style={{margin:'10px 10px',width:'120px', height:'120px'}} src='https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202003_FMT_WHH?wid=2000&hei=2000&fmt=jpeg&qlt=80&op_usm=0.5%2C0.5&.v=1583433236838'></img>
+                    <Link to={`/product/${item.itemFamily}/${item.itemId}`}><img style={{margin:'10px 10px',width:'120px', height:'120px'}} 
+                         src={process.env.REACT_APP_API_URL+`/image/${item.itemFamily}/${item.itemId}`}>    
+                        </img></Link>
                         <div style={{flexGrow:1,paddingLeft:'10px',paddingTop:'10px'}}>
                         
                             <Typography style={{marginBottom:'10px'}} variant="h3">{item.name}</Typography>
@@ -230,12 +216,15 @@ export default function ShoppingCart(){
                     </Box>
                     
                     <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
-                        Qty.<input type="number" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}></input>
+                    Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
+                                        onBlur={e=> setZero(e,idx)}></input>
                   </Typography>
                     <br/>
                     {
                             (item.quantity!=quantities[idx])  &&
-                            <Button style={{marginLeft:'30px',marginTop:'10px'}} className={classes.button} size="small" variant="contained">
+                            <Button style={{marginLeft:'30px',marginTop:'10px'}} className={classes.button} 
+                                    size="small" variant="contained"
+                                    onClick={()=>updateQuantity(item.itemId,idx)}>
                                 Update
                             </Button>
                     }
@@ -246,11 +235,7 @@ export default function ShoppingCart(){
                 }
 
                 <div className={classes.checkOutButtonStyles}>
-                    <StripeCheckout
-                    stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
-                    token={makePayment}
-                    >
-                    </StripeCheckout>
+                   <StripePayment/>
                 </div>
             </Box>
         )

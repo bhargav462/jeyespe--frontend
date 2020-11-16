@@ -8,46 +8,9 @@ import Button from '@material-ui/core/Button';
 import {StyledButton} from '../utility/StyledButton'
 import ImageGallery from 'react-image-gallery';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import "./ProductStyle.css"
-
-function addToCart(productId,itemFamily,name,price) {
-    console.log('cart');
-    const headers = {
-      "Content-Type": "Application/json",
-      token: Cookies.get("token"),
-    };
-
-    // TODO : create the item object
-    let item = {
-      itemId:productId,
-      itemFamily:itemFamily,
-      quantity:1,
-      name,
-      price
-    }
-    console.log('item bro',item)
-    fetch(process.env.REACT_APP_API_URL + "/addToCart",{
-      method: "POST",
-      headers,
-      body:JSON.stringify(item)
-    }).then(data => {
-      if(!data.ok)
-      {
-        alert('please login')
-      }else{
-
-      return data.json();
-      }
-    }).then((response) => {
-      if(response && response.itemPresent){
-        //TODO: Item is already present in the cart
-        alert('Item is already present in the cart');
-      }
-      else{
-      console.log(response);
-      alert('item added')}
-    })
-  }
+import {StripePayment} from '../utility/StripePayment';
+import {addToCart} from '../utility/AddToCart'
+import Carousel from 'react-bootstrap/Carousel'
 
 export default function ProductDetails(props) {
     const {match}=props
@@ -69,15 +32,14 @@ export default function ProductDetails(props) {
               console.log('body-------',body)
               const {imgChildren}=body
               setImages(imgChildren)
-              setDetails({name:body.name,price:body.price,description:body.description})
+              setDetails({name:body.name,price:body.price,description:body.description
+                            ,id:id,family:family})
           })
     },[])
     
     
     return <>
     {matches ?   <div style={{display:'flex',margin:'8% 30px',minHeight:'100vh'}}>
-    
-        <div>hello</div>
            
             <div style={{display:'flex',flexDirection:'column',marginRight:'10px'}}>
             {
@@ -126,21 +88,33 @@ export default function ProductDetails(props) {
             </div>
             
                 <div style={{marginTop:'20px'}}>
-                    <StyledButton style={{marginRight:'30px'}}>Buy Now</StyledButton>
-                    <StyledButton>Add to Cart</StyledButton>
+
+                    <StripePayment/>
+                    
+                    <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
          </div>
         </div>
         :
         <div style={{marginTop:'90px',marginLeft:'40px'}}>
+            <Carousel controls={false} interval={10000000} style={{textAlign:'center'}}>
+            <Carousel.Item >
             <img src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
+            </Carousel.Item>
+            <Carousel.Item >
+            <img src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
+            </Carousel.Item>
+            
+            </Carousel>
             <div style={{marginLeft:'40px',flexDirection:'column',flexGrow:1, display:'flex'
                         , padding:'30px'}}>
-            <h1>Product Name</h1>
-            <h2>Price $2342</h2>
+            <h1>{productDetails.name}</h1>
+            <h2>Price ${productDetails.price}</h2>
                 <div style={{marginTop:'20px'}}>
-                    <StyledButton style={{marginRight:'30px'}}>Buy Now</StyledButton>
-                    <StyledButton>Add to Cart</StyledButton>
+                    
+                     <StripePayment/>
+                    
+                    <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
          </div>
         </div>

@@ -101,7 +101,7 @@ export default function RowButtons() {
     return (
         <Grid container spacing={1}>
         {images.map((image) => (
-          <Grid item xs={12} md={4} >
+          <Grid item xs={12} md={4} key={image.url}>
           <ButtonBase
             focusRipple
             key={image.title}

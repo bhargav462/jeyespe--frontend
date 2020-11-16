@@ -142,7 +142,7 @@ export default function CUstomCarousel(){
   >
    {
       pages.map((page,idx)=>{
-        return <Carousel.Item interval={5000}>
+        return <Carousel.Item interval={5000} key={page.imgURL}> 
         {pageTemplate(page,animationStates[idx],classes)} 
          </Carousel.Item>
       })
