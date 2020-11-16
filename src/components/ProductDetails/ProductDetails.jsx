@@ -11,13 +11,23 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {StripePayment} from '../utility/StripePayment';
 import {addToCart} from '../utility/AddToCart'
 import Carousel from 'react-bootstrap/Carousel'
+import { makeStyles } from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+   img:{
+       width:'100px',
+       height:'100px'
+   }
+}))
 
 export default function ProductDetails(props) {
     const {match}=props
-    const {params: {id,family}}=match
+     const {params: {id,family}}=match
     const [images,setImages]=useState([])
     const [shownImage,changeImage]=useState(0)
     const [productDetails,setDetails]=useState({name:'product_name',price:0,description:[]})
+    const classes=useStyles()
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
     React.useEffect(()=>{
@@ -96,10 +106,10 @@ export default function ProductDetails(props) {
          </div>
         </div>
         :
-        <div style={{marginTop:'90px',marginLeft:'40px'}}>
+        <div style={{marginTop:'90px'}}>
             <Carousel controls={false} interval={10000000} style={{textAlign:'center'}}>
             <Carousel.Item >
-            <img src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
+            <img style={{width:'80%',height:'400px'}} src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
             </Carousel.Item>
             <Carousel.Item >
             <img src={`${process.env.REACT_APP_API_URL}/images/${images[shownImage]}`}/>
