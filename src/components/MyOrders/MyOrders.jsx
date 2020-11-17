@@ -7,6 +7,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {StyledButton} from '../utility/StyledButton'
+import {authentication} from '../utility/APISecurity'
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -23,6 +25,14 @@ const useStyles = makeStyles((theme) => {
     }
 })
 
+
+
+function reviewSubmission(e)
+{
+    e.preventDefault();
+    const review= document.getElementById('reviewField').value;
+
+}
 export default function MyOrders(props){
     const [orders,setOrders]=useState([]);
     const classes=useStyles();
@@ -32,21 +42,23 @@ export default function MyOrders(props){
             "Content-Type": "application/json",
             "token": Cookies.get('token')
         }
+
         fetch(process.env.REACT_APP_API_URL+"/myOrders",{
             method: "POST",
             headers
-        }).then(response=> response.json())
-        .then(orders=> {
-            // console.log(orders)
+        })
+        .then(response=> {
+           authentication(response, (orders)=> {
             let displayList= [];
+            
             orders.forEach(order => {
                 console.log(order.items)
                 order.items.forEach(orderUnits=> displayList.push(orderUnits))
             })
-            console.info(displayList)
             setOrders(displayList)
         })
-    },[])
+    }
+    )},[])
 
         return (<div className={classes.container}>
             {
@@ -66,9 +78,10 @@ export default function MyOrders(props){
                             <Typography>Write a Review</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <form>
-                                <input></input>
-                                <button>Submit</button>
+                            <form onSubmit={reviewSubmission} style={{width:'100%'}}>
+                                <textarea id="reviewField" style={{width:'80%'}}></textarea>
+                                <br/>
+                                <StyledButton type="submit">Submit</StyledButton>
                             </form>
                         </AccordionDetails>
                    </Accordion>

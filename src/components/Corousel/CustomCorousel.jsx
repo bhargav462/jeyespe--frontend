@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
 import logo from '../../images/logo.jpeg'
 import {StyledButton} from '../utility/StyledButton'
+import { Link } from "react-router-dom";
+
 
 function Page1JSX() {
   return (

@@ -12,7 +12,7 @@ import {StripePayment} from '../utility/StripePayment';
 import {addToCart} from '../utility/AddToCart'
 import Carousel from 'react-bootstrap/Carousel'
 import { makeStyles } from "@material-ui/core/styles";
-
+import {authentication} from '../utility/APISecurity'
 
 const useStyles = makeStyles((theme) => ({
    img:{
@@ -37,14 +37,14 @@ export default function ProductDetails(props) {
                 "Content-Type": "application/json",
                 "token": Cookies.get('token'),
             }
-          }).then(res=> res.json())
-          .then(body=> {
-              console.log('body-------',body)
+          }).then(res=> {
+              authentication(res,body=> {
               const {imgChildren}=body
               setImages(imgChildren)
               setDetails({name:body.name,price:body.price,description:body.description
                             ,id:id,family:family})
           })
+        })
     },[])
     
     

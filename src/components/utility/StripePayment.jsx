@@ -2,7 +2,7 @@ import React from 'react'
 import Cookies from "js-cookie";
 import StripeCheckout from 'react-stripe-checkout';
 import { StyledButton } from './StyledButton';
-
+import {authentication} from './APISecurity'
 const makePayment = token => {
     const body = {
         token
@@ -18,28 +18,13 @@ const makePayment = token => {
         headers,
         body: JSON.stringify(body)
     }).then(response => {
-        authentication(response)
+       return authentication(response,(data)=>{
+         if(data.status==true)  alert('Payment Successful')
+         else alert('Payment Failed')
+       })
     })
     .catch(error => console.log(error));
     
-}
-let authentication = function(response) {
-    if (!response.ok) {
-      if (response.status === 403) {
-        response.json().then((element) => {
-          if (element.error === "Login") {
-            // TODO : Route to login page
-            console.log("routing")
-          }else{
-            renderData(element);     
-          }
-        });
-      }
-    }
-  };
-  let renderData = function(products){
-    console.log(products,products)
-  // TODO: Do something with response 
 }
 
 export  function StripePayment(){

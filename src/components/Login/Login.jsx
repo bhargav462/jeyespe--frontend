@@ -124,12 +124,11 @@ export default function Log(props) {
           },
           body: JSON.stringify(values)
         }).then(res => {
-          setWaiting(false)
-          
           if(res.ok)
           {
             return res.text();
           }else{
+            setWaiting(false)
             alert('invalid credentials')
             console.log("invalid credentials")
             setSubmitting(false);

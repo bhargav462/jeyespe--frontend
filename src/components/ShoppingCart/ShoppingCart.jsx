@@ -13,7 +13,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { Link, NavLink } from "react-router-dom";
 import { StripePayment } from '../utility/StripePayment';
-
+import { authentication } from '../utility/APISecurity';
+import {MESSAGES} from '../utility/Messages'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,8 +56,8 @@ function deleteFromCart(id,setProducts){
             "token": Cookies.get('token'),
         }
     }).then(response=>{
-        return response.json()
-    }).then(temp=> setProducts(temp.cartItems))
+        authentication(response,data=> setProducts(data.cartItems))
+    })
 
 }
 export default function ShoppingCart(){
@@ -64,6 +65,8 @@ export default function ShoppingCart(){
     const classes=useStyles()
     const [products,setProducts]=useState([])
     const [quantities,setQuantities]=useState([])
+    const [isCartEmpty,setCartEmpty]=useState(false)
+    const [loading,setLoading]=useState(true)
     useEffect(()=>{
         fetch(process.env.REACT_APP_API_URL+'/getCartItems',{
             method: "POST",
@@ -72,46 +75,58 @@ export default function ShoppingCart(){
                 "token": Cookies.get('token')
             }
             // send the body by using JSON.stringify
-        }).then(response => {
-            if(!response.ok){
-                alert('Please Login')
-            }else{
-                console.log(response.body);
-                    
-                response.json().then(cart => {
-                    //cart Items
-                    if(cart.cart !== false)
+        }).then( (response) => {
+          
+            authentication(response,(data)=>{
+                    if(data===MESSAGES.LOGIN_ERROR)
                     {
-                        console.log('hey bhavuk',cart.items)
-                        setProducts(cart.items)
-                        setQuantities(cart.items.map(item=> item.quantity))
-                    }else{
-                        // Empty cart
-                        console.log('empty');
+                        return
                     }
+                     if(data.cart !== false)
+                    {
+                        // console.log('hey bhavuk',data.items)
+                        setProducts(data.items)
+                        setQuantities(data.items.map(item=> item.quantity))
+                    }else{
+                        setCartEmpty(true)
+                    }
+                   
                 })
-                
-            }
-        });
+            })
         
-    },[])
+        },[])
+     
+    function updateQuantityAtIndex(newQuantity,idx)
+    {
+        const updatedQuantities=[...quantities]
+        updatedQuantities[idx]=newQuantity
+        setQuantities(updatedQuantities)
+    }
 
     function quantityChange(e,idx){
-             
-            if(Object.is(parseInt(e.target.value),NaN))    return;
+            console.log(typeof e.target.value)
+            //If user removes all input, let him do it
+            if(e.target.value=='') {       
+               updateQuantityAtIndex('',idx)
+            }
+            //If non numeral is entered return
+            let numericalValue=Number(e.target.value)
+            if(Number.isNaN(numericalValue)) 
+               return;
+            console.log('here:',numericalValue)
+            updateQuantityAtIndex(numericalValue,idx)
+    }
 
-           let prevQuantities={...quantities}
-           prevQuantities[idx]=parseInt(e.target.value);
-           setQuantities(prevQuantities)
+    function checkEmpty(e,idx){
+        //If user left empty input set it back to 0
+        if(e.target.value==='')  
+            updateQuantityAtIndex(0,idx)
+        
+        //If user entered negative quantity make it positive
+        else if(parseInt(e.target.value)<0)
+            updateQuantityAtIndex(quantities[idx]*-1,idx)
     }
-    function setZero(e,idx){
-        if(e.target.value=='')  
-        {
-            let prevQuantities={...quantities}
-            prevQuantities[idx]=0
-            setQuantities(prevQuantities)
-        }
-    }
+
     function updateQuantity(itemId,idx){    
         fetch(process.env.REACT_APP_API_URL + "/updateQuantity",{
             method: "POST",
@@ -131,7 +146,10 @@ export default function ShoppingCart(){
     }
 
       
-    
+    if(isCartEmpty==true)
+    {
+        return <h1 className={classes.container}>Your Cart is Empty</h1>
+    }
     if(matches)
     return (
         <Box className={classes.container} elevation={3}
@@ -156,7 +174,7 @@ export default function ShoppingCart(){
                             <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
                             <Grid item md={2}>
                                 <h5>Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
-                                        onBlur={e=> setZero(e,idx)}></input></h5>
+                                        onBlur={e=> checkEmpty(e,idx)}></input></h5>
                                 {
                                     (item.quantity!=quantities[idx])  &&
                                     <Button className={classes.button} size="small" variant="contained"
@@ -217,7 +235,7 @@ export default function ShoppingCart(){
                     
                     <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
                     Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
-                                        onBlur={e=> setZero(e,idx)}></input>
+                                        onBlur={e=> checkEmpty(e,idx)}></input>
                   </Typography>
                     <br/>
                     {

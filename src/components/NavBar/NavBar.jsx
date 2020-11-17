@@ -118,19 +118,10 @@ export default function ButtonAppBar() {
             >
               Catalog
             </NavLink>
-            <NavLink
-              
-                  to="/cart"
-                  className={classes.link}
-                  activeClassName={classes.activeLink}
-                  exact={true}
-                >
-                Cart
-                </NavLink>
-            <NavLink to="/myOrders"  className={classes.link}>
-              My Orders
-            </NavLink>
-            <NavLink to="/contact"  className={classes.link}>
+           
+            <NavLink to="/contact"  className={classes.link}
+              activeClassName={classes.activeLink}
+              exact={true}>
               Contact Us
             </NavLink>
 
@@ -155,6 +146,20 @@ export default function ButtonAppBar() {
               </>
             ) : (
               <>
+               <NavLink
+                  to="/cart"
+                  className={classes.link}
+                  activeClassName={classes.activeLink}
+                  exact={true}
+                >
+                Cart
+                </NavLink>
+                
+                <NavLink to="/myOrders"  className={classes.link}
+                activeClassName={classes.activeLink}
+                exact={true}>
+                  My Orders
+                </NavLink>
                 <NavLink
                   to="/login"
                   className={classes.link}
@@ -164,6 +169,7 @@ export default function ButtonAppBar() {
                 >
                   Logout
                 </NavLink>
+
                
               </>
             )}
