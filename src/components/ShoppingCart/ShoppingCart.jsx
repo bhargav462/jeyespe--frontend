@@ -135,13 +135,12 @@ export default function ShoppingCart(){
                     token: Cookies.get("token")
             },
             body:JSON.stringify({itemId,quantity:quantities[idx]})
-        }).then(res=>  res.text())
-        .then(data=> {
+        }).then(response=>  authentication(response,data=> {
             alert(data)
             const prevProducts=[...products]
             prevProducts[idx].quantity=quantities[idx]
             setProducts(prevProducts)
-        })
+        }))
 
     }
 

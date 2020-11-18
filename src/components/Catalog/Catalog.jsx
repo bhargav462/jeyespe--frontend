@@ -24,25 +24,6 @@ export default class Catalog extends Component {
     };
   }
 
-  authentication(response) {
-      if (!response.ok) {
-        if (response.status === 403) {
-          response.json().then((element) => {
-            if (element.error === "Login") {
-              alert('Please Login');
-              return this.props.history.push("/login")
-            }
-          });
-        }else{
-          alert("error");
-        }
-      }else{
-        return new Promise(resolve => {
-          resolve(response);
-        })
-      }
-    };
-
 
   componentDidMount() {
     const headers = {
@@ -53,12 +34,11 @@ export default class Catalog extends Component {
     fetch(process.env.REACT_APP_API_URL + "/getItemList", {
       method: "GET",
       headers,
-    }).then((data) => {
-          data.json().then((products) => {
+    }).then((response) => response.json())
+    .then((products) => {
             console.log(products)
             this.setState({ products, loading: false }); 
           })
-    })
       
   }
 
