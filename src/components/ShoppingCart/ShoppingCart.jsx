@@ -15,7 +15,10 @@ import { Link, NavLink } from "react-router-dom";
 import { StripePayment } from '../utility/StripePayment';
 import { authentication } from '../utility/APISecurity';
 import {MESSAGES} from '../utility/Messages'
-
+import { MyLoader } from '../utility/MyLoader';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {MyBackDrop} from '../utility/MyBackDrop'
 
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
@@ -37,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.warning.dark,
         color:'white'
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+      },
 }))
 function calculateSubTotal(items){
     let total=0;
@@ -46,7 +53,10 @@ function calculateSubTotal(items){
     }
     return total
 }
-function deleteFromCart(id,setProducts){
+function deleteFromCart(id,setState,state){
+    setState(prevState=>{
+        return {...prevState,loading:false,activeBackDrop:true}
+    })
     fetch(process.env.REACT_APP_API_URL+'/cart/deleteItem',{
         method: "POST",
         body: JSON.stringify({itemId: id})
@@ -56,17 +66,42 @@ function deleteFromCart(id,setProducts){
             "token": Cookies.get('token'),
         }
     }).then(response=>{
-        authentication(response,data=> setProducts(data.cartItems))
+        authentication(response,data=> {
+            console.log('recieved delete response')
+            if(data==MESSAGES.LOGIN_ERROR){
+                setState(prevState=>{
+                    return {...prevState,activeBackDrop:false,loading:false}
+                })
+                return
+            }
+            else{
+                console.log(data)
+                setState(prevState=>{
+                    console.log('eresdfsdfasdfradafs',prevState.products)
+                    return {...prevState,loading:false,activeBackDrop:false,products:data.cartItems,
+                    quantities: prevState.quantities.filter((q,idx)=> prevState.products[idx].itemId!=id)}
+                })
+            }
+        })
     })
 
 }
 export default function ShoppingCart(){
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
     const classes=useStyles()
-    const [products,setProducts]=useState([])
-    const [quantities,setQuantities]=useState([])
-    const [isCartEmpty,setCartEmpty]=useState(false)
-    const [loading,setLoading]=useState(true)
+    
+    const [state,setState]=useState({products:[],
+                        quantities:[],
+                        isCartEmpty:false,
+                        loading:true,
+                        activeBackDrop:false})
+    // const [products,setProducts]=useState([])
+    // const [quantities,setQuantities]=useState([])
+    // const [isCartEmpty,setCartEmpty]=useState(false)
+    // const [loading,setLoading]=useState(true)
+
+    const {loading,isCartEmpty,quantities,products,activeBackDrop}={...state}
+
     useEffect(()=>{
         fetch(process.env.REACT_APP_API_URL+'/getCartItems',{
             method: "POST",
@@ -78,17 +113,31 @@ export default function ShoppingCart(){
         }).then( (response) => {
           
             authentication(response,(data)=>{
+                    console.log('recieved response useEffect')
                     if(data===MESSAGES.LOGIN_ERROR)
                     {
+                        setState(prevState=> {
+                            return {...prevState,loading:false}
+                        })
                         return
                     }
-                     if(data.cart !== false)
+                    else if(data.cart !== false)
                     {
                         // console.log('hey bhavuk',data.items)
-                        setProducts(data.items)
-                        setQuantities(data.items.map(item=> item.quantity))
+                        setState(prevState=>{
+                            return {...prevState,
+                                    loading:false,
+                                    products:data.items,
+                                    quantities:data.items.map(item=> item.quantity) }
+                        })
                     }else{
-                        setCartEmpty(true)
+                        setState(prevState=>{
+                            return {
+                                ...prevState,
+                                isCartEmpty:true,
+                                loading:false
+                            }
+                        })
                     }
                    
                 })
@@ -100,17 +149,22 @@ export default function ShoppingCart(){
     {
         const updatedQuantities=[...quantities]
         updatedQuantities[idx]=newQuantity
-        setQuantities(updatedQuantities)
+        setState(prevState=>{
+            return {...prevState,quantities:updatedQuantities}
+        })
+        // setQuantities(updatedQuantities)
     }
 
     function quantityChange(e,idx){
-            console.log(typeof e.target.value)
             //If user removes all input, let him do it
+            console.log('beginning; ',e.target.value)
             if(e.target.value=='') {       
                updateQuantityAtIndex('',idx)
+               return
             }
             //If non numeral is entered return
-            let numericalValue=Number(e.target.value)
+            let numericalValue=parseInt(e.target.value)
+            console.log('isNan Result:' ,Number.isNaN(numericalValue))
             if(Number.isNaN(numericalValue)) 
                return;
             console.log('here:',numericalValue)
@@ -120,14 +174,17 @@ export default function ShoppingCart(){
     function checkEmpty(e,idx){
         //If user left empty input set it back to 0
         if(e.target.value==='')  
-            updateQuantityAtIndex(0,idx)
+            updateQuantityAtIndex(1,idx)
         
         //If user entered negative quantity make it positive
         else if(parseInt(e.target.value)<0)
             updateQuantityAtIndex(quantities[idx]*-1,idx)
     }
 
-    function updateQuantity(itemId,idx){    
+    function updateQuantity(itemId,idx){  
+        setState(prevState=>{
+            return {...prevState,activeBackDrop:true,loading:false}
+        })  
         fetch(process.env.REACT_APP_API_URL + "/updateQuantity",{
             method: "POST",
             headers:{
@@ -136,20 +193,36 @@ export default function ShoppingCart(){
             },
             body:JSON.stringify({itemId,quantity:quantities[idx]})
         }).then(response=>  authentication(response,data=> {
-            alert(data)
-            const prevProducts=[...products]
-            prevProducts[idx].quantity=quantities[idx]
-            setProducts(prevProducts)
+            console.log('recieved response update quantity')
+            if(data==MESSAGES.LOGIN_ERROR)
+            {
+                alert('Sorry we are having some technical issues')
+                setState(prevState=>{
+                    return {...prevState,activeBackDrop:false,loading:false}
+                })
+                return
+            }
+            else
+            {
+                const updatedProducts=[...products]
+                updatedProducts[idx].quantity=quantities[idx]
+                setState(prevState=>{
+                    return {...prevState,products:updatedProducts,loading:false,activeBackDrop:false}
+                })
+            }
         }))
 
     }
 
-      
-    if(isCartEmpty==true)
+    if (loading)
+    {
+        return <MyLoader/>
+    }
+    else if(isCartEmpty==true)
     {
         return <h1 className={classes.container}>Your Cart is Empty</h1>
     }
-    if(matches)
+    else if(matches)
     return (
         <Box className={classes.container} elevation={3}
                 m={4} component={Paper}>
@@ -157,6 +230,9 @@ export default function ShoppingCart(){
                 Items in Your Bag
                 </Box>
                 <Divider variant="middle" />
+
+                <MyBackDrop open={activeBackDrop}/>
+             
                 {products.map((item,idx) => {
                     return    <>
                     <Box display="flex">
@@ -172,7 +248,7 @@ export default function ShoppingCart(){
                             </Grid> 
                             <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
                             <Grid item md={2}>
-                                <h5>Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
+                                <h5>Qty. <input  value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
                                         onBlur={e=> checkEmpty(e,idx)}></input></h5>
                                 {
                                     (item.quantity!=quantities[idx])  &&
@@ -184,7 +260,7 @@ export default function ShoppingCart(){
                                 </Grid>
                             <Grid item md={2}><h5> {`$${item.quantity*item.price}`}</h5></Grid>
                             <Grid item md={1}>
-                                <IconButton size="large" onClick={()=> deleteFromCart(item.itemId,setProducts)}>
+                                <IconButton size="large" onClick={()=> deleteFromCart(item.itemId,setState,state)}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </Grid>
@@ -200,7 +276,7 @@ export default function ShoppingCart(){
                     <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : ${calculateSubTotal(products)}</h3>
                 </Box>
                   <div className={classes.checkOutButtonStyles}>
-                    <StripePayment/>
+                    <StripePayment isCart={true}/>
                 </div>
             </Box>
     )
@@ -210,6 +286,8 @@ export default function ShoppingCart(){
                 <Box className={classes.container} elevation={3}
                  m={4} component={Paper}>
                 
+                 <MyBackDrop open={activeBackDrop}/>
+             
                 <h3 className={classes.heading}>Items in Your Bag</h3>
                 
                 <Divider variant="middle" />
@@ -233,7 +311,7 @@ export default function ShoppingCart(){
                     </Box>
                     
                     <Typography variant="p" style={{paddingLeft:'30px',paddingTop:'10px'}}>
-                    Qty. <input type="number" min="0" value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
+                    Qty. <input  value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
                                         onBlur={e=> checkEmpty(e,idx)}></input>
                   </Typography>
                     <br/>
@@ -252,7 +330,7 @@ export default function ShoppingCart(){
                 }
 
                 <div className={classes.checkOutButtonStyles}>
-                   <StripePayment/>
+                   <StripePayment isCart={true}/>
                 </div>
             </Box>
         )

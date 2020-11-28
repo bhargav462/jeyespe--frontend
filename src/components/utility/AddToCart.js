@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie'
+import swal from 'sweetalert';
+
 
 export function addToCart(productId,itemFamily,name,price) {
   
@@ -31,10 +33,10 @@ export function addToCart(productId,itemFamily,name,price) {
     }).then((response) => {
       if(response && response.itemPresent){
         //TODO: Item is already present in the cart
-        alert('Item is already present in the cart');
+        swal('Item is already present in the cart');
       }
       else{
       console.log(response);
-      alert('item added')}
+      swal('item added')}
     })
   }

@@ -1,3 +1,3 @@
 export const MESSAGES={
-    LOGIN_ERROR:'login_error'
+    LOGIN_ERROR:'login_error',
 }

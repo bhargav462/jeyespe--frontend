@@ -8,6 +8,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
 import {addToCart} from '../utility/AddToCart'
+import { MyLoader } from "../utility/MyLoader";
+import {MyBackDrop} from '../utility/MyBackDrop'
+import swal from 'sweetalert'
 
 const loadState={
   loading: 'loading',
@@ -21,6 +24,7 @@ export default class Catalog extends Component {
     this.state = {
       products: {},
       loading: true,
+      activeBackDrop:false
     };
   }
 
@@ -36,22 +40,73 @@ export default class Catalog extends Component {
       headers,
     }).then((response) => response.json())
     .then((products) => {
-            console.log(products)
             this.setState({ products, loading: false }); 
           })
       
   }
 
+   addToCart(productId,itemFamily,name,price) {
+  
+    const headers = {
+      "Content-Type": "Application/json",
+      token: Cookies.get("token"),
+    };
+
+    // TODO : create the item object
+    let item = {
+      itemId:productId,
+      itemFamily:itemFamily,
+      quantity:1,
+      name,
+      price
+    }
+
+    this.setState(prevState=>{
+      return { ...prevState, loading:false,activeBackDrop:true}
+    })
+
+    fetch(process.env.REACT_APP_API_URL + "/addToCart",{
+      method: "POST",
+      headers,
+      body:JSON.stringify(item)
+    }).then(data => {
+      if(!data.ok)
+      {
+        swal('please login')
+        return new Promise((resolve,reject)=> {
+          resolve(null)
+        })
+      }else{
+
+      return data.json();
+      }
+    }).then((response) => {
+        this.setState(prevState=>{
+            return {...prevState,loading:false,activeBackDrop:false}
+        })
+        if(response===null) 
+        {
+          return;
+        }
+      if(response && response.itemPresent){
+        //TODO: Item is already present in the cart
+        swal('Item is already present in the cart');
+      }
+      else{
+      console.log(response);
+      swal('item added')}
+    })
+  }
+
   render() {
     if (this.state.loading)
       return (
-        <h1 class="loading">
-          <CircularProgress size={80} />
-        </h1>
+        <MyLoader/>
       );
     else
       return (
         <div>
+          <MyBackDrop open={this.state.activeBackDrop}/>
           <div class="categories__container">
             <div class="categories">
               <h4>Product Categories</h4>
@@ -95,7 +150,7 @@ export default class Catalog extends Component {
                               <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={() => addToCart(subItem.id,prod,subItem.name,subItem.price)}
+                                    onClick={() => this.addToCart(subItem.id,prod,subItem.name,subItem.price)}
                                     class="add__to__cart text--medium "
                                   >
                                     {" "}

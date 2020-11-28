@@ -9,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {StyledButton} from '../utility/StyledButton'
 import {authentication} from '../utility/APISecurity'
-
+import { MESSAGES } from '../utility/Messages';
+import {MyLoader} from '../utility/MyLoader'
 const useStyles = makeStyles((theme) => {
     return {
       container: {
@@ -27,14 +28,26 @@ const useStyles = makeStyles((theme) => {
 
 
 
-function reviewSubmission(e)
+function reviewSubmission(e,orderId,itemId)
 {
     e.preventDefault();
     const review= document.getElementById('reviewField').value;
+    fetch(process.env.REACT_APP_API_URL + "/orders/addFeedback",{
+        method: "POST",
+        headers:{
+                "Content-Type": "Application/json",
+                token: Cookies.get("token")
+        },
+        body:JSON.stringify({id:orderId,itemId,feedback:review})
+    }
+    ).then(response=> authentication(response,data=>{
+        console.log('data',data)
+    }))
 
 }
 export default function MyOrders(props){
-    const [orders,setOrders]=useState([]);
+    const [state,setState]=useState({orders:[],loading:true})
+    const {orders,loading}=state;
     const classes=useStyles();
 
     useEffect(()=>{
@@ -49,18 +62,32 @@ export default function MyOrders(props){
         })
         .then(response=> {
            authentication(response, (orders)=> {
+               if(orders==MESSAGES.LOGIN_ERROR)
+                {
+                    setState(prevState=>{ 
+                        return {...prevState,loading:false}
+                    })
+                    return
+                }
             let displayList= [];
-            
+            // console.log('orders: ',orders)
             orders.forEach(order => {
-                console.log(order.items)
-                order.items.forEach(orderUnits=> displayList.push(orderUnits))
+                // console.log(order.items)
+                let orderId=order._id;
+                order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId}))
             })
-            setOrders(displayList)
+            // console.log('displayList: ',displayList)
+            setState(prevState=>{
+                return {orders:displayList,loading:false}
+            })
         })
     }
     )},[])
-
-        return (<div className={classes.container}>
+        if(loading) return <MyLoader/>
+        else if(orders.length==0)  
+             return <h1 className={classes.container}>You Haven't placed any order</h1>
+        else
+            return (<div className={classes.container}>
             {
                 orders.map(order=>{
                    return <>
@@ -78,7 +105,7 @@ export default function MyOrders(props){
                             <Typography>Write a Review</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <form onSubmit={reviewSubmission} style={{width:'100%'}}>
+                            <form onSubmit={(e)=>reviewSubmission(e,order._id,order.itemId)} style={{width:'100%'}}>
                                 <textarea id="reviewField" style={{width:'80%'}}></textarea>
                                 <br/>
                                 <StyledButton type="submit">Submit</StyledButton>

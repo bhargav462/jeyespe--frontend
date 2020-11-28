@@ -5,7 +5,7 @@ export function authentication(response,callback) {
         response.json().then((data) => {
           if (data.error === "Login") {
             alert('Please Login');
-            return;
+            callback(MESSAGES.LOGIN_ERROR)
           }else{
               callback(data)
           }

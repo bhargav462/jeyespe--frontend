@@ -119,13 +119,9 @@ export default function ButtonAppBar() {
               Catalog
             </NavLink>
            
-            <NavLink to="/contact"  className={classes.link}
-              activeClassName={classes.activeLink}
-              exact={true}>
-              Contact Us
-            </NavLink>
+            
 
-            {!user ? (
+            { !user ? (
               <>
                 <NavLink
                   to="/login"
@@ -173,6 +169,11 @@ export default function ButtonAppBar() {
                
               </>
             )}
+            <NavLink to="/contact"  className={classes.link}
+              activeClassName={classes.activeLink}
+              exact={true}>
+              Contact Us
+            </NavLink>
 
           </div>
         </Toolbar>

@@ -13,24 +13,37 @@ import {addToCart} from '../utility/AddToCart'
 import Carousel from 'react-bootstrap/Carousel'
 import { makeStyles } from "@material-ui/core/styles";
 import {authentication} from '../utility/APISecurity'
+import { MESSAGES } from '../utility/Messages';
+import { MyLoader } from '../utility/MyLoader';
+import { Typography } from "@material-ui/core";
+import {AuthContext} from '../utility/AuthProvider'
 
 const useStyles = makeStyles((theme) => ({
    img:{
        width:'100px',
        height:'100px'
+   },
+   responsiveHeading:{
+       fontSize:'25px'
    }
 }))
 
 export default function ProductDetails(props) {
     const {match}=props
      const {params: {id,family}}=match
-    const [images,setImages]=useState([])
-    const [shownImage,changeImage]=useState(0)
-    const [productDetails,setDetails]=useState({name:'product_name',price:0,description:[]})
+     const user = React.useContext(AuthContext);
+     const [state,setState]=useState({images:[],shownImage:0,
+                productDetails:{name:'product_name',price:0,description:[]},loading:true})
+
+    let {images,shownImage,productDetails,loading}=state;
+
     const classes=useStyles()
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
     React.useEffect(()=>{
+        setState(prevState=>{
+            return {...prevState,loading:true}
+        })
         fetch(process.env.REACT_APP_API_URL + `/images1/getChildImages/${family}/${id}`, {
             method: "GET",
             headers:{
@@ -39,18 +52,39 @@ export default function ProductDetails(props) {
             }
           }).then(res=> {
               authentication(res,body=> {
-              const {imgChildren}=body
-              setImages(imgChildren)
-              setDetails({name:body.name,price:body.price,description:body.description
-                            ,id:id,family:family})
+                  if(body==MESSAGES.LOGIN_ERROR)
+                   {
+                        setState(prevState=>{
+                            return {...prevState,loading:false}
+                        })
+                        return
+                   }
+                   else{
+                    const {imgChildren}=body
+                    setState(prevState=>{
+                        return {...prevState,loading:false,images:imgChildren,
+                        productDetails: {name:body.name,price:body.price,description:body.description
+                            ,id:id,family:family} }
+                    })
+                }
           })
         })
     },[])
     
+    function changeImage(idx){
+            setState(prevState=>{
+                return {...prevState,shownImage:idx,loading:false}
+            })
+    }
+
+    if(loading)
+    {
+        return <MyLoader/>
+    }
     
     return <>
     {matches ?   <div style={{display:'flex',margin:'8% 30px',minHeight:'100vh'}}>
-           
+
             <div style={{display:'flex',flexDirection:'column',marginRight:'10px'}}>
             {
                 images.map((img,idx)=>{
@@ -66,7 +100,7 @@ export default function ProductDetails(props) {
             
              
         </div>
-        <div style={{width:'600px',height:'600px',backgroundColor:'red'}}>
+        <div style={{width:'500px',height:'500px',backgroundColor:'#e9e4d0'}}>
            <ReactImageMagnify {...  {
             smallImage: {
                 isFluidWidth: true,
@@ -97,36 +131,39 @@ export default function ProductDetails(props) {
             }
             </div>
             
+               
                 <div style={{marginTop:'20px'}}>
 
-                    <StripePayment/>
+                    {user &&    <StripePayment isCart={false} productDetails={productDetails}/> }
                     
                     <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
+                   
          </div>
         </div>
-        :
+       
+        : 
         <div style={{marginTop:'90px'}}>
             <Carousel controls={false} interval={10000000} style={{textAlign:'center'}}>
             {
                 images.map((image,idx)=>{
                     return (<Carousel.Item >
-                    <img style={{width:'80%',height:'60%'}} src={`${process.env.REACT_APP_API_URL}/images/${image}`}></img>
+                    <img style={{width:'350px',height:'350px'}} src={`${process.env.REACT_APP_API_URL}/images/${image}`}></img>
                     </Carousel.Item>)
                 })
 
             }
 
             </Carousel>
-            <div style={{marginLeft:'40px',flexDirection:'column',flexGrow:1, display:'flex'
+            <div style={{marginLeft:'20px',flexDirection:'column',flexGrow:1, display:'flex'
                         , padding:'30px'}}>
-            <h1>{productDetails.name}</h1>
-            <h2>Price ${productDetails.price}</h2>
+           <div className={classes.responsiveHeading} variant="h3">{productDetails.name}</div>
+            <div className={classes.responsiveHeading}>Price ${productDetails.price}</div>
                 <div style={{marginTop:'20px'}}>
                     
-                     <StripePayment/>
+                {user &&  <StripePayment isCart={false} productDetails={productDetails} size={'small'} /> }
                     
-                    <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
+                    <StyledButton size={'small'} onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
          </div>
         </div>

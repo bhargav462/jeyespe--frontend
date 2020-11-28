@@ -20,6 +20,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Flipkart from './partners/flipkart.jpg'
 import Amazon from './partners/amazon.png'
 import IndiaMart from './partners/indiamart.jpg'
+
 const info = [
   {
     imgURL: BotanicImage,
@@ -88,7 +89,10 @@ const useStyles = makeStyles((theme) =>
        display:'none'
     }
 
-    },    
+    },
+    partner:{
+      width:'100px'
+    } ,
     showBelowxs:{
       [theme.breakpoints.up('sm')]:{
           display:'none'
@@ -202,9 +206,9 @@ export default function About() {
           Meet Our Partners
         </h3>
         <Box display="flex" justifyContent="space-around" my={6}>
-          <img src={Amazon} style={{width:'150px'}}/>
-          <img src={Flipkart} style={{width:'150px'}}/>
-          <img src={IndiaMart} style={{width:'150px'}}/>
+          <img src={Amazon} className={classes.partner}/>
+          <img src={Flipkart} className={classes.partner} />
+          <img src={IndiaMart} className={classes.partner}/>
         </Box>
       </Box>
 

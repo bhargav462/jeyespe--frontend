@@ -16,8 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TF from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import {MyLoader} from '../utility/MyLoader'
 const useStyles = makeStyles((theme) => ({
     textInput:{
         [theme.breakpoints.down('sm')]:{
@@ -37,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.down('sm')]:{
           marginTop:'20%',
+          padding: '40px 20px 30px 20px',         
+        },
+        [theme.breakpoints.down('xs')]:{
+          marginTop:'40%',
           padding: '40px 20px 30px 20px',         
         },
     } 
@@ -83,7 +86,7 @@ export default function Log(props) {
     if(user) return <Redirect to="/"/>
 
     else if(waiting)  return  <h1 class="loading">
-                       <CircularProgress size={80} />
+                      <MyLoader/>
                     </h1>
     return (
       <>
@@ -138,11 +141,11 @@ export default function Log(props) {
         })
         .then(data => {
 
-          console.log('res',data);
+          // console.log('res',data);
           
-          Cookies.set('token', data, { expires: 7 })
+          Cookies.set('token', data, { expires: 1 })
 
-          console.log('cookie',document.cookie);
+          // console.log('cookie',document.cookie);
 
           if(data !=='error')
           {
