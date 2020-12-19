@@ -11,11 +11,20 @@ import {addToCart} from '../utility/AddToCart'
 import { MyLoader } from "../utility/MyLoader";
 import {MyBackDrop} from '../utility/MyBackDrop'
 import swal from 'sweetalert'
+import countries from './countries'
+import {defaultCountry} from './countries'
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Divider from '@material-ui/core/Divider';
 
 const loadState={
   loading: 'loading',
   redirect: 'redirect',
-  showPage: 'showPage'
+  showPage: 'showPage',
+  country: countries[0].name
 }
 
 export default class Catalog extends Component {
@@ -24,7 +33,8 @@ export default class Catalog extends Component {
     this.state = {
       products: {},
       loading: true,
-      activeBackDrop:false
+      activeBackDrop:false,
+      country: defaultCountry
     };
   }
 
@@ -98,7 +108,17 @@ export default class Catalog extends Component {
     })
   }
 
+  handleCountryChange=(e)=>{
+    
+      console.log(e.target.value)
+      this.setState(prevState=>{
+        return {...prevState,country:e.target.value}
+      }) 
+      
+  }
+
   render() {
+
     if (this.state.loading)
       return (
         <MyLoader/>
@@ -107,8 +127,34 @@ export default class Catalog extends Component {
       return (
         <div>
           <MyBackDrop open={this.state.activeBackDrop}/>
+         
           <div class="categories__container">
             <div class="categories">
+              
+
+            <h4>Filters:</h4>
+            <FormControl>
+              <InputLabel id="demo-simple-select-helper-label">Country</InputLabel>
+              <Select
+                value={this.state.country}
+                onChange={this.handleCountryChange}
+                style={{width:'100%', padding:'5px'}}
+              >
+                {
+                  countries.map(country=> {
+        
+                    return <MenuItem value={country.code}>{country.name}</MenuItem>
+                  })
+                }
+                
+              </Select>
+            </FormControl>
+              
+              <br/>
+              <br/>
+              <Divider></Divider>
+              <br/>
+
               <h4>Product Categories</h4>
               <ul>
                 {Object.keys(this.state.products).map((prod) => {
