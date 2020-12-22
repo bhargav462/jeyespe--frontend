@@ -8,10 +8,10 @@ export const RequestContext=createContext();
 export function AuthProvider(props) {
     const [user,setUser]=useState('')
     const [requestProcessed,changeRequestStatus]=useState(false)
-    console.log('$$$$$$$$$$$$$',requestProcessed
-    )
+    // console.log('$$$$$$$$$$$$$',requestProcessed
+    // )
     useEffect(() => {
-        console.log('use effect called')
+        // console.log('use effect called')
         // const loggedInUser = localStorage.getItem("user");
         const loggedInUser=Cookies.get("token")
         fetch(process.env.REACT_APP_API_URL+'/token/check',{

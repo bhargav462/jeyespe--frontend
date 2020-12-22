@@ -85,7 +85,7 @@ export default function Log(props) {
    
     if(user) return <Redirect to="/"/>
 
-    else if(waiting)  return  <h1 class="loading">
+    else if(waiting)  return  <h1 className="loading">
                       <MyLoader/>
                     </h1>
     return (

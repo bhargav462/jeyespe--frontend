@@ -11,6 +11,7 @@ import {StyledButton} from '../utility/StyledButton'
 import {authentication} from '../utility/APISecurity'
 import { MESSAGES } from '../utility/Messages';
 import {MyLoader} from '../utility/MyLoader'
+import swal from 'sweetalert';
 const useStyles = makeStyles((theme) => {
     return {
       container: {
@@ -28,10 +29,14 @@ const useStyles = makeStyles((theme) => {
 
 
 
-function reviewSubmission(e,orderId,itemId)
+function reviewSubmission(e,orderId,itemId,feedbackInputId)
 {
     e.preventDefault();
-    const review= document.getElementById('reviewField').value;
+    const review= document.getElementById(feedbackInputId).value;
+  
+    console.log('check here')
+    console.log(orderId,itemId);
+    console.log('review',review);
     fetch(process.env.REACT_APP_API_URL + "/orders/addFeedback",{
         method: "POST",
         headers:{
@@ -41,12 +46,13 @@ function reviewSubmission(e,orderId,itemId)
         body:JSON.stringify({id:orderId,itemId,feedback:review})
     }
     ).then(response=> authentication(response,data=>{
+        swal('Review Recieved')
         console.log('data',data)
     }))
 
 }
 export default function MyOrders(props){
-    const [state,setState]=useState({orders:[],loading:true})
+    const [state,setState]=useState({orders:[],feedbacks:[],loading:true})
     const {orders,loading}=state;
     const classes=useStyles();
 
@@ -70,13 +76,13 @@ export default function MyOrders(props){
                     return
                 }
             let displayList= [];
-            // console.log('orders: ',orders)
+            console.log('orders: ',orders)
             orders.forEach(order => {
-                // console.log(order.items)
+                console.log(order.items)
                 let orderId=order._id;
                 order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId}))
             })
-            // console.log('displayList: ',displayList)
+            console.log('displayList: ',displayList)
             setState(prevState=>{
                 return {orders:displayList,loading:false}
             })
@@ -89,7 +95,7 @@ export default function MyOrders(props){
         else
             return (<div className={classes.container}>
             {
-                orders.map(order=>{
+                orders.map((order,idx)=>{
                    return <>
 
                     <Paper key={order._id} className={classes.orderDetail}>
@@ -105,8 +111,13 @@ export default function MyOrders(props){
                             <Typography>Write a Review</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <form onSubmit={(e)=>reviewSubmission(e,order._id,order.itemId)} style={{width:'100%'}}>
-                                <textarea id="reviewField" style={{width:'80%'}}></textarea>
+                            {console.log('feedback@@@@@@-> '+order.feedback)}
+                            <form onSubmit={(e)=>reviewSubmission(e,order._id,order.itemId,'feedback'+idx)} style={{width:'100%'}}>
+                                <textarea id={'feedback'+idx} style={{width:'80%'}} readOnly={order.feedback!=undefined?true:false}>
+                                    {
+                                        order.feedback
+                                    }
+                                </textarea>
                                 <br/>
                                 <StyledButton type="submit">Submit</StyledButton>
                             </form>

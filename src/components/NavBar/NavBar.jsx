@@ -9,6 +9,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import InfoIcon from "@material-ui/icons/Info";
 import ListIcon from "@material-ui/icons/List";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuIcon from "@material-ui/icons/Menu";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PermContactCalendarIcon from "@material-ui/icons/PermContactCalendar";
@@ -82,7 +83,7 @@ export default function ButtonAppBar() {
   const [openState, setOpen] = React.useState(false);
   const user = React.useContext(AuthContext);
   const setUser = React.useContext(AuthUpdateContext);
-  console.log("In NavBar", user);
+  // console.log("In NavBar", user);
   return (
     <div>
       <AppBar position="fixed" className={classes.appBar}>
@@ -142,6 +143,16 @@ export default function ButtonAppBar() {
               </>
             ) : (
               <>
+
+                <NavLink
+                  to="/profile"
+                  className={classes.link}
+                  activeClassName={classes.activeLink}
+                  exact={true}
+                >
+                  Profile
+                </NavLink>
+
                <NavLink
                   to="/cart"
                   className={classes.link}
@@ -165,6 +176,8 @@ export default function ButtonAppBar() {
                 >
                   Logout
                 </NavLink>
+
+               
 
                
               </>
@@ -213,7 +226,7 @@ export default function ButtonAppBar() {
                 </StyledLink>
               </>
               :
-
+            <>
             <StyledLink to="/login"> 
             <ListItem button onClick={()=>handleLogout(setUser)}>
               <ListItemIcon>
@@ -222,6 +235,8 @@ export default function ButtonAppBar() {
               <ListItemText primary="Logout" />
             </ListItem>
             </StyledLink>
+            
+            </>
           }
             <StyledLink to="/catalog">
               <ListItem button>
@@ -233,6 +248,16 @@ export default function ButtonAppBar() {
             </StyledLink>
 
            {user &&  <>
+
+
+            <StyledLink to="/profile">
+                    <ListItem button>
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItem>
+            </StyledLink>
 
             <StyledLink to="/myOrders">
                     <ListItem button>

@@ -1,3 +1,4 @@
+import swal from 'sweetalert';
 import {MESSAGES} from './Messages'
 export function authentication(response,callback) {
     if (!response.ok) {
@@ -11,7 +12,9 @@ export function authentication(response,callback) {
           }
         });
       }else{
-        response.json().then(data=> callback(data))
+        swal("Internal Error, Sorry for inconvinience")
+        return
+        // response.json().then(data=> callback(data))
       }
     }else{
       response.json().then(data=> {

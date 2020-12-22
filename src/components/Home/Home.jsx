@@ -138,6 +138,7 @@ export default function About() {
             let idx = id;
             return (
               <VisibilitySensor
+                key={idx}
                 onChange={(isVisible) => {
                   if (isVisible == true)
                     handleVisibilityChange(idx, setSliderState, sliderState);

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => {
-        console.log(theme.palette)
+        // console.log(theme.palette)
         return   {
             footerContainer:{
                 color:'white',

@@ -19,7 +19,6 @@ import { MyLoader } from '../utility/MyLoader';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {MyBackDrop} from '../utility/MyBackDrop'
-
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
         display: "flex",
@@ -44,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
       },
+    emptyCart:{
+        padding:'20px 40px'
+    }
 }))
 function calculateSubTotal(items){
     let total=0;
@@ -220,7 +222,10 @@ export default function ShoppingCart(){
     }
     else if(isCartEmpty==true)
     {
-        return <h1 className={classes.container}>Your Cart is Empty</h1>
+        return <>
+        <h1 className={`${classes.container} ${classes.emptyCart}`}>Your Cart is Empty</h1>
+        <img></img>
+        </>
     }
     else if(matches)
     return (
@@ -233,6 +238,7 @@ export default function ShoppingCart(){
 
                 <MyBackDrop open={activeBackDrop}/>
              
+                {console.log(products)}
                 {products.map((item,idx) => {
                     return    <>
                     <Box display="flex">

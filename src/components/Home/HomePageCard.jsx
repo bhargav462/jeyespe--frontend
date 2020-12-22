@@ -10,7 +10,7 @@ import {StyledButton} from '../utility/StyledButton'
 export default function HomePageCard(){
     const theme = useTheme();
 
-    console.log('theme',theme)
+    // console.log('theme',theme)
     return <Grid container spacing={0}>
             <Grid item md={6} xs={12}>
                 <img src={BackgroundImage} style={{width:'100%',height:'100%'}}></img>

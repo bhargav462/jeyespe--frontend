@@ -31,7 +31,11 @@ errorMessage:{
     padding: '50px 30px 30px 30px',         
   },
   [theme.breakpoints.down('sm')]:{
-    marginTop:'15%',
+    marginTop:'20%',
+    padding: '40px 20px 30px 20px',         
+  },
+  [theme.breakpoints.down('xs')]:{
+    marginTop:'30%',
     padding: '40px 20px 30px 20px',         
   },
 } 

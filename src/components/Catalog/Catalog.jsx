@@ -41,13 +41,12 @@ export default class Catalog extends Component {
 
   componentDidMount() {
     const headers = {
-      "Content-Type": "Application/json",
-      token: Cookies.get("token"),
+      "Content-Type": "Application/json"
     };
 
-    fetch(process.env.REACT_APP_API_URL + "/getItemList", {
+    fetch(process.env.REACT_APP_API_URL + `/getItemList/${this.state.country}`, {
       method: "GET",
-      headers,
+      headers
     }).then((response) => response.json())
     .then((products) => {
             this.setState({ products, loading: false }); 
@@ -108,14 +107,19 @@ export default class Catalog extends Component {
     })
   }
 
-  handleCountryChange=(e)=>{
+  // handleCountryChange=(e)=>{
     
-      console.log(e.target.value)
-      this.setState(prevState=>{
-        return {...prevState,country:e.target.value}
-      }) 
+  //   const headers = {
+  //     "Content-Type": "Application/json"
+  //   };
+
+
+  //     console.log(e.target.value)
+  //     this.setState(prevState=>{
+  //       return {...prevState,country:e.target.value}
+  //     }) 
       
-  }
+  // }
 
   render() {
 
@@ -132,7 +136,7 @@ export default class Catalog extends Component {
             <div class="categories">
               
 
-            <h4>Filters:</h4>
+            {/* <h4>Filters:</h4>
             <FormControl>
               <InputLabel id="demo-simple-select-helper-label">Country</InputLabel>
               <Select
@@ -153,7 +157,7 @@ export default class Catalog extends Component {
               <br/>
               <br/>
               <Divider></Divider>
-              <br/>
+              <br/> */}
 
               <h4>Product Categories</h4>
               <ul>

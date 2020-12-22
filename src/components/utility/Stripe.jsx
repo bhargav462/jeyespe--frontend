@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 
 export default function Stripe(props) {
   const classes = useStyles();
-  console.log('in stripe',props)
+  // console.log('in stripe',props)
   return (
     <div style={props.style} className={classes.stripeContainer} 
           style={{backgroundImage:`url(${props.image})`}}>

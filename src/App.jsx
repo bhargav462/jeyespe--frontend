@@ -14,6 +14,7 @@ import ProductDetails from './components/ProductDetails/ProductDetails'
 import Contact from './components/Contact/Contact'
 import {MyLoader} from './components/utility/MyLoader'
 import MyOrders from './components/MyOrders/MyOrders'
+import Profile from './components/Profile'
 function App() {
   return (
     <div>
@@ -26,7 +27,7 @@ function App() {
 
 function AllCode(){
   const requestProcessed=React.useContext(RequestContext)
-  console.log('hey----------',requestProcessed)
+  // console.log('hey----------',requestProcessed)
   if(requestProcessed) 
   return (
       <ThemeProvider theme={customTheme}>
@@ -36,6 +37,13 @@ function AllCode(){
             <Home/>
             <Footer/>
           </Route>
+
+          <Route exact path="/profile">
+            <NavBar/>
+            <Profile/>
+            <Footer/>
+          </Route>
+       
           <Route exact path="/login">
             <NavBar/>
             <Login/>
