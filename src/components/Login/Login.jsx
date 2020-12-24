@@ -97,7 +97,7 @@ export default function Log(props) {
         password: "",
       }}
       validate={(values) => {
-        console.log(values);
+        // console.log(values);
         const errors = {};
         if (!values.email) {
           errors.email = "Required";
@@ -115,7 +115,7 @@ export default function Log(props) {
       }}
 
       onSubmit={(values, { setSubmitting }) => {
-        console.log('values',values);
+        // console.log('values',values);
         setMailSentMessage('')
         setWaiting(true)
         setTimeout(() => {

@@ -24,7 +24,9 @@ export function AuthProvider(props) {
         .then(response=> response.json())
         .then(data=> {
           if(data.user==true) 
-              setUser(loggedInUser)
+              {
+                setUser(loggedInUser)
+              }
           changeRequestStatus(true)
         })
         

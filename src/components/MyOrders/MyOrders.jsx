@@ -113,7 +113,7 @@ export default function MyOrders(props){
                         <AccordionDetails>
                             {console.log('feedback@@@@@@-> '+order.feedback)}
                             <form onSubmit={(e)=>reviewSubmission(e,order._id,order.itemId,'feedback'+idx)} style={{width:'100%'}}>
-                                <textarea id={'feedback'+idx} style={{width:'80%'}} readOnly={order.feedback!=undefined?true:false}>
+                                <textarea id={'feedback'+idx} style={{width:'80%'}} >
                                     {
                                         order.feedback
                                     }

@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
 import logo from '../../images/logo.jpeg'
 import {StyledButton} from '../utility/StyledButton'
-import { Link } from "react-router-dom";
 
 
 function Page1JSX() {
@@ -89,7 +88,7 @@ const pageTemplate=(page,animationState,classes)=> {
         />
         <div className="content">
         
-        <Zoom in={animationState==finalScale?true:false} timeout={2000}> 
+        <Zoom in={animationState===finalScale?true:false} timeout={2000}> 
           <img src={logo} style={{width:'10%'}}></img>
         </Zoom>
         <Fade in={animationState==finalScale?true:false} timeout={3000}>

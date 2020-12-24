@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     button: {
         padding:'4px',
         backgroundColor: theme.palette.warning.dark,
+        '&:hover': {
+            background: theme.palette.warning.light,
+         },
         color:'white'
     },
     backdrop: {

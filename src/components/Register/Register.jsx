@@ -7,6 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
 import {StyledButton} from '../utility/StyledButton'
+import countries from '../utility/countries'
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   textInput:{
@@ -145,6 +148,17 @@ export default function Logout() {
         <Form >
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
+            <Grid item>
+            <Field name="color" component={Select} style={{minWidth:'100%'}} variant="outlined">
+
+            <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+
+</Field>
+
+
+            </Grid>
           <Grid item >
               <Field
                 component={TextField}

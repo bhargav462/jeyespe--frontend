@@ -11,8 +11,7 @@ import {addToCart} from '../utility/AddToCart'
 import { MyLoader } from "../utility/MyLoader";
 import {MyBackDrop} from '../utility/MyBackDrop'
 import swal from 'sweetalert'
-import countries from './countries'
-import {defaultCountry} from './countries'
+import {currencySymbols} from '../utility/countries'
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -23,8 +22,7 @@ import Divider from '@material-ui/core/Divider';
 const loadState={
   loading: 'loading',
   redirect: 'redirect',
-  showPage: 'showPage',
-  country: countries[0].name
+  showPage: 'showPage'
 }
 
 export default class Catalog extends Component {
@@ -34,22 +32,24 @@ export default class Catalog extends Component {
       products: {},
       loading: true,
       activeBackDrop:false,
-      country: defaultCountry
+      currencySymbol:'Rs'
     };
   }
 
 
   componentDidMount() {
     const headers = {
-      "Content-Type": "Application/json"
+      "Content-Type": "Application/json",
+      "token": Cookies.get('token') || '',
     };
 
-    fetch(process.env.REACT_APP_API_URL + `/getItemList/${this.state.country}`, {
+    fetch(process.env.REACT_APP_API_URL + `/getItemList`, {
       method: "GET",
       headers
     }).then((response) => response.json())
-    .then((products) => {
-            this.setState({ products, loading: false }); 
+    .then(({products,currency}) => { 
+            let currencySymbol= currencySymbols[currency]
+            this.setState({ products, loading: false,currencySymbol }); 
           })
       
   }
@@ -107,19 +107,6 @@ export default class Catalog extends Component {
     })
   }
 
-  // handleCountryChange=(e)=>{
-    
-  //   const headers = {
-  //     "Content-Type": "Application/json"
-  //   };
-
-
-  //     console.log(e.target.value)
-  //     this.setState(prevState=>{
-  //       return {...prevState,country:e.target.value}
-  //     }) 
-      
-  // }
 
   render() {
 
@@ -134,31 +121,6 @@ export default class Catalog extends Component {
          
           <div class="categories__container">
             <div class="categories">
-              
-
-            {/* <h4>Filters:</h4>
-            <FormControl>
-              <InputLabel id="demo-simple-select-helper-label">Country</InputLabel>
-              <Select
-                value={this.state.country}
-                onChange={this.handleCountryChange}
-                style={{width:'100%', padding:'5px'}}
-              >
-                {
-                  countries.map(country=> {
-        
-                    return <MenuItem value={country.code}>{country.name}</MenuItem>
-                  })
-                }
-                
-              </Select>
-            </FormControl>
-              
-              <br/>
-              <br/>
-              <Divider></Divider>
-              <br/> */}
-
               <h4>Product Categories</h4>
               <ul>
                 {Object.keys(this.state.products).map((prod) => {
@@ -195,7 +157,7 @@ export default class Catalog extends Component {
                                 {subItem.name}
                               </p>
                               <p class="card__price text--medium">
-                                Rs {subItem.price}.00
+                                 {`${this.state.currencySymbol} ${subItem.price}`}
                               </p>
                               <div class="card__info addToCartButton">
                                 <a>
