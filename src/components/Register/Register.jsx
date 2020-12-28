@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
 import { Button } from "@material-ui/core";
@@ -52,11 +52,21 @@ export default function Logout() {
     let history = useHistory();
     const [contactErrorMessage,setContactMessage]=React.useState('');
     const [emailErrorMessage,setEmailMessage]=React.useState('');
+    const [country,setCountry]=useState( {currency:'INR', name:'INDIA'});
+
     function validateContact(value) {
 
       return contactErrorMessage;
 
     }
+
+    const handleCountryChange = (event) => {
+      console.log(event.target.value)
+      setCountry({
+                  name:event.nativeEvent.target.textContent,
+                   currency:event.target.value
+              })
+    };
 
     return (
     <Formik
@@ -64,10 +74,11 @@ export default function Logout() {
         email: "",
         password: "",
         username:"",
-        contact: ""
+        contact: "",
+        
       }}
       validate={(values) => {
-        console.log(values);
+        // console.log(values);
         const errors = {};
         if (!values.email) {
           errors.email = "Required";
@@ -96,6 +107,7 @@ export default function Logout() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
+        values={...values,country}
         console.log('values',values);
         setContactMessage('')
         setEmailMessage('')
@@ -148,14 +160,20 @@ export default function Logout() {
         <Form >
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
+           
             <Grid item>
-            <Field name="color" component={Select} style={{minWidth:'100%'}} variant="outlined">
-
-            <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-
-</Field>
+            
+            <Field name="country" component={Select} style={{minWidth:'100%'}} variant="outlined"
+                                 value={country.currency}     onChange={handleCountryChange}
+                                 className={classes.textInput}>
+            {
+                countries.map(country=>{
+                    return  <MenuItem value={country.currency}>
+                        {country.name}
+                    </MenuItem>
+                })
+            }
+            </Field>
 
 
             </Grid>
