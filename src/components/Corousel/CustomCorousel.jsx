@@ -8,7 +8,7 @@ import Fade from '@material-ui/core/Fade';
 import Zoom from '@material-ui/core/Zoom';
 import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
-import logo from '../../images/logo.jpeg'
+import logo from '../logo.jpeg'
 import {StyledButton} from '../utility/StyledButton'
 
 
