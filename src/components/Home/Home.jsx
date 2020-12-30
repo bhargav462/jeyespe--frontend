@@ -22,7 +22,6 @@ import Amazon from './partners/amazon.png'
 import Alibaba from './partners/alibaba.jpg'
 import { Link, NavLink } from "react-router-dom";
 
-
 const info = [
   {
     imgURL: BotanicImage,

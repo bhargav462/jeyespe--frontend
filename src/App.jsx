@@ -3,7 +3,7 @@ import NavBar from './components/NavBar/NavBar'
 import Home from './components/Home/Home'
 import Footer from './components/Footer/Footer'
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import {Redirect,BrowserRouter as Router,Route} from 'react-router-dom'
+import {Redirect,Router,Route} from 'react-router-dom'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import Catalog from './components/Catalog/Catalog'
@@ -15,11 +15,12 @@ import Contact from './components/Contact/Contact'
 import {MyLoader} from './components/utility/MyLoader'
 import MyOrders from './components/MyOrders/MyOrders'
 import Profile from './components/Profile'
-import { useLocation } from "react-router-dom";
+import history from './components/utility/history'
 
 function App() {
   return (
     <div>
+
     <AuthProvider>
       <AllCode/>
     </AuthProvider>
@@ -29,17 +30,13 @@ function App() {
 
 function AllCode(){
   const requestProcessed=React.useContext(RequestContext)
-  // console.log('hey----------',requestProcessed)
-  
-  // React.useEffect(() => {
-    //   window.scrollTo(0, 0);
-    // }, [pathname]);
     
     if(requestProcessed) 
     return (
       <ThemeProvider theme={customTheme}>
-      <Router>
-        
+      <Router history={history}>
+  
+        <div>
           <Route exact path="/">
             <NavBar/>
             <Home/>
@@ -98,7 +95,14 @@ function AllCode(){
            }>   
           </Route>
       
-
+          <Route path="/404"
+             render={(props) => <>
+              {/* <NavBar/> */}
+               <h1>404 Page</h1>
+              </>
+          }>   
+          </Route>
+          </div>
       </Router>
       
       </ThemeProvider>

@@ -1,12 +1,16 @@
 import swal from 'sweetalert';
 import {MESSAGES} from './Messages'
+import history from './history'
+
 export function authentication(response,callback) {
+    // console.log('this function runs',history)
     if (!response.ok) {
       if (response.status === 403) {
         response.json().then((data) => {
           if (data.error === "Login") {
-            alert('Please Login');
+            // alert('Please Login');
             callback(MESSAGES.LOGIN_ERROR)
+            history.push('/404')
           }else{
               callback(data)
           }

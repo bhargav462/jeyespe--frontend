@@ -11,7 +11,7 @@ import Cookies from 'js-cookie'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink,useHistory } from "react-router-dom";
 import { StripePayment } from '../utility/StripePayment';
 import { authentication } from '../utility/APISecurity';
 import {MESSAGES} from '../utility/Messages'
@@ -99,6 +99,7 @@ function deleteFromCart(id,setState,state){
 export default function ShoppingCart(){
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
     const classes=useStyles()
+    const history=useHistory()
     
     const [state,setState]=useState({products:[],
                         quantities:[],
