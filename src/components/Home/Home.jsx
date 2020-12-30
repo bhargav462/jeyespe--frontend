@@ -19,7 +19,7 @@ import { StyledButton } from "../utility/StyledButton";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Flipkart from './partners/flipkart.jpg'
 import Amazon from './partners/amazon.png'
-import IndiaMart from './partners/indiamart.jpg'
+import Alibaba from './partners/alibaba.jpg'
 import { Link, NavLink } from "react-router-dom";
 
 
@@ -93,7 +93,10 @@ const useStyles = makeStyles((theme) =>
 
     },
     partner:{
-      width:'100px'
+      [theme.breakpoints.down('sm')]:{
+        width:'100px'
+      },
+      width:'200px'
     } ,
     showBelowxs:{
       [theme.breakpoints.up('sm')]:{
@@ -218,7 +221,7 @@ export default function Home() {
         <Box display="flex" justifyContent="space-around" my={6}>
           <img src={Amazon} className={classes.partner}/>
           <img src={Flipkart} className={classes.partner} />
-          <img src={IndiaMart} className={classes.partner}/>
+          <img src={Alibaba} className={classes.partner}/>
         </Box>
       </Box>
 
