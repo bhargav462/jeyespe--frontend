@@ -330,7 +330,7 @@ export default function ShoppingCart(){
                             <Typography style={{marginBottom:'10px'}} variant="h3">{item.name}</Typography>
                             <Typography  variant="p" component="div">{item.itemFamily}</Typography>
                             <Typography variant="p" component="div"> {`${currencySymbols[currency]} ${item.price}`}</Typography>
-                            <Button size="small" variant="contained" onClick={()=> deleteFromCart(item.itemId)}>
+                            <Button size="small" variant="contained" onClick={()=> deleteFromCart(item.itemId,setState,state)}>
                                 Delete
                             </Button>
                                     

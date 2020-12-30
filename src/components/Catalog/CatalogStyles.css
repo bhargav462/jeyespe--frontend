@@ -68,7 +68,7 @@ main {
   display: grid;
   grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;
   grid-gap: 40px;
-  padding: 60px 0;
+  padding-top: 60px;
 }
 
 .text--medium {
@@ -168,10 +168,10 @@ main {
   justify-content: center;
 }
 
-
+/* 
 .cardogiries{
   margin-top: 80px;
-}
+} */
 
 @media only screen and (max-width: 1000px) {
   .card {

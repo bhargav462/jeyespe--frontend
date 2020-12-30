@@ -136,7 +136,8 @@ export default class Catalog extends Component {
             {Object.keys(this.state.products).map((prod) => {
                 return (
                 <>
-                  <h2 id={prod} class="item__family">
+                  <div id={prod} style={{marginBottom:'80px'}}/>
+                  <h2  class="item__family">
                     {capitalCase(space(prod))}
                   </h2>
                   <main>
