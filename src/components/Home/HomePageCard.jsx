@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/core/styles";
 import {StyledButton} from '../utility/StyledButton'
+import { Link, NavLink } from "react-router-dom";
+
 
 export default function HomePageCard(){
     const theme = useTheme();
@@ -24,9 +26,15 @@ export default function HomePageCard(){
                 <Typography variant='h5' component="p" style={{margin:'5% 0px'}}>
                 We Market forest Products and provide land management in many countries</Typography>
              
-                <StyledButton mode="light">
-                   View Products
-                </StyledButton>
+                <Link
+                    to="/catalog"
+                    exact={true}
+                    >
+                        <StyledButton mode="light">
+                          View Products
+                        </StyledButton>
+                </Link>
+                
              </Grid>
     </Grid>
 }

@@ -7,7 +7,6 @@ import { StyledButton } from "../utility/StyledButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
-import {addToCart} from '../utility/AddToCart'
 import { MyLoader } from "../utility/MyLoader";
 import {MyBackDrop} from '../utility/MyBackDrop'
 import swal from 'sweetalert'
@@ -18,6 +17,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
+import space from 'to-space-case'
+import { capitalCase } from "capital-case";
 
 const loadState={
   loading: 'loading',
@@ -38,6 +39,7 @@ export default class Catalog extends Component {
 
 
   componentDidMount() {
+    window.scrollTo(0, 0)
     const headers = {
       "Content-Type": "Application/json",
       "token": Cookies.get('token') || '',
@@ -124,7 +126,7 @@ export default class Catalog extends Component {
               <h4>Product Categories</h4>
               <ul>
                 {Object.keys(this.state.products).map((prod) => {
-                  return <a href={"#" + prod.replace(" ", "")}>{prod}</a>;
+                  return <a href={"#" + prod}>{capitalCase(space(prod))}</a>;
                 })}
               </ul>
             </div>
@@ -132,10 +134,10 @@ export default class Catalog extends Component {
           <div class="cardogiries">
           
             {Object.keys(this.state.products).map((prod) => {
-              return (
+                return (
                 <>
-                  <h2 id={prod.replace(" ", "")} class="item__family">
-                    {prod}
+                  <h2 id={prod} class="item__family">
+                    {capitalCase(space(prod))}
                   </h2>
                   <main>
                     <section class="cards">

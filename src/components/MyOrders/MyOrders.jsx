@@ -57,6 +57,9 @@ export default function MyOrders(props){
     const classes=useStyles();
 
     useEffect(()=>{
+        //To set scroll bar to top
+        window.scrollTo(0, 0)
+          
         const headers = {
             "Content-Type": "application/json",
             "token": Cookies.get('token')

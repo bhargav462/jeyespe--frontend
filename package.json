@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.5.3",
+    "capital-case": "^1.0.4",
     "classnames": "^2.2.6",
     "dotenv": "^8.2.0",
     "formik": "^2.2.0",
@@ -27,7 +28,8 @@
     "react-transition-group": "^4.4.1",
     "react-visibility-sensor": "^5.1.1",
     "styled-components": "^5.2.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "to-space-case": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

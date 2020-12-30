@@ -10,7 +10,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
 import logo from '../logo.jpg'
 import {StyledButton} from '../utility/StyledButton'
+import { Link, NavLink } from "react-router-dom";
 
+
+function ShopNowButton(){
+  return   <Link
+              to="/catalog"
+              exact={true}
+            >
+                <StyledButton>Shop Now</StyledButton>
+            </Link>}
 
 function Page1JSX() {
   return (
@@ -19,7 +28,7 @@ function Page1JSX() {
        <div className={'heading'}>
           Great Trees
       </div>
-      <StyledButton>Shop Now</StyledButton>
+      {ShopNowButton()}
     </>
   );
 }
@@ -30,8 +39,7 @@ function Page2JSX() {
        <div className={'heading'} >
           Building
       </div>
-      <StyledButton>Shop Now</StyledButton>
-    
+      {ShopNowButton()}
     </>
   );
 }
@@ -42,8 +50,7 @@ function Page3JSX() {
        <div  className={'heading'} >
           Red SandleWood
       </div>
-      <StyledButton>Shop Now</StyledButton>
-    
+      {ShopNowButton()}
     </>
   );
 }

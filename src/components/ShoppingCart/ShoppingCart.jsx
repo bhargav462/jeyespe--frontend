@@ -19,6 +19,7 @@ import { MyLoader } from '../utility/MyLoader';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {MyBackDrop} from '../utility/MyBackDrop'
+import {currencySymbols} from '../utility/countries'
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
         display: "flex",
@@ -50,13 +51,17 @@ const useStyles = makeStyles((theme) => ({
         padding:'20px 40px'
     }
 }))
+function roundedValue(input)
+{
+    return Math.round((input + Number.EPSILON) * 100) / 100
+}
 function calculateSubTotal(items){
     let total=0;
     for(let i=0;i<items.length;i++)
     {
         total+=Number(items[i].price)*Number(items[i].quantity)
     }
-    return total
+    return roundedValue(total)
 }
 function deleteFromCart(id,setState,state){
     setState(prevState=>{
@@ -99,15 +104,27 @@ export default function ShoppingCart(){
                         quantities:[],
                         isCartEmpty:false,
                         loading:true,
-                        activeBackDrop:false})
+                        activeBackDrop:false,
+                        currency: '',
+                        })
     // const [products,setProducts]=useState([])
     // const [quantities,setQuantities]=useState([])
     // const [isCartEmpty,setCartEmpty]=useState(false)
     // const [loading,setLoading]=useState(true)
 
-    const {loading,isCartEmpty,quantities,products,activeBackDrop}={...state}
+    const {loading,isCartEmpty,quantities,products,activeBackDrop,currency}={...state}
 
+
+    function setBackdrop(status)
+    {
+        setState(prevState=>{
+            return {...prevState,loading:false,activeBackDrop:status}
+        })
+    }
     useEffect(()=>{
+        //To set scroll bar to top
+        window.scrollTo(0, 0)
+          
         fetch(process.env.REACT_APP_API_URL+'/getCartItems',{
             method: "POST",
             headers:{
@@ -128,12 +145,14 @@ export default function ShoppingCart(){
                     }
                     else if(data.cart !== false)
                     {
-                        // console.log('hey bhavuk',data.items)
+                        console.log('hey bhavuk',data)
                         setState(prevState=>{
                             return {...prevState,
                                     loading:false,
                                     products:data.items,
-                                    quantities:data.items.map(item=> item.quantity) }
+                                    isCartEmpty:false,
+                                    quantities:data.items.map(item=> item.quantity),
+                                    currency: data.currency}
                         })
                     }else{
                         setState(prevState=>{
@@ -255,7 +274,7 @@ export default function ShoppingCart(){
                                     {item.itemFamily}
                                 </Box>
                             </Grid> 
-                            <Grid item md={3}><h5>Rs. {item.price}</h5></Grid>
+                            <Grid item md={3}><h5> {`${currencySymbols[currency]} ${item.price}`}</h5></Grid>
                             <Grid item md={2}>
                                 <h5>Qty. <input  value={quantities[idx]} size={3} onChange={e=> quantityChange(e,idx)}
                                         onBlur={e=> checkEmpty(e,idx)}></input></h5>
@@ -267,7 +286,7 @@ export default function ShoppingCart(){
                                     </Button>
                                 }
                                 </Grid>
-                            <Grid item md={2}><h5> {`$${item.quantity*item.price}`}</h5></Grid>
+                            <Grid item md={2}><h5> {`${currencySymbols[currency]} ${roundedValue(item.quantity*item.price)}`}</h5></Grid>
                             <Grid item md={1}>
                                 <IconButton size="large" onClick={()=> deleteFromCart(item.itemId,setState,state)}>
                                     <DeleteIcon/>
@@ -282,10 +301,10 @@ export default function ShoppingCart(){
                 }   )}
                 
                 <Box> 
-                    <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : ${calculateSubTotal(products)}</h3>
+                    <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : {`${currencySymbols[currency]} ${calculateSubTotal(products)}`}</h3>
                 </Box>
                   <div className={classes.checkOutButtonStyles}>
-                    <StripePayment isCart={true}/>
+                    <StripePayment setLoading={setBackdrop} isCart={true}/>
                 </div>
             </Box>
     )
@@ -310,7 +329,7 @@ export default function ShoppingCart(){
                         
                             <Typography style={{marginBottom:'10px'}} variant="h3">{item.name}</Typography>
                             <Typography  variant="p" component="div">{item.itemFamily}</Typography>
-                            <Typography variant="p" component="div"> {`$${item.price}`}</Typography>
+                            <Typography variant="p" component="div"> {`${currencySymbols[currency]} ${item.price}`}</Typography>
                             <Button size="small" variant="contained" onClick={()=> deleteFromCart(item.itemId)}>
                                 Delete
                             </Button>
@@ -337,9 +356,12 @@ export default function ShoppingCart(){
                   </div>  
                   })
                 }
-
+                <Box> 
+                    <h3 style={{margin:'15px'}}>Subtotal : {`${currencySymbols[currency]} ${calculateSubTotal(products)}`}</h3>
+                </Box>
+                
                 <div className={classes.checkOutButtonStyles}>
-                   <StripePayment isCart={true}/>
+                   <StripePayment setLoading={setBackdrop} isCart={true}/>
                 </div>
             </Box>
         )

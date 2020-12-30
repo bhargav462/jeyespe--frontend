@@ -5,7 +5,7 @@ const countries=[
 ]
 
 export const currencySymbols={
-    INR : 'Rs',
+    INR : 'Rs.',
     USD : '$',
     EUR : '£'
 }

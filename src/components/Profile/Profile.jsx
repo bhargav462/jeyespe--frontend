@@ -80,6 +80,9 @@ export default function Profile(){
     const {loading,activeBackDrop,user,country}=state
 
     useEffect(()=>{
+        //To set scroll bar to top on navigation change
+        window.scrollTo(0, 0)
+          
         fetch(process.env.REACT_APP_API_URL+'/user/details',{
             method: "POST",
             headers:{

@@ -13,20 +13,20 @@ export function authentication(response,callback) {
         });
       }else{
         swal("Internal Error, Sorry for inconvinience")
-        return
+        return 
         // response.json().then(data=> callback(data))
       }
     }else{
       response.json().then(data=> {
-         console.log('security000000000000',data)
-         console.log(callback)  
+        //  console.log('security000000000000',data)
+        //  console.log(callback)  
          callback(data)
       })
     }
   };
 
-export function renderData(response){
-    response.json().then(data => {
+// export function renderData(response){
+//     response.json().then(data => {
       
-    })
-  }
+//     })
+//   }

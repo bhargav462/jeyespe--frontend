@@ -17,6 +17,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TF from '@material-ui/core/TextField';
 import {MyLoader} from '../utility/MyLoader'
+import { Link, NavLink } from "react-router-dom";
+
+
 const useStyles = makeStyles((theme) => ({
     textInput:{
         [theme.breakpoints.down('sm')]:{
@@ -27,6 +30,18 @@ const useStyles = makeStyles((theme) => ({
         },
         marginBottom:'10px',
     } ,
+    link: {
+      color: "black",
+      marginTop:'10px',
+      "&:hover": {
+        // backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.primary.dark,
+        textDecoration: "none",
+      },
+    },
+    activeLink:{
+      color:theme.palette.primary.dark
+    },
     formContainer:{
         marginTop:'12%',
         padding: '50px 30px 30px 30px',
@@ -206,8 +221,19 @@ export default function Log(props) {
             
             <Grid item>
             <div>
-      <Button  onClick={handleClickOpen}>
+      <Button  className={classes.link} onClick={handleClickOpen}>
         Forgot Password ?
+      </Button>
+      <br/>
+      <Button>
+          <NavLink
+                    to="/register"
+                    className={classes.link}
+                    activeClassName={classes.activeLink}
+                    exact={true}
+                  >
+                    Register
+          </NavLink>
       </Button>
       <Dialog open={open} onClose={handleClose} > 
         <DialogTitle>Forgot Password</DialogTitle>

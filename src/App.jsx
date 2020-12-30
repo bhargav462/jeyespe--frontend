@@ -15,6 +15,8 @@ import Contact from './components/Contact/Contact'
 import {MyLoader} from './components/utility/MyLoader'
 import MyOrders from './components/MyOrders/MyOrders'
 import Profile from './components/Profile'
+import { useLocation } from "react-router-dom";
+
 function App() {
   return (
     <div>
@@ -28,10 +30,16 @@ function App() {
 function AllCode(){
   const requestProcessed=React.useContext(RequestContext)
   // console.log('hey----------',requestProcessed)
-  if(requestProcessed) 
-  return (
+  
+  // React.useEffect(() => {
+    //   window.scrollTo(0, 0);
+    // }, [pathname]);
+    
+    if(requestProcessed) 
+    return (
       <ThemeProvider theme={customTheme}>
       <Router>
+        
           <Route exact path="/">
             <NavBar/>
             <Home/>
@@ -89,7 +97,8 @@ function AllCode(){
                </>
            }>   
           </Route>
-        
+      
+
       </Router>
       
       </ThemeProvider>

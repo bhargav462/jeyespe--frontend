@@ -9,7 +9,7 @@ import {StyledButton} from '../utility/StyledButton'
 import ImageGallery from 'react-image-gallery';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {StripePayment} from '../utility/StripePayment';
-import {addToCart} from '../utility/AddToCart'
+// import {addToCart} from '../utility/AddToCart'
 import Carousel from 'react-bootstrap/Carousel'
 import { makeStyles } from "@material-ui/core/styles";
 import {authentication} from '../utility/APISecurity'
@@ -17,6 +17,9 @@ import { MESSAGES } from '../utility/Messages';
 import { MyLoader } from '../utility/MyLoader';
 import { Typography } from "@material-ui/core";
 import {AuthContext} from '../utility/AuthProvider'
+import {currencySymbols} from '../utility/countries'
+import {MyBackDrop} from '../utility/MyBackDrop'
+import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
    img:{
@@ -33,13 +36,64 @@ export default function ProductDetails(props) {
      const {params: {id,family}}=match
      const user = React.useContext(AuthContext);
      const [state,setState]=useState({images:[],shownImage:0,
-                productDetails:{name:'product_name',price:0,description:[]},loading:true})
+                productDetails:{name:'product_name',price:0,description:[]},loading:true,
+            length:-1,height:-1,weight:-1,currency:'',activeBackDrop:false})
 
-    let {images,shownImage,productDetails,loading}=state;
+    let {images,shownImage,productDetails,loading,height,length,weight,currency,activeBackDrop }=state;
 
     const classes=useStyles()
     const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
+    function setBackdrop(status){
+        setState(prevState=>{
+            return {...prevState,loading:false,activeBackDrop:status}
+        })
+    }
+
+    async function addToCart(productId,itemFamily,name,price) {
+        setState(prevState=>{
+            return {...prevState,loading:false,activeBackDrop:true}
+        })
+        const headers = {
+          "Content-Type": "Application/json",
+          token: Cookies.get("token"),
+        };
+    
+        // TODO : create the item object
+        let item = {
+          itemId:productId,
+          itemFamily:itemFamily,
+          quantity:1,
+          name,
+          price
+        }
+        console.log('item bro',item)
+         const data=await fetch(process.env.REACT_APP_API_URL + "/addToCart",{
+          method: "POST",
+          headers,
+          body:JSON.stringify(item)
+        })
+        
+          console.log(data.ok)
+          if(data.ok==false)
+          {
+            setState(prevState=> {return {...prevState,loading:false,activeBackDrop:false}})
+            swal('please login')
+            return
+          }
+          const response= await data.json();
+    
+          if(response && response.itemPresent){
+            swal('Item is already present in the cart');
+          }
+          else{
+          swal('item added')
+        }
+        setState(prevState=> {return {...prevState,loading:false,activeBackDrop:false}})
+            
+      }
+
+      
     React.useEffect(()=>{
         setState(prevState=>{
             return {...prevState,loading:true}
@@ -52,6 +106,7 @@ export default function ProductDetails(props) {
             }
           }).then(res=> {
               authentication(res,body=> {
+                  console.log('product Page: ',body)
                   if(body==MESSAGES.LOGIN_ERROR)
                    {
                         setState(prevState=>{
@@ -64,7 +119,8 @@ export default function ProductDetails(props) {
                     setState(prevState=>{
                         return {...prevState,loading:false,images:imgChildren,
                         productDetails: {name:body.name,price:body.price,description:body.description
-                            ,id:id,family:family} }
+                            ,id:id,family:family, length:body.length,height:body.height,weight:body.weight,
+                                 currency:body.currency} }
                     })
                 }
           })
@@ -83,8 +139,8 @@ export default function ProductDetails(props) {
     }
     
     return <>
+            <MyBackDrop open={activeBackDrop}/>
     {matches ?   <div style={{display:'flex',margin:'8% 30px',minHeight:'100vh'}}>
-
             <div style={{display:'flex',flexDirection:'column',marginRight:'10px'}}>
             {
                 images.map((img,idx)=>{
@@ -123,7 +179,7 @@ export default function ProductDetails(props) {
         <div style={{marginLeft:'40px',flexDirection:'column', display:'flex'
                         , padding:'30px'}}>
             <h1>{productDetails.name}</h1>
-            <h2>Price ${productDetails.price}</h2>
+            <h2>Price {`${currencySymbols[productDetails.currency]} ${productDetails.price}`}</h2>
             <div style={{maxWidth:'700px'}}>
 
             {
@@ -131,10 +187,13 @@ export default function ProductDetails(props) {
             }
             </div>
             
+            {height!=-1 && <p>Height: {height} cm</p>}
+            {length!=-1 && <p>Length: {length} cm</p>}
+            {weight!=-1 && <p> weight: {weight} gm</p>}
                
                 <div style={{marginTop:'20px'}}>
 
-                    {user &&    <StripePayment isCart={false} productDetails={productDetails}/> }
+                    {user &&    <StripePayment setLoading={setBackdrop} isCart={false} productDetails={productDetails}/> }
                     
                     <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
@@ -158,10 +217,19 @@ export default function ProductDetails(props) {
             <div style={{marginLeft:'20px',flexDirection:'column',flexGrow:1, display:'flex'
                         , padding:'30px'}}>
            <div className={classes.responsiveHeading} variant="h3">{productDetails.name}</div>
-            <div className={classes.responsiveHeading}>Price ${productDetails.price}</div>
+            <div className={classes.responsiveHeading}>Price {`${currencySymbols[productDetails.currency]} ${productDetails.price}`}</div>
+
+            <div style={{maxWidth:'700px'}}>
+
+            {
+                productDetails.description.map(desc=> <p>{desc}</p>)
+            }
+            </div>
+
+            
                 <div style={{marginTop:'20px'}}>
                     
-                {user &&  <StripePayment isCart={false} productDetails={productDetails} size={'small'} /> }
+                {user &&  <StripePayment  setLoading={setBackdrop} isCart={false} productDetails={productDetails} size={'small'} /> }
                     
                     <StyledButton size={'small'} onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>

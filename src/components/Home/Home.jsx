@@ -20,6 +20,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Flipkart from './partners/flipkart.jpg'
 import Amazon from './partners/amazon.png'
 import IndiaMart from './partners/indiamart.jpg'
+import { Link, NavLink } from "react-router-dom";
+
 
 const info = [
   {
@@ -107,15 +109,20 @@ function handleVisibilityChange(idx, setSliderState, sliderState) {
   let prevState = [...sliderState];
   prevState[idx] = true;
   setSliderState(prevState);
-}
+} 
 
-export default function About() {
+export default function Home() {
   const classes = useStyles();
   const matches = useMediaQuery(theme => theme.breakpoints.up('md'));
 
   const temp = new Array(info.length);
   temp.fill(false);
   const [sliderState, setSliderState] = React.useState(temp);
+
+  React.useEffect(() => {
+    //To move scroll bar to top
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <div style={{marginTop:'60px'}}>
@@ -190,9 +197,11 @@ export default function About() {
         <RowButtons />
 
         <Box mt={4} style={{ textAlign: "center" }}>
-          <Button variant="contained" color="primary">
-            Learn More
-          </Button>
+          <Link to="/contact"   exact={true}>  
+              <Button variant="contained" color="primary">
+                Learn More
+              </Button>
+          </Link>
         </Box>
       </div>
 
@@ -217,7 +226,9 @@ export default function About() {
         <h1 style={{ marginBottom: "50px" }}>
           Red Sandlewood Products Are What We Know Best
         </h1>
-        <StyledButton mode="dark">Click Here</StyledButton>
+        <Link to="/catalog" exact={true}>
+          <StyledButton mode="dark">Click Here</StyledButton>
+        </Link>
       </Stripe>
     </div>
   );
