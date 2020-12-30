@@ -95,6 +95,9 @@ export default function ProductDetails(props) {
 
       
     React.useEffect(()=>{
+        //To set scroll to top
+        window.scrollTo(0, 0)
+
         setState(prevState=>{
             return {...prevState,loading:true}
         })

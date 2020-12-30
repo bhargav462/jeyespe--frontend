@@ -29,8 +29,8 @@ const makePayment = (token,isCart,productDetails,setLoading) => {
         method: "POST",
         headers,
         body: JSON.stringify(body)
-    }).then(response => {
-        authentication(response,(data)=>{
+    }).then( response => {
+        authentication(response,async (data)=>{
             setLoading(false);
            
             if(data==MESSAGES.LOGIN_ERROR)
@@ -39,9 +39,10 @@ const makePayment = (token,isCart,productDetails,setLoading) => {
            }
 
          if(data.status==true) 
-            swal("Your Payment is Successful ","Thankyou for shopping with us ","success");
+            await swal("Your Payment is Successful ","Thankyou for shopping with us ","success")
          else 
-            swal('Payment Failed','Sorry for the inconvinience',"error")
+            await swal('Payment Failed','Sorry for the inconvinience',"error")
+        window.location.reload()
        })
     })
     .catch(error => swal('ERROR!','Something went wrong','error'));
