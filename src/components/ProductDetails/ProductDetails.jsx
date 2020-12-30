@@ -102,7 +102,7 @@ export default function ProductDetails(props) {
             method: "GET",
             headers:{
                 "Content-Type": "application/json",
-                "token": Cookies.get('token'),
+                "token": Cookies.get('token')||'',
             }
           }).then(res=> {
               authentication(res,body=> {
