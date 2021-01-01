@@ -39,7 +39,9 @@ const makePayment = (token,isCart,productDetails,setLoading) => {
            }
 
          if(data.status==true) 
-            await swal("Your Payment is Successful ","Thankyou for shopping with us ","success")
+            await swal("Your Payment is Successful ",
+                            "Thankyou for shopping with us, Your order will be delivered soon",
+                                "success")
          else 
             await swal('Payment Failed','Sorry for the inconvinience',"error")
         window.location.reload()

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {  useState,useEffect } from "react";
 import MediaCard from "./MediaCard/MediaCard";
 import Grid from "@material-ui/core/Grid";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,26 +19,59 @@ import Select from '@material-ui/core/Select';
 import Divider from '@material-ui/core/Divider';
 import space from 'to-space-case'
 import { capitalCase } from "capital-case";
+import { Accordion, AccordionSummary } from "@material-ui/core";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from '@material-ui/core/Typography';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+      productCategoriesSmall:{
+        marginTop:'75px',
+        position:'fixed',
+        width:'100%',
+        zIndex:'100',
+        [theme.breakpoints.up('md')]:{
+          display:'none'
+        },
+      },              
+      productHeadingsAccordion:{
+        color:'black',
+        textDecoration:'none',
+        display:'block',
+        width:'100%',
+        paddingLeft:'10px',
+        '&:hover':{
+          backgroundColor:'#c8a781',
+          textDecoration:'none',
+          color:'white'
+        }
+      } ,
+      accordionContainer:{
+        maxHeight:'200px',
+        overflow:'scroll'
+      }
+}))
 const loadState={
+
   loading: 'loading',
   redirect: 'redirect',
   showPage: 'showPage'
 }
 
-export default class Catalog extends Component {
-  constructor() {
-    super();
-    this.state = {
+export default function Catalog(){
+ 
+    const [state,setState]= useState( {
       products: {},
       loading: true,
       activeBackDrop:false,
       currencySymbol:'Rs'
-    };
-  }
+    })
 
+    const {products,loading,activeBackDrop,currencySymbol}=state
+    const classes=useStyles();
 
-  componentDidMount() {
+  useEffect(()=> {
     window.scrollTo(0, 0)
     const headers = {
       "Content-Type": "Application/json",
@@ -51,12 +84,12 @@ export default class Catalog extends Component {
     }).then((response) => response.json())
     .then(({products,currency}) => { 
             let currencySymbol= currencySymbols[currency]
-            this.setState({ products, loading: false,currencySymbol }); 
+            setState({ products, loading: false,currencySymbol }); 
           })
       
-  }
+  },[])
 
-   addToCart(productId,itemFamily,name,price) {
+   function addToCart(productId,itemFamily,name,price) {
   
     const headers = {
       "Content-Type": "Application/json",
@@ -72,7 +105,7 @@ export default class Catalog extends Component {
       price
     }
 
-    this.setState(prevState=>{
+    setState(prevState=>{
       return { ...prevState, loading:false,activeBackDrop:true}
     })
 
@@ -92,7 +125,7 @@ export default class Catalog extends Component {
       return data.json();
       }
     }).then((response) => {
-        this.setState(prevState=>{
+        setState(prevState=>{
             return {...prevState,loading:false,activeBackDrop:false}
         })
         if(response===null) 
@@ -109,40 +142,62 @@ export default class Catalog extends Component {
     })
   }
 
+ 
 
-  render() {
-
-    if (this.state.loading)
+    if (loading)
       return (
         <MyLoader/>
       );
     else
       return (
         <div>
-          <MyBackDrop open={this.state.activeBackDrop}/>
+          <MyBackDrop open={activeBackDrop}/>
+
+          <Accordion style={{margin:'75px 0px 20px 0px'}} className={classes.productCategoriesSmall}>
+                  <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
+                    Product Categories
+                  </AccordionSummary>
+                
+                    <div className={classes.accordionContainer}>
+                    {Object.keys(products).map((prod) => {
+                      return  <p>
+                         <a className={classes.productHeadingsAccordion} href={"#" + prod}>{capitalCase(space(prod))}</a>
+                        </p>  
+                    })}
+                    </div>
+                  
+                </Accordion>
          
-          <div class="categories__container">
+          <div className={`categories__container productCat`}>
             <div class="categories">
               <h4>Product Categories</h4>
               <ul>
-                {Object.keys(this.state.products).map((prod) => {
+                {Object.keys(products).map((prod) => {
                   return <a href={"#" + prod}>{capitalCase(space(prod))}</a>;
                 })}
               </ul>
             </div>
           </div>
+           
+               
+            
           <div class="cardogiries">
           
-            {Object.keys(this.state.products).map((prod) => {
+            {Object.keys(products).map((prod) => {
                 return (
                 <>
-                  <div id={prod} style={{marginBottom:'80px'}}/>
+                  <div id={prod} style={{marginBottom:'100px'}}/>
                   <h2  class="item__family">
                     {capitalCase(space(prod))}
                   </h2>
                   <main>
                     <section class="cards">
-                      {this.state.products[prod].map((subItem) => {
+                      {products[prod].map((subItem) => {
+                       
+                       if(subItem==null || subItem.img=='') {
+                        console.log("Empty Image source")
+                        return
+                       } 
                         return (
                           <div class="card">
                             <div class="card__image-container">
@@ -160,12 +215,12 @@ export default class Catalog extends Component {
                                 {subItem.name}
                               </p>
                               <p class="card__price text--medium">
-                                 {`${this.state.currencySymbol} ${subItem.price}`}
+                                 {`${currencySymbol} ${subItem.price}`}
                               </p>
                               <div class="card__info addToCartButton">
                                 <a>
                                   <button
-                                    onClick={() => this.addToCart(subItem.id,prod,subItem.name,subItem.price)}
+                                    onClick={() => addToCart(subItem.id,prod,subItem.name,subItem.price)}
                                     class="add__to__cart text--medium "
                                   >
                                     {" "}
@@ -185,5 +240,5 @@ export default class Catalog extends Component {
           </div>
         </div>
       );
-  }
+  
 }

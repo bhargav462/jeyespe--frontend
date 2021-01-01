@@ -179,7 +179,7 @@ main {
   }
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 960px) {
   .categories__container {
     display: none;
   }

@@ -183,7 +183,7 @@ export default function Profile(){
                      className={classes.formControl}
                      fullWidth={true}>
         <div className={classes.heading}>Country</div>
-        <Select
+        {/* <Select
           value={country.currency}
           variant='outlined'
           onChange={handleCountryChange}
@@ -197,9 +197,8 @@ export default function Profile(){
                 })
             }
         </Select>
-        <Button className={classes.countrySubmitBtn} type="submit">Update</Button>
+        <Button className={classes.countrySubmitBtn} type="submit">Update</Button> */}
       </FormControl>
        
-        {/* <button>Update</button> */}
         </Box>
 }

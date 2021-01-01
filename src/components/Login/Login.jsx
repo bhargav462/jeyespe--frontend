@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 import {AuthContext,AuthUpdateContext} from '../utility/AuthProvider'
 import { useHistory } from "react-router-dom";
 import {StyledButton} from '../utility/StyledButton'

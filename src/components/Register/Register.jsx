@@ -163,7 +163,7 @@ export default function Logout() {
            
             <Grid item>
             
-            <Field name="country" component={Select} style={{minWidth:'100%'}} variant="outlined"
+            {/* <Field name="country" component={Select} style={{minWidth:'100%'}} variant="outlined"
                                  value={country.currency}     onChange={handleCountryChange}
                                  className={classes.textInput}>
             {
@@ -173,7 +173,7 @@ export default function Logout() {
                     </MenuItem>
                 })
             }
-            </Field>
+            </Field> */}
 
 
             </Grid>
