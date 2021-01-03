@@ -10,8 +10,21 @@ import {StyledButton} from '../utility/StyledButton'
 import countries from '../utility/countries'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { Link, NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
+  link: {
+    color: "black",
+    marginTop:'10px',
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.dark,
+      textDecoration: "none",
+    },
+  },
+  activeLink:{
+    color:theme.palette.primary.dark
+  },
   textInput:{
     [theme.breakpoints.down('sm')]:{
         width:'300px'
@@ -227,9 +240,24 @@ export default function Logout() {
               >
                 Register
               </StyledButton>
+
+            
+            
             </Grid>
+
             </Paper>
+            <NavLink
+                    to="/login"
+                    className={classes.link}
+                    activeClassName={classes.activeLink}
+                    exact={true}
+                  >
+                    Login
+              </NavLink>
           </Grid>
+            
+         
+
         </Form>
       )}
     </Formik>

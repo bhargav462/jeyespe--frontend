@@ -6,7 +6,6 @@ import {authentication} from './APISecurity'
 import { MESSAGES } from './Messages';
 import swal from 'sweetalert'
 
-
 const makePayment = (token,isCart,productDetails,setLoading) => {
     setLoading(true);
     console.log(productDetails)
@@ -44,17 +43,18 @@ const makePayment = (token,isCart,productDetails,setLoading) => {
                                 "success")
          else 
             await swal('Payment Failed','Sorry for the inconvinience',"error")
-        window.location.reload()
+            window.location.reload()
        })
     })
-    .catch(error => swal('ERROR!','Something went wrong','error'));
-    setLoading(false);
+    .catch(error => swal('ERROR!','Something went wrong','error').then(
+        setLoading(false)
+    ));
 }
 
 export  function StripePayment(props){
     return  <StripeCheckout
     shippingAddress
-    stripeKey="pk_test_51HgaW6HISAjMedpx6Rx65qvbEpNdhHsyyayo021HcDwMsSHmk9Ei4FnZsEZ1bogeCeG9gPTSdu9FBxgarfA5hlKQ00EJ3URML8"
+    stripeKey={process.env.REACT_APP_STRIPE_KEY}
     token={(token)=>makePayment(token,props.isCart,props.productDetails,props.setLoading)}
     >
         <StyledButton size={props.size || 'medium'} style={{marginRight:'10px',marginBotton:'10px'}}>

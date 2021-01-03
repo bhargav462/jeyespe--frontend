@@ -20,6 +20,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {MyBackDrop} from '../utility/MyBackDrop'
 import {currencySymbols} from '../utility/countries'
+import {StyledButton} from '../utility/StyledButton'
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
         display: "flex",
@@ -261,7 +262,7 @@ export default function ShoppingCart(){
 
                 <MyBackDrop open={activeBackDrop}/>
              
-                {console.log(products)}
+           
                 {products.map((item,idx) => {
                     return    <>
                     <Box display="flex">
@@ -305,7 +306,9 @@ export default function ShoppingCart(){
                     <h3 style={{textAlign:'right',marginRight:'12%'}}>Subtotal : {`${currencySymbols[currency]} ${calculateSubTotal(products)}`}</h3>
                 </Box>
                   <div className={classes.checkOutButtonStyles}>
-                    <StripePayment setLoading={setBackdrop} isCart={true}/>
+                  <Link to={`/buynow`}>
+                                <StyledButton>Buy Now</StyledButton>
+                        </Link>
                 </div>
             </Box>
     )
@@ -359,10 +362,12 @@ export default function ShoppingCart(){
                 }
                 <Box> 
                     <h3 style={{margin:'15px'}}>Subtotal : {`${currencySymbols[currency]} ${calculateSubTotal(products)}`}</h3>
-                </Box>
+                </Box>                  
                 
                 <div className={classes.checkOutButtonStyles}>
-                   <StripePayment setLoading={setBackdrop} isCart={true}/>
+                <Link to={`/buynow`}>
+                                <StyledButton>Buy Now</StyledButton>
+                        </Link>
                 </div>
             </Box>
         )

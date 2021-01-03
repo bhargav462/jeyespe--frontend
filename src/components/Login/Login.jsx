@@ -18,7 +18,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TF from '@material-ui/core/TextField';
 import {MyLoader} from '../utility/MyLoader'
 import { Link, NavLink } from "react-router-dom";
-
+import swal from 'sweetalert'
 
 const useStyles = makeStyles((theme) => ({
     textInput:{
@@ -123,8 +123,6 @@ export default function Log(props) {
         }
         if (!values.password) {
           errors.password = "Required";
-        } else if (values.password.length < 8) {
-          errors.password = "Password should be atleast 8 characters";
         }
         return errors;
       }}
@@ -147,7 +145,7 @@ export default function Log(props) {
             return res.text();
           }else{
             setWaiting(false)
-            alert('invalid credentials')
+            swal('invalid credentials')
             console.log("invalid credentials")
             setSubmitting(false);
             return 'error';

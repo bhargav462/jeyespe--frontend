@@ -20,6 +20,7 @@ import {AuthContext} from '../utility/AuthProvider'
 import {currencySymbols} from '../utility/countries'
 import {MyBackDrop} from '../utility/MyBackDrop'
 import swal from 'sweetalert';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
    img:{
@@ -107,7 +108,7 @@ export default function ProductDetails(props) {
                 "Content-Type": "application/json",
                 "token": Cookies.get('token')||'',
             }
-          }).then(res=> {
+          }).then(res=> {   
               authentication(res,body=> {
                   console.log('product Page: ',body)
                   if(body==MESSAGES.LOGIN_ERROR)
@@ -196,7 +197,9 @@ export default function ProductDetails(props) {
                
                 <div style={{marginTop:'20px'}}>
 
-                    {user &&    <StripePayment setLoading={setBackdrop} isCart={false} productDetails={productDetails}/> }
+                    {user &&    <Link style={{marginRight:'5px'}} to={`/purchase/${productDetails.family}/${productDetails.id}`}>
+                                <StyledButton>Buy Now</StyledButton>
+                        </Link>}
                     
                     <StyledButton onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>
@@ -231,8 +234,10 @@ export default function ProductDetails(props) {
 
             
                 <div style={{marginTop:'20px'}}>
-                    
-                {user &&  <StripePayment  setLoading={setBackdrop} isCart={false} productDetails={productDetails} size={'small'} /> }
+
+                {user &&    <Link style={{marginRight:'5px'}} to={`/purchase/${productDetails.family}/${productDetails.id}`}>
+                                <StyledButton  size={'small'}>Buy Now</StyledButton>
+                        </Link>}
                     
                     <StyledButton size={'small'} onClick={()=> addToCart(productDetails.id,productDetails.family,productDetails.name,productDetails.price)}>Add to Cart</StyledButton>
                 </div>

@@ -12,6 +12,10 @@ import {authentication} from '../utility/APISecurity'
 import { MESSAGES } from '../utility/Messages';
 import {MyLoader} from '../utility/MyLoader'
 import swal from 'sweetalert';
+import moment from 'moment';
+import {MyBackDrop} from '../utility/MyBackDrop'
+
+
 const useStyles = makeStyles((theme) => {
     return {
       container: {
@@ -29,31 +33,10 @@ const useStyles = makeStyles((theme) => {
 
 
 
-function reviewSubmission(e,orderId,itemId,feedbackInputId)
-{
-    e.preventDefault();
-    const review= document.getElementById(feedbackInputId).value;
-  
-    console.log('check here')
-    console.log(orderId,itemId);
-    console.log('review',review);
-    fetch(process.env.REACT_APP_API_URL + "/orders/addFeedback",{
-        method: "POST",
-        headers:{
-                "Content-Type": "Application/json",
-                token: Cookies.get("token")
-        },
-        body:JSON.stringify({id:orderId,itemId,feedback:review})
-    }
-    ).then(response=> authentication(response,data=>{
-        swal('Review Recieved')
-        console.log('data',data)
-    }))
 
-}
 export default function MyOrders(props){
-    const [state,setState]=useState({orders:[],feedbacks:[],loading:true})
-    const {orders,loading}=state;
+    const [state,setState]=useState({orders:[],feedbacks:[],loading:true,activeBackDrop:false})
+    const {orders,loading,activeBackDrop}=state;
     const classes=useStyles();
 
     useEffect(()=>{
@@ -78,32 +61,73 @@ export default function MyOrders(props){
                     })
                     return
                 }
+
             let displayList= [];
-            console.log('orders: ',orders)
+           
             orders.forEach(order => {
                 console.log(order.items)
                 let orderId=order._id;
-                order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId}))
+                let createdAt=order.createdAt;
+                order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId,date:createdAt}))
             })
-            console.log('displayList: ',displayList)
+            let sorted=displayList.sort(function(a,b){
+                    return new Date(b.date) - new Date(a.date);
+              });
+            
             setState(prevState=>{
                 return {orders:displayList,loading:false}
             })
         })
     }
     )},[])
+
+    function reviewSubmission(e,orderId,itemId,feedbackInputId)
+    {
+        setState(prevState=>{
+            return {...prevState,activeBackDrop:true,loading:false}
+        })
+        e.preventDefault();
+        const review= document.getElementById(feedbackInputId).value;
+    
+        fetch(process.env.REACT_APP_API_URL + "/orders/addFeedback",{
+            method: "POST",
+            headers:{
+                    "Content-Type": "Application/json",
+                    token: Cookies.get("token")
+            },
+            body:JSON.stringify({id:orderId,itemId,feedback:review})
+        }
+        ).then(response=> authentication(response,data=>{
+            swal('Review Recieved').then(
+                setState(prevState=>{
+                    return {...prevState,loading:false,activeBackDrop:false}
+                })
+            )
+        
+        }))
+        .catch(err=> swal('something went wrong').then(setState(prevState=>{
+            return {...prevState,loading:false,activeBackDrop:false}
+        })))
+
+    }
+
         if(loading) return <MyLoader/>
         else if(orders.length==0)  
              return <h1 className={classes.container}>You Haven't placed any order</h1>
         else
             return (<div className={classes.container}>
+                <MyBackDrop open={activeBackDrop}/>
+
             {
                 orders.map((order,idx)=>{
                    return <>
 
                     <Paper key={order._id} className={classes.orderDetail}>
                         <p><strong>Order ID</strong>: {order._id}</p>
+                        <p><strong>Quantity</strong>: {order.quantity}</p>
                         <p><strong>Total</strong>: Rs. {order.price*order.quantity}</p>
+                        <p><strong>Placed At </strong>: {moment(order.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                      
                         <p>{order.name}</p>
                         <img src={`${process.env.REACT_APP_API_URL}/images/${order.img}`}
                             width={'100px'}></img>      
@@ -114,7 +138,7 @@ export default function MyOrders(props){
                             <Typography>Write a Review</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {console.log('feedback@@@@@@-> '+order.feedback)}
+                         
                             <form onSubmit={(e)=>reviewSubmission(e,order._id,order.itemId,'feedback'+idx)} style={{width:'100%'}}>
                                 <textarea id={'feedback'+idx} style={{width:'80%'}} >
                                     {

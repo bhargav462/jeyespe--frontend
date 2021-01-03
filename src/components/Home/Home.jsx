@@ -126,6 +126,8 @@ export default function Home() {
     window.scrollTo(0, 0)
   }, [])
 
+  console.log(process.env.REACT_APP_STRIPE_KEY)
+
   return (
     <div style={{marginTop:'60px'}}>
        <CustomCorousel/>

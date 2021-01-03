@@ -16,7 +16,9 @@ export function authentication(response,callback) {
           }
         });
       }else{
-        swal("Internal Error, Sorry for inconvinience")
+        swal("Internal Error, Sorry for inconvinience").then(
+          history.push('/error')
+        )
         return 
         // response.json().then(data=> callback(data))
       }

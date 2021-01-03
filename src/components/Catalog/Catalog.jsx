@@ -40,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
         textDecoration:'none',
         display:'block',
         width:'100%',
+        paddingTop:'3px',
+        paddingbottom:'3px',
         paddingLeft:'10px',
         '&:hover':{
           backgroundColor:'#c8a781',
@@ -83,6 +85,7 @@ export default function Catalog(){
       headers
     }).then((response) => response.json())
     .then(({products,currency}) => { 
+        console.log('hereeeeee',products)
             let currencySymbol= currencySymbols[currency]
             setState({ products, loading: false,currencySymbol }); 
           })
@@ -159,10 +162,9 @@ export default function Catalog(){
                   </AccordionSummary>
                 
                     <div className={classes.accordionContainer}>
-                    {Object.keys(products).map((prod) => {
-                      return  <p>
-                         <a className={classes.productHeadingsAccordion} href={"#" + prod}>{capitalCase(space(prod))}</a>
-                        </p>  
+                    {products && Object.keys(products).map((prod) => {
+                      return   <a className={classes.productHeadingsAccordion} href={"#" + prod}>{capitalCase(space(prod))}</a>
+                        
                     })}
                     </div>
                   
@@ -172,7 +174,7 @@ export default function Catalog(){
             <div class="categories">
               <h4>Product Categories</h4>
               <ul>
-                {Object.keys(products).map((prod) => {
+                {products && Object.keys(products).map((prod) => {
                   return <a href={"#" + prod}>{capitalCase(space(prod))}</a>;
                 })}
               </ul>
@@ -183,7 +185,7 @@ export default function Catalog(){
             
           <div class="cardogiries">
           
-            {Object.keys(products).map((prod) => {
+            {products && Object.keys(products).map((prod) => {
                 return (
                 <>
                   <div id={prod} style={{marginBottom:'100px'}}/>
