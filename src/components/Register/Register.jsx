@@ -11,7 +11,7 @@ import countries from '../utility/countries'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link, NavLink } from "react-router-dom";
-
+import swal from 'sweetalert'
 const useStyles = makeStyles((theme) => ({
   link: {
     color: "black",
@@ -157,15 +157,15 @@ export default function Logout() {
         })
         .then(data => { 
             if(data !== 'error'){
-              alert('registered successfully');
+              swal('registered successfully').then(()=>
               history.push('/login')
+              )
             }
         })
 
         setTimeout(() => {
           setSubmitting(false);
-          alert("we recieved");
-          // alert(JSON.stringify(values, null, 2));
+        
         }, 500);
       }}
     >
@@ -246,14 +246,6 @@ export default function Logout() {
             </Grid>
 
             </Paper>
-            <NavLink
-                    to="/login"
-                    className={classes.link}
-                    activeClassName={classes.activeLink}
-                    exact={true}
-                  >
-                    Login
-              </NavLink>
           </Grid>
             
          
