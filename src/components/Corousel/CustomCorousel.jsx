@@ -8,49 +8,42 @@ import Fade from '@material-ui/core/Fade';
 import Zoom from '@material-ui/core/Zoom';
 import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
-import logo from '../logo.jpg'
+import logo from './../../images/red-sandalwood-1.jpg'
 import {StyledButton} from '../utility/StyledButton'
-import { Link, NavLink } from "react-router-dom";
 
-
-function ShopNowButton(){
-  return   <Link
-              to="/catalog"
-              exact={true}
-            >
-                <StyledButton>Shop Now</StyledButton>
-            </Link>}
 
 function Page1JSX() {
   return (
     <>
-      <p>Quality wood from </p>
+      <p> </p>
        <div className={'heading'}>
-          Great Trees
+          Pure Red Sandal wood
       </div>
-      {ShopNowButton()}
+      <StyledButton>Shop Now</StyledButton>
     </>
   );
 }
 function Page2JSX() {
   return (
     <>
-      <p>Wood you need for</p>
+      <p>Pure Red Sandalwood logs for</p>
        <div className={'heading'} >
-          Building
+          Exports
       </div>
-      {ShopNowButton()}
+      <StyledButton>Shop Now</StyledButton>
+    
     </>
   );
 }
 function Page3JSX() {
   return (
     <>
-      <p>Keep Your Calm and buy</p>
+      <p>Pure Red Sandalwood logs for</p>
        <div  className={'heading'} >
-          Red SandleWood
+          Products
       </div>
-      {ShopNowButton()}
+      <StyledButton>Shop Now</StyledButton>
+    
     </>
   );
 }
