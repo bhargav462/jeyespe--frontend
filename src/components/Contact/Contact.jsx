@@ -40,7 +40,7 @@ export default function Contact(){
          <div className={classes.addressContainer}>
         
          <Typography variant="h3" component="span">Phone Numbers</Typography>
-         <p>+91 949-499-2255 / +91 807-490-4565</p>
+         <p>+91 9494992255 / +91 7013934774</p>
          <Divider/>
          <Typography variant="h3" component="span">Address</Typography>
             <address>

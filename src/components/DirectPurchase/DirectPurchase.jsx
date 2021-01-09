@@ -12,6 +12,7 @@ import makePayment from '../utility/PaymentGateway'
 import Paper from '@material-ui/core/Paper';
 import {MyBackDrop} from '../utility/MyBackDrop'
 import { authentication } from '../utility/APISecurity';
+import Cookies from 'js-cookie'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +95,9 @@ export default function DirectPurchase(props){
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-                makePayment({address:values,userItem:{itemId:id,itemFamily:family}},setBackdrop)
+                
+            makePayment({address:values,userItem:{itemId:id,itemFamily:family}},setBackdrop)
+            
         },
       });
 

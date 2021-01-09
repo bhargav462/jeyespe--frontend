@@ -16,15 +16,33 @@ function loadScript(src) {
 		document.body.appendChild(script)
 	})
 }
-
-async function makePayment(user,setLoading,isCart=false) {
-    setLoading(true)
-    console.log(setLoading)
+async function checkPinCode(pincode){
+  try{
+    const data=await fetch(process.env.REACT_APP_API_URL + '/pincode/verify', {
+        method:"POST",
+        headers:{
+            "Content-Type": "application/json",
+            "token": Cookies.get('token'),
+        },
+        body:JSON.stringify({pincode})
+        }).then(res=>{
+            return res.json()
+        })
+        let isServiceable=false
+        isServiceable=data.delivery_codes.reduce((acc,curLocation)=> acc||(curLocation.postal_code.pin==pincode),isServiceable)
+        return isServiceable
+    }
+    catch(e){
+        throw e
+    } 
+}
+async function razorPayPayment(user,setLoading,isCart)
+{
+    
     const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
 
     if (!res) {
-        alert('Razorpay SDK failed to load. Are you online?')
-        return
+        throw new Error('Payment Gateway failed to load. Are you online?')
     }
 
     let url='/purchase'
@@ -48,10 +66,10 @@ async function makePayment(user,setLoading,isCart=false) {
     
     console.log(data)
     if(data.status==false)  {
-        setLoading(false)
-        alert('something went wrong')
-        return
+        // setLoading(false)
+        throw new Error('something went wrong')
     }
+
     const options = {
         key: process.env.REACT_APP_PAYMENT_KEY,
         currency: data.currency,
@@ -64,11 +82,25 @@ async function makePayment(user,setLoading,isCart=false) {
         name: 'Jeyspe Impex',
         description: 'Red Sandalwood Products',
         image: `${process.env.REACT_APP_API_URL}/logo.png`,
-        handler: function (response) {
-          swal('success','Your Payment is Successful').then(()=>{
-              setLoading(false)
-              history.push('/catalog')
-          })
+        handler:  function (response) {
+        
+            fetch(`${process.env.REACT_APP_API_URL}/place/order`, 
+            { 
+                method: 'POST',
+                body:JSON.stringify({orderId:data.receipt}),
+                headers:{
+                    "Content-Type": "application/json",
+                    "token": Cookies.get('token'),
+             }})
+             .then(res=> res.json())
+             .then(data=> swal('Payment Successful, Your order will be delivered'))
+             .catch(err=> swal('Payment Successful but we have trouble with delivery, Contact administor'))
+             .finally(()=> {
+                 console.log('finally of success executed')
+                 setLoading(false)
+                  history.push('/myOrders')
+             })
+            
         },
         prefill: {
             address: user.address
@@ -80,14 +112,31 @@ async function makePayment(user,setLoading,isCart=false) {
             }
         }
     }
-    // console.log(options)
     const paymentObject = new window.Razorpay(options)
     paymentObject.on('payment.failed', function (response){
-    //   alert(response.error.description)
-    console.log('failed payment')
-      setLoading(false)
+        setLoading(false)
     })
     paymentObject.open()
+    console.log('completed execution of payment')
+
+}
+async function makePayment(user,setLoading,isCart=false) {
+    // setLoading(true)
+    // console.log(setLoading)
+    let data;
+    setLoading(true)
+    try{
+        const isServiceable=await checkPinCode(user.address.zipcode)
+        console.log(isServiceable)
+        if(isServiceable==false)
+            throw new Error("We are currently not delivering in your location")
+        
+        await razorPayPayment(user,setLoading,isCart)
+    }
+    catch(e){
+        alert(e.message)
+        setLoading(false)
+    }
 }
 
 
