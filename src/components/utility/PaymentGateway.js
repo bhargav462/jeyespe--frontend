@@ -93,8 +93,17 @@ async function razorPayPayment(user,setLoading,isCart)
                     "token": Cookies.get('token'),
              }})
              .then(res=> res.json())
-             .then(data=> swal('Payment Successful, Your order will be delivered'))
-             .catch(err=> swal('Payment Successful but we have trouble with delivery, Contact administor'))
+             .then(data=> {
+                if(data.success==true)
+                    return swal('Payment Successful, Your order will be delivered')
+                else
+                {
+                    console.log(data)
+                    if(data.deliveryRemarks==null)  throw new Error('Payment Successful but we have trouble with delivery, Contact administor')
+                    else    throw new Error(data.deliveryRemarks)    
+                }   
+            })
+             .catch(err=> swal(err.message))
              .finally(()=> {
                  console.log('finally of success executed')
                  setLoading(false)
@@ -121,9 +130,7 @@ async function razorPayPayment(user,setLoading,isCart)
 
 }
 async function makePayment(user,setLoading,isCart=false) {
-    // setLoading(true)
-    // console.log(setLoading)
-    let data;
+
     setLoading(true)
     try{
         const isServiceable=await checkPinCode(user.address.zipcode)
