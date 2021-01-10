@@ -8,7 +8,7 @@ import Fade from '@material-ui/core/Fade';
 import Zoom from '@material-ui/core/Zoom';
 import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
-import logo from './../../images/red-sandalwood-1.jpg'
+import logo from './../logo.jpg'
 import {StyledButton} from '../utility/StyledButton'
 
 
