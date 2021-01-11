@@ -132,14 +132,14 @@ export default function Home() {
     <div style={{marginTop:'60px'}}>
        <CustomCorousel/>
       <div>
-        <div className={classes.marginCenter}>
+        {/* <div className={classes.marginCenter}>
           <HomePageCard />
-        </div>
-        <Stripe image={parallax1}>
-          <h1>
-            We Buy Red Pine Poles, Softwood, Hardwood & Standing Timber!
-          </h1>
-        </Stripe>
+        </div> */}
+          {/* <Stripe image={parallax1}>
+            <h1>
+              We Buy Red Pine Poles, Softwood, Hardwood & Standing Timber!
+            </h1>
+          </Stripe> */}
 
         <h1 style={{ margin: "40px 0px", textAlign: "center" }}>
           About Red Sandalwood
@@ -188,7 +188,7 @@ export default function Home() {
       </div>
 
       {/* start of next segment */}
-      <div
+      {/* <div
         style={{
           textAlign: "center",
           margin: "100px 0px",
@@ -207,7 +207,7 @@ export default function Home() {
               </Button>
           </Link>
         </Box>
-      </div>
+      </div> */}
 
       <Box
         style={{

@@ -17,7 +17,7 @@ function Page1JSX() {
     <>
       <p> </p>
        <div className={'heading'}>
-          Pure Red Sandal wood
+          Red Sandal wood
       </div>
       <StyledButton>Shop Now</StyledButton>
     </>

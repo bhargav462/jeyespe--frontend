@@ -39,6 +39,9 @@ export default function Contact(){
          className={classes.map}   ></iframe> */}
          <div className={classes.addressContainer}>
         
+         <Typography variant="h3" component="span">Founder</Typography>
+         <p>JASTI SAI PRABHAKAR</p>
+         <Divider/>
          <Typography variant="h3" component="span">Phone Numbers</Typography>
          <p>+91 9494992255 / +91 7013934774</p>
          <Divider/>
@@ -59,6 +62,7 @@ export default function Contact(){
          <Divider/>
          <br/>
          <Typography variant="h3">Website</Typography>
+         <p><a href="https://www.redcarvings.com">www.redcarvings.com</a></p>
          <p><a href="http://www.jeyespe.com">www.jeyespe.com</a></p>
          </div>
     </div>
