@@ -10,7 +10,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import './style.css'
 import logo from './../logo.jpg'
 import {StyledButton} from '../utility/StyledButton'
+import { Link, NavLink } from "react-router-dom";
 
+
+function ShopNowButton(props){
+    return <Link to="/catalog"><StyledButton>Shop Now</StyledButton></Link>
+}
 
 function Page1JSX() {
   return (
@@ -19,18 +24,18 @@ function Page1JSX() {
        <div className={'heading'}>
           Red Sandal wood
       </div>
-      <StyledButton>Shop Now</StyledButton>
+      <ShopNowButton/>
     </>
   );
 }
 function Page2JSX() {
   return (
     <>
-      <p>Pure Red Sandalwood logs for</p>
+      <p style={{fontSize:'20px'}}>Pure Red Sandalwood logs for</p>
        <div className={'heading'} >
           Exports
       </div>
-      <StyledButton>Shop Now</StyledButton>
+      <ShopNowButton/>
     
     </>
   );
@@ -38,11 +43,11 @@ function Page2JSX() {
 function Page3JSX() {
   return (
     <>
-      <p>Pure Red Sandalwood logs for</p>
+      <p style={{fontSize:'20px'}}>Pure Red Sandalwood logs for</p>
        <div  className={'heading'} >
           Products
       </div>
-      <StyledButton>Shop Now</StyledButton>
+      <ShopNowButton/>
     
     </>
   );
@@ -127,7 +132,6 @@ export default function CUstomCarousel(){
    arr.fill(startScale)
    const [animationStates,changeAnimationState]=React.useState(arr)
     React.useEffect(()=>{
-      console.log('use effect of corousel')
       let copyArr=[...animationStates]
       copyArr.fill(startScale)
       copyArr[0]=finalScale

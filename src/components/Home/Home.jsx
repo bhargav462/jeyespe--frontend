@@ -20,7 +20,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Flipkart from './partners/flipkart.jpg'
 import Amazon from './partners/amazon.png'
 import Alibaba from './partners/alibaba.jpg'
+import Qalara from './partners/qalara.jpg'
 import { Link, NavLink } from "react-router-dom";
+import homeText from './homeText'
 
 const info = [
   {
@@ -93,7 +95,7 @@ const useStyles = makeStyles((theme) =>
     },
     partner:{
       [theme.breakpoints.down('sm')]:{
-        width:'100px'
+        width:'80px'
       },
       width:'200px'
     } ,
@@ -120,13 +122,12 @@ export default function Home() {
   const temp = new Array(info.length);
   temp.fill(false);
   const [sliderState, setSliderState] = React.useState(temp);
-
+ 
   React.useEffect(() => {
     //To move scroll bar to top
     window.scrollTo(0, 0)
   }, [])
 
-  console.log(process.env.REACT_APP_STRIPE_KEY)
 
   return (
     <div style={{marginTop:'60px'}}>
@@ -209,11 +210,25 @@ export default function Home() {
         </Box>
       </div> */}
 
+      <Box style={{ backgroundColor: "#f0ece0",padding:"50px 0px"}}>
+      <h3 style={{textAlign:'center',marginBottom:'20px'}}>
+          What We Do
+      </h3>
+      <ul type="square" style={{paddingLeft:'10%',fontSize:'20px'}}>
+      {
+        homeText.whatWeDo.map(line=>{
+          return <li>{line}</li>
+        })
+      }
+      </ul>
+      </Box>
+
       <Box
         style={{
           textAlign: "center",
           backgroundColor: "#f0ece0",
           height: "400px",
+          marginTop:'30px'
         }}
       >
         <h3 style={{ color: "black",paddingTop:'100px' }}>
@@ -223,6 +238,7 @@ export default function Home() {
           <img src={Amazon} className={classes.partner}/>
           <img src={Flipkart} className={classes.partner} />
           <img src={Alibaba} className={classes.partner}/>
+          <img src={Qalara} className={classes.partner}/>
         </Box>
       </Box>
 

@@ -64,11 +64,12 @@ export default function MyOrders(props){
 
             let displayList= [];
            
+            console.log('here',orders)
             orders.forEach(order => {
-                console.log(order.items)
                 let orderId=order._id;
                 let createdAt=order.createdAt;
-                order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId,date:createdAt}))
+                let deliveryStatus=order.deliveryStatus;
+                order.items.forEach(orderUnits=> displayList.push({...orderUnits,_id:orderId,date:createdAt,deliveryStatus}))
             })
             let sorted=displayList.sort(function(a,b){
                     return new Date(b.date) - new Date(a.date);
@@ -127,6 +128,7 @@ export default function MyOrders(props){
                         <p><strong>Quantity</strong>: {order.quantity}</p>
                         <p><strong>Total</strong>: Rs. {order.price*order.quantity}</p>
                         <p><strong>Placed At </strong>: {moment(order.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                        <p><strong>Delivery Status </strong>: {order.deliveryStatus}</p>
                       
                         <p>{order.name}</p>
                         <img src={`${process.env.REACT_APP_API_URL}/images/${order.img}`}

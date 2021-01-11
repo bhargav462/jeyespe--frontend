@@ -33,10 +33,10 @@ export default function Contact(){
         </h1>
         <Link to="/"><StyledButton mode="dark">Home</StyledButton></Link>
       </Stripe>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.1853729064837!2d83.21559614949287!3d17.68631534330372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQxJzEyLjMiTiA4M8KwMTInNTYuOSJF!5e1!3m2!1sen!2sin!4v1609323500386!5m2!1sen!2sin" 
+      
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15192.013682186607!2d82.85130145376645!3d17.83847458452887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQ5JzU0LjYiTiA4MsKwNTEnMzYuMSJF!5e0!3m2!1sen!2sin!4v1610370078136!5m2!1sen!2sin" 
         className={classes.map} ></iframe>
-      {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.55224420098!2d77.49085232434939!3d12.954294599027378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1604656064028!5m2!1sen!2sin" 
-         className={classes.map}   ></iframe> */}
+
          <div className={classes.addressContainer}>
         
          <Typography variant="h3" component="span">Founder</Typography>

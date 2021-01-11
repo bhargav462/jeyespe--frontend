@@ -2,7 +2,7 @@ import swal from 'sweetalert';
 import {MESSAGES} from './Messages'
 import history from './history'
 
-export function authentication(response,callback) {
+export  function authentication(response,callback) {
     // console.log('this function runs',history)
     if (!response.ok) {
       if (response.status === 403) {
@@ -14,7 +14,10 @@ export function authentication(response,callback) {
           }else{
               callback(data)
           }
-        });
+        }).catch(err=> {
+          swal("Internal Error, Sorry for inconvinience").then(
+            history.push('/error'))
+          })
       }else{
         swal("Internal Error, Sorry for inconvinience").then(
           history.push('/error')

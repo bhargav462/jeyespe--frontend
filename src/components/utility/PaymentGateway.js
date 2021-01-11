@@ -49,8 +49,8 @@ async function razorPayPayment(user,setLoading,isCart)
     if(isCart){
         url='/buyNow'
     }
-    console.log(user)
-    console.log('url',url)
+    // console.log(user)
+    // console.log('url',url)
     const data = await fetch(`${process.env.REACT_APP_API_URL}${url}`, 
     { 
         method: 'POST',
@@ -64,7 +64,7 @@ async function razorPayPayment(user,setLoading,isCart)
         t.json()
     )
     
-    console.log(data)
+    // console.log(data)
     if(data.status==false)  {
         // setLoading(false)
         throw new Error('something went wrong')
@@ -98,14 +98,14 @@ async function razorPayPayment(user,setLoading,isCart)
                     return swal('Payment Successful, Your order will be delivered')
                 else
                 {
-                    console.log(data)
+                    // console.log(data)
                     if(data.deliveryRemarks==null)  throw new Error('Payment Successful but we have trouble with delivery, Contact administor')
                     else    throw new Error(data.deliveryRemarks)    
                 }   
             })
              .catch(err=> swal(err.message))
              .finally(()=> {
-                 console.log('finally of success executed')
+                //  console.log('finally of success executed')
                  setLoading(false)
                   history.push('/myOrders')
              })
@@ -116,7 +116,7 @@ async function razorPayPayment(user,setLoading,isCart)
         },
         "modal": {
             "ondismiss": function(){
-                console.log('dismissed')
+                // console.log('dismissed')
                 setLoading(false)
             }
         }
@@ -126,7 +126,7 @@ async function razorPayPayment(user,setLoading,isCart)
         setLoading(false)
     })
     paymentObject.open()
-    console.log('completed execution of payment')
+    // console.log('completed execution of payment')
 
 }
 async function makePayment(user,setLoading,isCart=false) {
@@ -134,7 +134,7 @@ async function makePayment(user,setLoading,isCart=false) {
     setLoading(true)
     try{
         const isServiceable=await checkPinCode(user.address.zipcode)
-        console.log(isServiceable)
+        // console.log(isServiceable)
         if(isServiceable==false)
             throw new Error("We are currently not delivering in your location")
         

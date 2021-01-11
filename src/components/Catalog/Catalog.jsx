@@ -85,7 +85,7 @@ export default function Catalog(){
       headers
     }).then((response) => response.json())
     .then(({products,currency}) => { 
-        console.log('hereeeeee',products)
+        // console.log('hereeeeee',products)
             let currencySymbol= currencySymbols[currency]
             setState({ products, loading: false,currencySymbol }); 
           })
@@ -197,7 +197,6 @@ export default function Catalog(){
                       {products[prod].map((subItem) => {
                        
                        if(subItem==null || subItem.img=='') {
-                        console.log("Empty Image source")
                         return
                        } 
                         return (

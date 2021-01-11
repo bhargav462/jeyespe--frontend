@@ -21,6 +21,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {MyBackDrop} from '../utility/MyBackDrop'
 import {currencySymbols} from '../utility/countries'
 import {StyledButton} from '../utility/StyledButton'
+import swal from 'sweetalert';
 const useStyles = makeStyles((theme) => ({
     checkOutButtonStyles:{
         display: "flex",
@@ -78,7 +79,6 @@ function deleteFromCart(id,setState,state){
         }
     }).then(response=>{
         authentication(response,data=> {
-            console.log('recieved delete response')
             if(data==MESSAGES.LOGIN_ERROR){
                 setState(prevState=>{
                     return {...prevState,activeBackDrop:false,loading:false}
@@ -86,9 +86,8 @@ function deleteFromCart(id,setState,state){
                 return
             }
             else{
-                console.log(data)
+                // console.log(data)
                 setState(prevState=>{
-                    console.log('eresdfsdfasdfradafs',prevState.products)
                     return {...prevState,loading:false,activeBackDrop:false,products:data.cartItems,
                     quantities: prevState.quantities.filter((q,idx)=> prevState.products[idx].itemId!=id)}
                 })
@@ -137,7 +136,6 @@ export default function ShoppingCart(){
         }).then( (response) => {
           
             authentication(response,(data)=>{
-                    console.log('recieved response useEffect')
                     if(data===MESSAGES.LOGIN_ERROR)
                     {
                         setState(prevState=> {
@@ -147,7 +145,7 @@ export default function ShoppingCart(){
                     }
                     else if(data.cart !== false)
                     {
-                        console.log('hey bhavuk',data)
+                        // console.log('hey bhavuk',data)
                         setState(prevState=>{
                             return {...prevState,
                                     loading:false,
@@ -182,18 +180,18 @@ export default function ShoppingCart(){
     }
 
     function quantityChange(e,idx){
-            //If user removes all input, let him do it
-            console.log('beginning; ',e.target.value)
+            //If user removes all input, let him do it onBlur will handle that
+            // console.log('beginning; ',e.target.value)
             if(e.target.value=='') {       
                updateQuantityAtIndex('',idx)
                return
             }
             //If non numeral is entered return
             let numericalValue=parseInt(e.target.value)
-            console.log('isNan Result:' ,Number.isNaN(numericalValue))
+            // console.log('isNan Result:' ,Number.isNaN(numericalValue))
             if(Number.isNaN(numericalValue)) 
                return;
-            console.log('here:',numericalValue)
+            // console.log('here:',numericalValue)
             updateQuantityAtIndex(numericalValue,idx)
     }
 
@@ -211,6 +209,9 @@ export default function ShoppingCart(){
         setState(prevState=>{
             return {...prevState,activeBackDrop:true,loading:false}
         })  
+        // check if quantity is 0
+        if(quantities[idx]==0)
+            quantities[idx]=1
         fetch(process.env.REACT_APP_API_URL + "/updateQuantity",{
             method: "POST",
             headers:{
@@ -219,24 +220,25 @@ export default function ShoppingCart(){
             },
             body:JSON.stringify({itemId,quantity:quantities[idx]})
         }).then(response=>  authentication(response,data=> {
-            console.log('recieved response update quantity')
             if(data==MESSAGES.LOGIN_ERROR)
             {
                 alert('Sorry we are having some technical issues')
                 setState(prevState=>{
-                    return {...prevState,activeBackDrop:false,loading:false}
+                    return {...prevState,loading:false,activeBackDrop:false}
                 })
                 return
             }
             else
             {
                 const updatedProducts=[...products]
+                // Check for 0 quantity
                 updatedProducts[idx].quantity=quantities[idx]
                 setState(prevState=>{
                     return {...prevState,products:updatedProducts,loading:false,activeBackDrop:false}
                 })
             }
-        }))
+        })).catch(err=> swal(err.message))
+        
 
     }
 

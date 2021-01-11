@@ -68,14 +68,13 @@ export default function ProductDetails(props) {
           name,
           price
         }
-        console.log('item bro',item)
          const data=await fetch(process.env.REACT_APP_API_URL + "/addToCart",{
           method: "POST",
           headers,
           body:JSON.stringify(item)
         })
         
-          console.log(data.ok)
+        //   console.log(data.ok)
           if(data.ok==false)
           {
             setState(prevState=> {return {...prevState,loading:false,activeBackDrop:false}})
@@ -110,7 +109,6 @@ export default function ProductDetails(props) {
             }
           }).then(res=> {   
               authentication(res,body=> {
-                  console.log('product Page: ',body)
                   if(body==MESSAGES.LOGIN_ERROR)
                    {
                         setState(prevState=>{
