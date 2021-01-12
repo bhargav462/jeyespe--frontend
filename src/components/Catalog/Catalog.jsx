@@ -204,7 +204,8 @@ export default function Catalog(){
                             <div class="card__image-container">
                               <Link to={`product/${prod}/${subItem.id}`}>
                                 <img
-                                  src={          
+                                  src={  
+                                    `${process.env.REACT_APP_API_URL}/images` +        
                                     subItem.img
                                   }
                                 />
