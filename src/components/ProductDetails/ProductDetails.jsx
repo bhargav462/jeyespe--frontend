@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
    },
    responsiveHeading:{
        fontSize:'25px'
+   },
+   productId:{
+       fontSize : '20px'
    }
 }))
 
@@ -109,6 +112,7 @@ export default function ProductDetails(props) {
             }
           }).then(res=> {   
               authentication(res,body=> {
+                  console.log("body",body);
                   if(body==MESSAGES.LOGIN_ERROR)
                    {
                         setState(prevState=>{
@@ -182,6 +186,7 @@ export default function ProductDetails(props) {
                         , padding:'30px'}}>
             <h1>{productDetails.name}</h1>
             <h2>Price {`${currencySymbols[productDetails.currency]} ${productDetails.price}`}</h2>
+            <h4>Product ID : {`${productDetails.id}`}</h4>
             <div style={{maxWidth:'700px'}}>
 
             {
@@ -222,6 +227,7 @@ export default function ProductDetails(props) {
                         , padding:'30px'}}>
            <div className={classes.responsiveHeading} variant="h3">{productDetails.name}</div>
             <div className={classes.responsiveHeading}>Price {`${currencySymbols[productDetails.currency]} ${productDetails.price}`}</div>
+            <div className={classes.productId} variant="h4">Product ID : {productDetails.id}</div>
 
             <div style={{maxWidth:'700px'}}>
 

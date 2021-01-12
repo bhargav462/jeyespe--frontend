@@ -204,8 +204,7 @@ export default function Catalog(){
                             <div class="card__image-container">
                               <Link to={`product/${prod}/${subItem.id}`}>
                                 <img
-                                  src={
-                                    
+                                  src={          
                                     subItem.img
                                   }
                                 />
