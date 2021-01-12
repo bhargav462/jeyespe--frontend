@@ -12,6 +12,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link, NavLink } from "react-router-dom";
 import swal from 'sweetalert'
+import {MyBackDrop} from '../utility/MyBackDrop'
+
 const useStyles = makeStyles((theme) => ({
   link: {
     color: "black",
@@ -66,6 +68,7 @@ export default function Logout() {
     const [contactErrorMessage,setContactMessage]=React.useState('');
     const [emailErrorMessage,setEmailMessage]=React.useState('');
     const [country,setCountry]=useState( {currency:'INR', name:'INDIA'});
+    const [activeBackDrop,setActiveBackDrop]=useState(false)
 
     function validateContact(value) {
 
@@ -81,7 +84,10 @@ export default function Logout() {
               })
     };
 
-    return (
+    return <>
+ 
+     <MyBackDrop open={activeBackDrop}/>
+
     <Formik
       initialValues={{
         email: "",
@@ -121,9 +127,9 @@ export default function Logout() {
       }}
       onSubmit={(values, { setSubmitting }) => {
         values={...values,country}
-        console.log('values',values);
         setContactMessage('')
         setEmailMessage('')
+        setActiveBackDrop(true)
         fetch(process.env.REACT_APP_API_URL+'/register',{
           method:'POST',
           headers:{
@@ -145,11 +151,10 @@ export default function Logout() {
             console.log(e.message);
             if(e.message === 'email'){
               setEmailMessage('email already in use')
-              console.log('email already used')
+  
               // TODO: "Email already used"
             }else if(e.message === 'phoneNo'){
               setContactMessage('Phone Number already in use  ')
-              console.log('phone number already in use')
               // TODO: "Phone Number already in use"
             }
           })
@@ -162,6 +167,7 @@ export default function Logout() {
               )
             }
         })
+        .finally(()=> setActiveBackDrop(false))
 
         setTimeout(() => {
           setSubmitting(false);
@@ -253,6 +259,6 @@ export default function Logout() {
         </Form>
       )}
     </Formik>
-  );
+  </>
 }
 
