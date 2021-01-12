@@ -205,7 +205,7 @@ export default function Catalog(){
                               <Link to={`product/${prod}/${subItem.id}`}>
                                 <img
                                   src={
-                                    "https://jeyespe-backend.herokuapp.com/images/" +
+                                    
                                     subItem.img
                                   }
                                 />
