@@ -118,9 +118,7 @@ export default function CartPurchase(props){
             }
             // send the body by using JSON.stringify
         }).then( (response) => {
-            console.log('got response')
             authentication(response,(data)=>{
-                    console.log('recieved response useEffect')
                     if(data===MESSAGES.LOGIN_ERROR)
                     {
                         setState(prevState=> {

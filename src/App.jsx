@@ -18,6 +18,9 @@ import Profile from './components/Profile'
 import history from './components/utility/history'
 import {DirectPurchase} from './components/DirectPurchase'
 import {CartPurchase} from './components/CartPurchase'
+import { Link, NavLink } from "react-router-dom";
+import {StyledButton} from './components/utility/StyledButton'
+
 function App() {
   return (
     <div>
@@ -123,10 +126,12 @@ function AllCode(){
           </Route>
       
           <Route exact path="/404"
-             render={(props) => <>
+             render={(props) => <div style={{textAlign:'center'}}>
               {/* <NavBar/> */}
-               <h1>404 Page</h1>
-              </>
+               <h1 style={{marginBottom:'30px'}}>Please Login First</h1>
+               <Link to="/"><StyledButton style={{marginRight:'20px'}}>Home</StyledButton></Link>
+               <Link to="/login"><StyledButton>Login</StyledButton></Link>
+              </div>
           }>   
           </Route>
 
