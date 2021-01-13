@@ -73,7 +73,7 @@ async function razorPayPayment(user,setLoading,isCart)
     const options = {
         key: process.env.REACT_APP_PAYMENT_KEY,
         currency: data.currency,
-        amount: data.amount.toString(),
+        amount: data.amount.toString(), 
         order_id: data.id,
         notes:{
             receipt: data.receipt,

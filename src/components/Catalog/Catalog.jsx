@@ -140,7 +140,7 @@ export default function Catalog(){
         swal('Item is already present in the cart');
       }
       else{
-      console.log(response);
+      // console.log(response);
       swal('item added')}
     })
   }

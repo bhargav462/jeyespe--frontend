@@ -16,11 +16,11 @@ export  function authentication(response,callback) {
           }
         }).catch(err=> {
           swal("Internal Error, Sorry for inconvinience").then(
-            history.push('/error'))
+            history.push('/home'))
           })
       }else{
         swal("Internal Error, Sorry for inconvinience").then(
-          history.push('/error')
+          history.push('/home')
         )
         return 
         // response.json().then(data=> callback(data))
