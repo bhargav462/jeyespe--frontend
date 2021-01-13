@@ -64,9 +64,9 @@ async function razorPayPayment(user,setLoading,isCart)
         t.json()
     )
     
-    // console.log(data)
+    console.log(data)
     if(data.status==false)  {
-        // setLoading(false)
+        setLoading(false)
         throw new Error('something went wrong')
     }
 
@@ -98,7 +98,7 @@ async function razorPayPayment(user,setLoading,isCart)
                     return swal('Payment Successful, Your order will be delivered')
                 else
                 {
-                    // console.log(data)
+                    console.log(data)
                     if(data.deliveryRemarks==null)  throw new Error('Payment Successful but we have trouble with delivery, Contact administor')
                     else    throw new Error(data.deliveryRemarks)    
                 }   
@@ -133,8 +133,9 @@ async function makePayment(user,setLoading,isCart=false) {
 
     setLoading(true)
     try{
+        console.log(user.address);
         const isServiceable=await checkPinCode(user.address.zipcode)
-        // console.log(isServiceable)
+        console.log(isServiceable)
         if(isServiceable==false)
             throw new Error("We are currently not delivering in your location")
         
