@@ -44,8 +44,9 @@ export default function Footer(){
     const classes=useStyles()
     return <>
         <Grid container justify={"space-around"} className={classes.footerContainer}>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.1853729064837!2d83.21559614949287!3d17.68631534330372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQxJzEyLjMiTiA4M8KwMTInNTYuOSJF!5e1!3m2!1sen!2sin!4v1609323500386!5m2!1sen!2sin" 
-             className={classes.map}   ></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3803.0904002301195!2d82.85783531482335!3d17.831841094527793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDQ5JzU0LjYiTiA4MsKwNTEnMzYuMSJF!5e1!3m2!1sen!2sin!4v1610537869060!5m2!1sen!2sin"
+        className={classes.map}></iframe>
+        
             <Box display="flex" flexDirection="column" className={classes.gridItem}>
                 <Typography  variant="h6">My Account</Typography>
                 <Link to="/myOrders" className={classes.footerLink} >
