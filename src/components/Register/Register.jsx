@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Link, NavLink } from "react-router-dom";
 import swal from 'sweetalert'
 import {MyBackDrop} from '../utility/MyBackDrop'
+import * as yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -59,7 +60,16 @@ errorMessage:{
 } 
 }));
 
-
+const validationSchema = yup.object({
+  email: yup
+    .string('Enter your email')
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+});
 
 
 export default function Logout() {
@@ -181,20 +191,6 @@ export default function Logout() {
           <Paper elevation={10} className={classes.formContainer}>
            
             <Grid item>
-            
-            {/* <Field name="country" component={Select} style={{minWidth:'100%'}} variant="outlined"
-                                 value={country.currency}     onChange={handleCountryChange}
-                                 className={classes.textInput}>
-            {
-                countries.map(country=>{
-                    return  <MenuItem value={country.currency}>
-                        {country.name}
-                    </MenuItem>
-                })
-            }
-            </Field> */}
-
-
             </Grid>
           <Grid item >
               <Field

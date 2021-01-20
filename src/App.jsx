@@ -20,7 +20,7 @@ import {DirectPurchase} from './components/DirectPurchase'
 import {CartPurchase} from './components/CartPurchase'
 import { Link, NavLink } from "react-router-dom";
 import {StyledButton} from './components/utility/StyledButton'
-
+import TermsAndConditions from './components/TermsAndConditions'
 function App() {
   return (
     <div>
@@ -108,12 +108,21 @@ function AllCode(){
                <Footer/>
                </>
            }>   
+
           </Route>
           <Route exact path="/myOrders"
           render={(props) => <>
                <NavBar/>
                 <MyOrders/>
                <Footer/>
+               </>
+           }>   
+          </Route>
+
+          <Route exact path="/termsAndConditions"
+              render={(props) => <>
+                <NavBar/>
+               <TermsAndConditions {...props} />
                </>
            }>   
           </Route>

@@ -71,6 +71,12 @@ export default function Footer(){
                 <Link to="/contact" className={classes.footerLink} >
                     Contact Us
                 </Link>
+                <Link to="/termsAndConditions" className={classes.footerLink} >
+                    Terms And Conditions
+                </Link>
+                <Link to="/privacyPolicy" className={classes.footerLink} >
+                   Privacy Policy
+                </Link>
             </Box>
             
             
