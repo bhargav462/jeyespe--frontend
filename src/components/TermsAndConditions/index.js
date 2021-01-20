@@ -11,6 +11,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 export default function TermsAndConditions(){
   const classes = useStyles();
+ 
+  React.useEffect(() =>    //To set scroll bar to top
+   window.scrollTo(0, 0)
+    , [])
+  
   return <Box className={classes.container} m={4} elevation={3}>
     <h1>Terms & Conditions</h1>
     <p>Updated at 2021-01-19</p>

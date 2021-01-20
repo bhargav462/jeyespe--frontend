@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Formik, Form, Field } from "formik";
-import { Button } from "@material-ui/core";
-import { TextField } from "formik-material-ui";
+import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
 import { useHistory } from "react-router-dom";
 import {StyledButton} from '../utility/StyledButton'
-import countries from '../utility/countries'
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { Link, NavLink } from "react-router-dom";
 import swal from 'sweetalert'
 import {MyBackDrop} from '../utility/MyBackDrop'
 import * as yup from 'yup';
+import { useFormik } from 'formik';
+import "yup-phone";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import StyledLink from '../utility/StyledLink'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -69,6 +70,17 @@ const validationSchema = yup.object({
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
     .required('Password is required'),
+  username: yup
+    .string('Enter your username')
+    .required('username is required'),
+  contact: yup
+    .string()
+  .phone()
+    .required(),
+  privacyPolicy: yup
+    .bool( 'Field must be checked')
+    .oneOf([true], 'Field must be checked')
+  
 });
 
 
@@ -93,49 +105,16 @@ export default function Logout() {
                    currency:event.target.value
               })
     };
-
-    return <>
- 
-     <MyBackDrop open={activeBackDrop}/>
-
-    <Formik
-      initialValues={{
+    const formik = useFormik({
+      initialValues: {
         email: "",
         password: "",
         username:"",
         contact: "",
-        
-      }}
-      validate={(values) => {
-        // console.log(values);
-        const errors = {};
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
-        }
-        if (!values.password) {
-          errors.password = "Required";
-        } else if (values.password.length < 8) {
-          errors.password = "Password should be atleast 8 characters";
-        }
-        if(!values.username){
-            errors.username="Required"
-        }
-        if(!values.contact)
-        {
-            errors.contact="Required"
-        }
-        else if(values.contact.length!=10 || Object.is(Number(values.contact),NaN))  
-        {
-          errors.contact="Enter valid number"
-        }
-        
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
+        privacyPolicy:false
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values, { setSubmitting }) => {
         values={...values,country}
         setContactMessage('')
         setEmailMessage('')
@@ -183,78 +162,113 @@ export default function Logout() {
           setSubmitting(false);
         
         }, 500);
-      }}
-    >
-      {({ isSubmitting, submitForm }) => (
-        <Form >
+      },
+    });
+  
+    return <>
+ 
+     <MyBackDrop open={activeBackDrop}/>
+
+    <form onSubmit={formik.handleSubmit}>
           <Grid container direction="column" alignItems="center">
           <Paper elevation={10} className={classes.formContainer}>
            
             <Grid item>
             </Grid>
           <Grid item >
-              <Field
-                component={TextField}
+              <TextField
                 type="username"
                 label="Username"
                 name="username"
                 variant="outlined"
+                value={formik.values.username}
                 className={classes.textInput}
+                onChange={formik.handleChange}
+                ercontactror={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
               />
             </Grid>
+            
           <Grid item >
-              <Field
-                component={TextField}
+              <TextField
                 name="email"
                 variant="outlined"
                 label="Email"
                 className={classes.textInput}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
               />
+
               <div className={classes.errorMessage}>{emailErrorMessage}</div>
             </Grid>
+
             <Grid item >
-              <Field
-                component={TextField}
+              <TextField
                 type="password"
                 label="Password"
                 name="password"
                 variant="outlined"
                 className={classes.textInput}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
+
             <Grid item >
-              <Field
-                component={TextField}
+              <TextField
                 type="contact"
-                label="contact"
+                label="Contact"
                 name="contact"
                 variant="outlined"
                 className={classes.textInput}
+                onChange={formik.handleChange}
+                value={formik.values.contact}
+                error={formik.touched.contact && Boolean(formik.errors.contact)}
+                helperText={formik.touched.contact && formik.errors.contact}
               />
+
               <div className={classes.errorMessage}>{contactErrorMessage}</div>
             </Grid>
+
+            <Grid item>
+              <FormControl
+                    error={formik.touched.privacyPolicy && Boolean(formik.errors.privacyPolicy)}
+                    >
+              <FormControlLabel
+                  className={classes.textInput}
+                  control={
+                    <Checkbox
+                      checked={formik.values.privacyPolicy}
+                      onChange={formik.handleChange}
+                      name="privacyPolicy"
+                      color="primary"
+                      error={formik.touched.privacyPolicy && Boolean(formik.errors.privacyPolicy)}
+                      helperText={formik.touched.privacyPolicy && formik.errors.privacyPolicy}
+                    />
+                  }
+                  label={<StyledLink to="/privacyPolicy">*Privacy Policy</StyledLink>}
+                />
+                <FormHelperText>{formik.touched.privacyPolicy && formik.errors.privacyPolicy  }</FormHelperText>
+              </FormControl>
+            </Grid>
+
             <Grid item>
               <StyledButton
                 variant="contained"
-                disabled={isSubmitting}
-                onClick={submitForm}
-                mode="light"
-              >
+                type="submit"
+                mode="light">
                 Register
               </StyledButton>
-
-            
-            
             </Grid>
-
             </Paper>
           </Grid>
-            
-         
 
-        </Form>
-      )}
-    </Formik>
+        </form>
+    
   </>
 }
 

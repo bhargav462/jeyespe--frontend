@@ -31,7 +31,8 @@
     "styled-components": "^5.2.0",
     "sweetalert": "^2.1.2",
     "to-space-case": "^1.0.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "yup-phone": "^1.2.19"
   },
   "scripts": {
     "start": "react-scripts start",
