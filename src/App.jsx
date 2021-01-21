@@ -27,8 +27,9 @@ import { DirectPurchase } from "./components/DirectPurchase";
 import { CartPurchase } from "./components/CartPurchase";
 import { Link, NavLink } from "react-router-dom";
 import { StyledButton } from "./components/utility/StyledButton";
-import TermsAndConditions from "./components/TermsAndConditions";
-import PrivacyPolicy from "./components/PrivacyPolicy";
+import TermsAndConditions from "./components/Policies/TermsAndConditions";
+import PrivacyPolicy from "./components/Policies/PrivacyPolicy";
+import RefundPolicy from "./components/Policies/RefuncPolicy"
 function App() {
   return (
     <div>
@@ -160,6 +161,17 @@ function AllCode() {
                 <>
                   <NavBar />
                   <PrivacyPolicy {...props} />
+                </>
+              )}
+            ></Route>
+
+            <Route
+              exact
+              path="/refundPolicy"
+              render={(props) => (
+                <>
+                  <NavBar />
+                <RefundPolicy {...props} />
                 </>
               )}
             ></Route>

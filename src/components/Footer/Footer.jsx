@@ -85,6 +85,9 @@ export default function Footer() {
           <Link to="/privacyPolicy" className={classes.footerLink}>
             Privacy Policy
           </Link>
+          <Link to="/refundPolicy" className={classes.footerLink}>
+            Refund Policy
+          </Link>
         </Box>
       </Grid>
     </>

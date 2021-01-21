@@ -240,7 +240,8 @@ export default function CartPurchase(props){
             error={formik.touched.zipcode && Boolean(formik.errors.zipcode)}
             helperText={formik.touched.zipcode && formik.errors.zipcode}
             />
-             
+               <Link to="/refundPolicy">Check Our Refund Policy</Link>
+            <br/>
             
                 <StyledButton  variant="outlined" style={{marginTop:'10px'}} type="submit">
                 Pay Now
