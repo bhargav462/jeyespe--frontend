@@ -30,6 +30,7 @@ import { StyledButton } from "./components/utility/StyledButton";
 import TermsAndConditions from "./components/Policies/TermsAndConditions";
 import PrivacyPolicy from "./components/Policies/PrivacyPolicy";
 import RefundPolicy from "./components/Policies/RefuncPolicy"
+import TrackOrder from './components/TrackOrder'
 function App() {
   return (
     <div>
@@ -110,6 +111,18 @@ function AllCode() {
 
             <Route
               exact
+              path="/trackOrder/:orderId"
+              render={(props) => (
+                <>
+                  <NavBar />
+                  <TrackOrder {...props} />
+                  <Footer />
+                </>
+              )}
+            ></Route>
+
+            <Route
+              exact
               path="/buynow"
               render={(props) => (
                 <>
@@ -171,7 +184,7 @@ function AllCode() {
               render={(props) => (
                 <>
                   <NavBar />
-                <RefundPolicy {...props} />
+                  <RefundPolicy {...props} />
                 </>
               )}
             ></Route>
